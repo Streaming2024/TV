@@ -464,7 +464,39 @@ Data saved in your pc</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://yosintv.github.io/yosintv/match.js"></script>
-  
+<script>
+        // Your JavaScript code here
+        function convertToUserTimezone(kathmanduTime) {
+            var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            var kathmanduOffset = 5.75 * 60; // Kathmandu timezone offset in minutes (+5 hours and 45 minutes)
+            var userOffset = new Date().getTimezoneOffset(); // User's timezone offset in minutes (negative for behind UTC)
+            var offsetDifference = (userOffset + kathmanduOffset) * 60 * 1000; // Convert to milliseconds
+    
+            var userTime = new Date(kathmanduTime.getTime() - offsetDifference);
+    
+            var options = {
+                month: 'short', // Display month in abbreviated format (e.g., Jan, Feb)
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric'
+            };
+    
+            return userTime.toLocaleString(undefined, options);
+        }
+    
+        // Get all elements with class "eventDateInKathmandu" and update their text content
+        var eventDatesInKathmandu = document.querySelectorAll(".eventDateInKathmandu");
+    
+        for (var i = 0; i < eventDatesInKathmandu.length; i++) {
+            var matchDateElement = eventDatesInKathmandu[i].previousElementSibling;
+            var eventDateTime = matchDateElement.getAttribute("data-start");
+    
+            if (eventDateTime) {
+                var userTimezone = convertToUserTimezone(new Date(eventDateTime));
+                eventDatesInKathmandu[i].textContent = userTimezone;
+            }
+        }
+    </script>  
 
 </div></div>
 <div class='sidebar no-items section' id='sidebar2'></div>
