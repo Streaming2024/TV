@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Video</title>
+</head>
+<body>
+    <iframe allow="encrypted-media" allowfullscreen="true" allowtransparency="true" frameborder="0" height="400px" marginheight="0" sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation" marginwidth="0" width="100%" src="https://www.youtube.com/live_chat?v=mqfH4WFDcM0"></iframe>
+</body>
+</html>
