@@ -1,113 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>TV Player</title>
-    <meta name="referrer" content="no-referrer">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script src="/Player/jwplayer.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/disable-devtool@latest"></script>
-    <script>
-        function getParam(sname) {
-            var params = location.search.substr(location.search.indexOf("?") + 1);
-            var sval = params.replace("url=", "");
-            return sval;
-        }
-        var sv = getParam("sv");
-
-        $(document).ready(function() {
-            $("img").on("contextmenu", function() {
-                return false;
-            });
-        });
-
-        function init() {
-            // Get the `src` parameter from the URL.
-            const urlParams = new URLSearchParams(window.location.search);
-            const srcParam = urlParams.get('src');
-            const videoUrl = urlParams.get('url');
-
-            if (srcParam) {
-                // Show the iframe player
-                document.getElementById('iframe').src = srcParam;
-                document.getElementById('jwPlayer').style.display = 'none';
-            } else if (videoUrl) {
-                // Show the JW Player
-                jwplayer("jwPlayer").setup({
-                    file: videoUrl,
-                });
-                document.getElementById('iframe').style.display = 'none';
-            }
-
-            // Wait until the iframe is loaded and then unmute
-            document.getElementById('iframe').onload = function() {
-                var iframe = document.getElementById('iframe').contentWindow;
-                iframe.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-            };
-        }
-    </script>
-    <style>
-        #container {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background: #8a0000;
-            color: #fff;
-            overflow: hidden;
-        }
-        #iframe, #jwPlayer {
-            height: 100vh !important;
-            padding: 0;
-            margin: 0;
-        }
-        body {
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
-        #container {
-            position: absolute;
-            text-align: center;
-        }
-        video {
-            outline: 0;
-        }
+<html> 
+<head> 
+<title></title> 
+<meta name="robots" content="noindex"> 
+<script src="//cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script> 
+<script type="text/javascript"src="//cdn.jsdelivr.net/gh/clappr/clappr-level-selector-plugin@latest/dist/level-selector.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/@clappr/hlsjs-playback@1.2.0/dist/hlsjs-playback.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/@c3voc/clappr-audio-track-selector@0.2.4/dist/audio-track-selector.min.js"></script> 
+   <style>
+   
         #text {
             position: fixed;
             border: 0;
             left: 0;
             width: 100%;
             color: #fff;
-            bottom: 50px;
+            bottom: 30px;
             text-align: center;
-            font-family: tahoma;
-            font-size: 20px;
+            font-family: Tahoma, Geneva, sans-serif;
+            font-size: 15px;
             z-index: 9999;
+            overflow: hidden;
+            white-space: nowrap;
+            background-color: rgba(51, 51, 51, 0.4); /* Semi-transparent background color */
+            padding: 10px 0; /* Padding around the text */
+        }
+
+        .scrolling-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll 18s linear infinite; /* Slower animation */
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+      
+
+        #logo {
+            position: fixed;
+            top: 5px;
+            right: 5px;
+            z-index: 10000;
+        }
+
+        #logo img {
+            width: 300px; /* Adjust the size as needed */
         }
     </style>
-    <style>
-        .video-js {
-            width: 100%;
-            height: 100%;
-        }
-        body {
-            text-align: center;
-            margin: 0px;
-        }
-        #videojs {
-            width: 100%;
-            height: 100%;
-        }
-        .streaming-dimensions {
-            width: 100% !important;
-            height: 100% !important;
-        }
-    </style>
-</head>
-<body onload="init()">
-    <iframe id="iframe" allowfullscreen="allowfullscreen" allowtransparency="true" frameborder="0" height="100%" marginheight="0" marginwidth="0" sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation" src width="100%"></iframe>
-    <div id="jwPlayer"></div>
-    <div id="text">www.yono-tv.com</div>
-</body>
+<script disable-devtool-auto='' src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
+<script type='text/javascript' src='//urgentlyrightypast.com/43/85/cf/4385cf4c178e5e6bc4e56ceb0f2730dd.js'></script>
+
+ <div id="logo">
+        <a href="https://t.me/yonotvlive">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgRm5vtRSVKrZQf_TDxhbIB-62fp4VpZtrmiR2RgkqGaoKe3tFYbZXn1aAR-OO7AcMExyBd6Fsch7cxehV9L3iZVA373CXcu8MxXzLrt9Kq-0G6grYDAVgz0NhQX00Z06KJAVQ99KrTFTJgHZeKUf5t1YDzbHjqEpWApbeqFSUUhlZI54AZHsO0Dh3gzv0/s1600/WWW.KASINTV.COM.webp" alt="Logo">
+        </a>
+    </div>
+<div id="player" style="height: 100%; width: 100%;"></div> 
+ <div id="text">
+        <div class="scrolling-text">This website is removed anytime for copyright Please Join the Telegram Channel for More Updates @kyonotvlivev</div>
+    </div>
+</head>   
+<body>  
+ <script> 
+        // Function to get query parameters from URL 
+        function getQueryParams(param) { 
+            let urlParams = new URLSearchParams(window.location.search); 
+            return urlParams.get(param); 
+        } 
+ 
+        // Get the 'src' parameter from the URL 
+        var sourceUrl = getQueryParams('id'); 
+ 
+        // Default to a placeholder if 'src' is not provided 
+        if (!sourceUrl) { 
+            sourceUrl = ''; 
+        } 
+ 
+        // Initialize Clappr player with the source URL 
+        var player = new Clappr.Player({ 
+            source: sourceUrl, 
+            plugins: [HlsjsPlayback, LevelSelector, AudioTrackSelector], 
+            width: '100%', 
+            height: '100%', 
+            autoPlay: true, 
+            mimeType: "application/x-mpegURL", 
+            mediacontrol: { seekbar: "#ff0000", buttons: "#eee" }, 
+            parentId: "#player", 
+            hlsUseNextLevel: false, 
+            hlsMinimumDvrSize: 60, 
+            hlsRecoverAttempts: 16, 
+            hlsPlayback: { 
+                preload: true, 
+                customListeners: [], 
+            }, 
+            playback: { 
+                extrapolatedWindowNumSegments: 2, 
+                triggerFatalErrorOnResourceDenied: false, 
+                hlsjsConfig: { 
+                    // hls.js specific options 
+                }, 
+            }, 
+        }); 
+    </script> 
+    </body> 
 </html>
