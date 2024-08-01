@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Player</title>
+    <meta content="noindex, nofollow, noarchive" name="robots"/>
+    <meta name="referrer" content="no-referrer" />
+ <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
+</head>
+<body>
+    <div id="player" class="ViostreamIframe"></div>
+
+    <script>
+        function getParameterByName(name) {
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(window.location.href);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        var ConfiguracionCanales = {
+            
+            "FEED_1": {
+                url: "https://tglmp02.akamaized.net/out/v1/5081e069e08140c9b95f89a1659cf4dd/manifest.mpd",
+                k1: "607b7d22565c4bc3b95ff6c33ce65425",
+                k2: "28cc5367df666c44be4382e64af64d57"
+            },
+            "FEED_2": {
+                url: "https://mwmpos01.akamaized.net/out/v1/5fa3fdc8720b4317b14df756e81b78c1/manifest.mpd",
+                k1: "4d2b7b722f564526800fd7cb058303b5",
+                k2: "2fed1593855c46873731379f3ab2d669"
+            },
+            "FEED_3": {
+                url: "https://tglmp02.akamaized.net/out/v1/5081e069e08140c9b95f89a1659cf4dd/manifest.mpd",
+                k1: "607b7d22565c4bc3b95ff6c33ce65425",
+                k2: "28cc5367df666c44be4382e64af64d57"
+            },
+            "FEED_4": {
+                url: "https://mwmpos04.akamaized.net/out/v1/0084d9780a854a03aceade6da36ea9d1/manifest.mpd",
+                k1: "c6bab0067b5744dca11920002226d429",
+                k2: "8941026b108040f7bafce260145c19c4"
+            },
+            "FEED_5": {
+                url: "https://mwmpos03.akamaized.net/out/v1/34786af906004c77814e5bc098595bb4/manifest.mpd",
+                k1: "7aace826bd5d48d0bbf330ad1ec16f5c",
+                k2: "88b44df0ab0831d1bd2fdb3d23cb7e8f"
+            },
+            "FEED_6": {
+                url: "https://mwmpos01.akamaized.net/out/v1/11d366d059b24b4780c86e4894e35b11/manifest.mpd",
+                k1: "c5b34732f10148b9a9de022bb91a1eab",
+                k2: "1e59c2a09be4d537aa04bec805bed64e"
+            },
+            "FEED_7": {
+                url: "https://mwmpos02.akamaized.net/out/v1/10bacd45a9d8417a8ef01747e60eb3af/manifest.mpd",
+                k1: "26a0cfcc4ff445858360d41ef02e7e0f",
+                k2: "cd01c0254f2615bfca9eb23e62f2dbdc"
+            },
+            "FEED_8": {
+                url: "https://mwmpos03.akamaized.net/out/v1/571cf7ef16284d65aefc2cd92adebd39/manifest.mpd",
+                k1: "013ff1929ddb41a186d9ec63912a5670",
+                k2: "73da97902887735edd5cf2a04c2a4bd6"
+            },
+            "FEED_9": {
+                url: "https://mwmpos02.akamaized.net/out/v1/affe3e52f7db4ee2ae69d2fa4dac76b5/manifest.mpd",
+                k1: "56dce91a7a504f7c909f41daa67e17e5",
+                k2: "096eefa3c85aff704265eef51171ec3a"
+            },
+            "FEED_10": {
+                url: "https://mwmpos02.akamaized.net/out/v1/629b58ad3a734deea8c2267a261665af/manifest.mpd",
+                k1: "9434173a763e423fbc8dca7b27d393e4",
+                k2: "8fff3a0b245b8b837126ade3348b8720"
+            },
+            "FEED_11": {
+                url: "https://mwmpos04.akamaized.net/out/v1/7858540d66b44c0583c19e6b90efdb0b/manifest.mpd",
+                k1: "0ffd62c517de4fc29887c3410ceb8d0b",
+                k2: "e71be77c8149a1aa1dd09c5667700bfb"
+            },
+             "FEED_12": {
+                url: "https://mwmpos01.akamaized.net/out/v1/b37aba4f022f4cab973d80282c616904/manifest.mpd",
+                k1: "e47d842706c048c98cde16f41c8c1f3f",
+                k2: "ce46d2eeb1d648a18185023b7d772913"
+            },
+             "FEED_13": {
+                url: "https://mwmpos02.akamaized.net/out/v1/fce653c6a7d44a0288533b7a03e8dd00/manifest.mpd",
+                k1: "a47d851deaae4504b0fedf842d2db9ef",
+                k2: "943a9749cb54b17d9d0fc7c3ab5b7375"
+            },
+             "FEED_14": {
+                url: "https://mwmpos01.akamaized.net/out/v1/5d9d4e9cc6154bea81321230403e319f/manifest.mpd",
+                k1: "56439911482e4ea29baf9086250d17eb",
+                k2: "4ede19976f7b9f3aba13b572fe193b62"
+            },
+            "FEED_15": {
+                url: "https://mwmpos03.akamaized.net/out/v1/43062599f633463688e28e331f7f0e47/manifest.mpd",
+                k1: "3f32acdabea64b93bfacaa4dc2ccf7fa",
+                k2: "1ca53b84806b4e3d57fa8febafe62656"
+            },
+            "FEED_16": {
+                url: "https://mwmpos01.akamaized.net/out/v1/9d59f6e5e1f84631a9ebd228739a2d4f/manifest.mpd",
+                k1: "c9be41becbf94d169d451b87275d3220",
+                k2: "d8e6327c108a0fda737df0e33b62a0d9"
+            },
+            "FEED_17": {
+                url: "https://mwmpos04.akamaized.net/out/v1/9a0f8933d9d745ba8b12cbf05d9a3b58/manifest.mpd",
+                k1: "c6ee935a59714f618b825c82d6bb0927",
+                k2: "6f3f2a6bfa1aea20c32d6a7526296f12"
+            },
+        };
+
+var id = getParameterByName('id');
+var config = ConfiguracionCanales[id];
+
+if (config) {
+    var sources = [];
+
+    if (config.url.includes('.m3u8')) {
+        sources.push({
+            file: config.url
+        });
+    }
+    
+    if (config.url.includes('.mpd') && config.k1 && config.k2) {
+        sources.push({
+            file: config.url,
+            drm: {"clearkey": {"keyId": config.k1, "key": config.k2}}
+        });
+    }
+
+ //JWWWWWW
+    jwplayer("player").setup({
+        playlist: [{
+            sources: sources
+        }],
+        autostart: true,
+        width: "100%", 
+        height: "100%", 
+        stretching: "exactfit",
+        aspectratio: "16:9",
+        skin: {controlbar: {text:"#FA7663", icons:"#FFFFFF"}, timeslider:{progress:"#FA7663"}, menus:{text:"#FA7663"} },
+        cast: {}, 
+                
+        });
+        }
+    </script>
+</body>
+</html>
