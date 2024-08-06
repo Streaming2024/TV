@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Player</title>
+    <meta content="noindex, nofollow, noarchive" name="robots"/>
+    <meta name="referrer" content="no-referrer" />
+    <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
+    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
+</head>
+<body>
+    <div id="player" class="ViostreamIframe"></div>
+
+    <script>
+        function getParameterByName(name) {
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(window.location.href);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        var ConfiguracionCanales = {
+            "FEED_1": {
+                url: "https://cors-proxy.cooks.fyi/https://d25tgymtnqzu8s.cloudfront.net/event/smil:ag1/manifest.mpd",
+                k1: "14bc9706a4b044f083401ad4912ff657",
+                k2: "e26b1490488635cdd2dc41c8b81c8cc1"
+            },
+            "FEED_2": {
+                url: "https://cors-proxy.cooks.fyi/https://d25tgymtnqzu8s.cloudfront.net/event/smil:ag2/manifest.mpd",
+                k1: "00c74743daaa4519b2d3d6b6e7a9a89c",
+                k2: "87f7e82f78206a846a85bb214e619ed1"
+            },
+            // Other existing feeds...
+
+            // New Optus Sport Feeds
+            "OPTUS_1": {
+                url: "https://uniproxy.misty.workers.dev/https://linear.aws.optusvideo.tv/v7/OptusSport1/xbtss/drm/avc/dash/plain/manifest.mpd",
+                k1: "03b47c8e5bdf41cbbbef29be6a18de9e",
+                k2: "3e13b4627eed3885cb58818fdc39d66f"
+            },
+            "OPTUS_2": {
+                url: "https://uniproxy.misty.workers.dev/https://linear.aws.optusvideo.tv/v7/OptusSport2/xbtss/drm/avc/dash/plain/manifest.mpd",
+                k1: "127b26420b5343719a317dc6abc3099e",
+                k2: "a859aa07a1a3a75eb6525195ca441488"
+            },
+            "OPTUS_3": {
+                url: "https://uniproxy.misty.workers.dev/https://linear.aws.optusvideo.tv/v7/OptusSport3/xbtss/drm/avc/dash/plain/manifest.mpd",
+                k1: "ea0621118ecd46ff982ca4af8c2a9837",
+                k2: "3146695d2eed75d4b1e8005adeb2ebc6"
+            },
+            "OPTUS_4": {
+                url: "https://uniproxy.misty.workers.dev/https://linear.aws.optusvideo.tv/v7/OptusSport4/xbtss/drm/avc/dash/plain/manifest.mpd",
+                k1: "fbf70a6fc0bc4adb8bf777400ee12415",
+                k2: "02b39b93bdeb41329fe32d9aae7d32d5"
+            },
+            "OPTUS_5": {
+                url: "https://uniproxy.misty.workers.dev/https://linear.aws.optusvideo.tv/v7/OptusSport5/xbtss/drm/avc/dash/plain/manifest.mpd",
+                k1: "9ecaa9c5e14941d89281e932dcb5a91a",
+                k2: "b3b74ce2a4fa1dd8135b566c939fc19f"
+            },
+            "OPTUS_6": {
+                url: "https://uniproxy.misty.workers.dev/https://linear.aws.optusvideo.tv/v7/OptusSport6/xbtss/drm/avc/dash/plain/manifest.mpd",
+                k1: "f95b305610c54ef0a2aae0647456c477",
+                k2: "ad60099095daeb7d1181edb22c4af590"
+            },
+            "OPTUS_7": {
+                url: "https://uniproxy.misty.workers.dev/https://linear.aws.optusvideo.tv/v7/OptusSport7/xbtss/drm/avc/dash/plain/manifest.mpd",
+                k1: "b7659939fbb44194acb82baff73af8fc",
+                k2: "f165f4f2e81772c8faf7f95df0fbfef0"
+            },
+            "OPTUS_8": {
+                url: "https://uniproxy.misty.workers.dev/https://linear.aws.optusvideo.tv/v7/OptusSport8/xbtss/drm/avc/dash/plain/manifest.mpd",
+                k1: "1c74521542a2455a9f60157f114bab4d",
+                k2: "caecb6108d7a2efd26e76feb635730db"
+            }
+        };
+
+        var id = getParameterByName('id');
+        var config = ConfiguracionCanales[id];
+
+        if (config) {
+            var sources = [];
+
+            if (config.url.includes('.m3u8')) {
+                sources.push({
+                    file: config.url
+                });
+            }
+            
+            if (config.url.includes('.mpd') && config.k1 && config.k2) {
+                sources.push({
+                    file: config.url,
+                    drm: {"clearkey": {"keyId": config.k1, "key": config.k2}}
+                });
+            }
+
+            jwplayer("player").setup({
+                playlist: [{
+                    sources: sources
+                }],
+                autostart: true,
+                width: "100%", 
+                height: "100%", 
+                stretching: "exactfit",
+                aspectratio: "16:9",
+                skin: {controlbar: {text:"#FA7663", icons:"#FFFFFF"}, timeslider:{progress:"#FA7663"}, menus:{text:"#FA7663"} },
+                cast: {} 
+            });
+        }
+    </script>
+</body>
+</html>
