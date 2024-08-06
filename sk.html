@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Player</title>
+    <meta content="noindex, nofollow, noarchive" name="robots"/>
+    <meta name="referrer" content="no-referrer" />
+    <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
+    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
+</head>
+<body>
+    <div id="player" class="ViostreamIframe"></div>
+
+    <script>
+        function getParameterByName(name) {
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(window.location.href);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        var ConfiguracionCanales = {
+            "SK_SPORT_1": {
+                url: "https://dash2.antik.sk/stream/nvidia_sport_1/playlist_cenc.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            },
+            "SK_SPORT_2": {
+                url: "https://dash2.antik.sk/stream/nvidia_sport2/playlist_cbcs.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            },
+            "SK_ARENA_SPORT_1": {
+                url: "https://dash2.antik.sk/stream/nvidia_arena_sport1/playlist_cbcs.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            },
+            "SK_ARENA_SPORT_2": {
+                url: "https://dash2.antik.sk/stream/hisi_as2/playlist_cbcs.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            },
+            "SK_NOVA_SPORT_1": {
+                url: "https://dash2.antik.sk/stream/nvidia_nova_sport1/playlist_cenc.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            },
+            "SK_NOVA_SPORT_2": {
+                url: "https://dash2.antik.sk/stream/nvidia_nova_sport2/playlist_cenc.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            },
+            "SK_JOJ_SPORT": {
+                url: "https://dash2.antik.sk/stream/nvidia_joj_sport/playlist_cbcs.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            },
+            "SK_JOJ_CINEMA": {
+                url: "https://dash2.antik.sk/stream/nvidia_joj_cinema/playlist_cbcs.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            },
+            "SK_JOJ_CINEMA_PLUS": {
+                url: "https://dash2.antik.sk/stream/hisi_joj_cine_plus_jedna/playlist_cbcs.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            },
+            "SK_DISNEY_JUNIOR": {
+                url: "https://dash2.antik.sk/stream/hisi_disney_jr/playlist_cbcs.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "edef8ba979d64acea3c827dcd51d21ed"
+            },
+            "SK_DISNEY_CHANNEL": {
+                url: "https://dash2.antik.sk/stream/hisi_disney_channel/playlist_cbcs.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            },
+            "SK_NICKELODEON": {
+                url: "https://dash2.antik.sk/stream/hisi_nickelodeon/playlist_cbcs.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            },
+            "SK_NICK_JR": {
+                url: "https://dash2.antik.sk/stream/hisi_nick_jr/playlist_cbcs.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            },
+            "SK_JIMJAM": {
+                url: "https://dash2.antik.sk/stream/hisi_jimjam/playlist_cbcs.mpd",
+                k1: "11223344556677889900112233445566",
+                k2: "11223344556677889900112233445566"
+            }
+        };
+
+        var id = getParameterByName('id');
+        var config = ConfiguracionCanales[id];
+
+        if (config) {
+            var sources = [];
+
+            if (config.url.includes('.m3u8')) {
+                sources.push({
+                    file: config.url
+                });
+            }
+            
+            if (config.url.includes('.mpd') && config.k1 && config.k2) {
+                sources.push({
+                    file: config.url,
+                    drm: {"clearkey": {"keyId": config.k1, "key": config.k2}}
+                });
+            }
+
+            jwplayer("player").setup({
+                playlist: [{
+                    sources: sources
+                }],
+                autostart: true,
+                width: "100%", 
+                height: "100%", 
+                stretching: "exactfit",
+                aspectratio: "16:9",
+                skin: {controlbar: {text:"#FA7663", icons:"#FFFFFF"}, timeslider:{progress:"#FA7663"}, menus:{text:"#FA7663"} },
+                cast: {} 
+            });
+        }
+    </script>
+</body>
+</html>
