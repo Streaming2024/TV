@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Player</title>
+    <meta content="noindex, nofollow, noarchive" name="robots"/>
+    <meta name="referrer" content="no-referrer" />
+    <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
+    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
+</head>
+<body>
+    <div id="player" class="ViostreamIframe"></div>
+
+    <script>
+        function getParameterByName(name) {
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(window.location.href);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        var ConfiguracionCanales = {
+            "FEED_1": {
+                url: "https://do2ibj89ih8kz.cloudfront.net/out/v1/7942a70dc4a64ed2bceb6b933402ffeb/manifest.mpd",
+                k1: "14bc9706a4b044f083401ad4912ff657",
+                k2: "e26b1490488635cdd2dc41c8b81c8cc1"
+            },
+            "FEED_2": {
+                url: "https://d2q3zea8ff7bj4.cloudfront.net/out/v1/a054e78fe6c7439faec28e9f71b16672/manifest.mpd",
+                k1: "00c74743daaa4519b2d3d6b6e7a9a89c",
+                k2: "87f7e82f78206a846a85bb214e619ed1"
+            },
+            "FEED_3": {
+                url: "https://me02.starlive.workers.dev/out/v1/2f39077458694b06bdfb15ef16f55d45/manifest.mpd",
+                k1: "4d2b7b722f564526800fd7cb058303b5",
+                k2: "2fed1593855c46873731379f3ab2d669"
+            },
+            "FEED_4": {
+                url: "https://me04.starlive.workers.dev/out/v1/4604623e7ff4462a962275664ccd8ee5/manifest.mpd",
+                k1: "3b05bcb11f664736993fd5c7ddc0a0cf",
+                k2: "d1f6705e028f81615221b6a7da2c91ae"
+            },
+            "FEED_5": {
+                url: "https://me03.starlive.workers.dev/out/v1/926637c1aba44cffa74adc74bf786816/manifest.mpd",
+                k1: "60d21f9bd2bc4def81b7196a4f375bbd",
+                k2: "5abae0e3b5bd439cc387a526a0eba70d"
+            },
+            "FEED_6": {
+                url: "https://me01.starlive.workers.dev/out/v1/d43dbc5da1334ec088ed9eb5796eee7c/manifest.mpd",
+                k1: "c3d1cabc9bac4bb7854f7a98abee21b2",
+                k2: "38b942982bfaa38cd031a656ab0c8f3c"
+            },
+            "FEED_7": {
+                url: "https://me02.starlive.workers.dev/out/v1/3b1dd652def14c0d88ad4d65b8a63103/manifest.mpd",
+                k1: "c63eb5f8b141426bbd533073b3417650",
+                k2: "a1f328dd9ec6e9aba76c3575e16f2607"
+            },
+            "FEED_8": {
+                url: "https://me03.starlive.workers.dev/out/v1/757f68f7d04b464d8ba433865b04adcd/manifest.mpd",
+                k1: "6e359554fdae4c679b05cdbb12d60485",
+                k2: "fda345af49cfe9787ffee91a6004a3d5"
+            },
+            "FEED_9": {
+                url: "https://me02.starlive.workers.dev/out/v1/c7968554079946679615c275e0e5d155/manifest.mpd",
+                k1: "98548f126bcb4505a47d40133ac7d0ed",
+                k2: "1446543ce3d62ef08d0c1eada2e7800a"
+            },
+            "FEED_10": {
+                url: "https://me02.starlive.workers.dev/out/v1/ff22f8d0966549a595ef1b32536a7044/manifest.mpd",
+                k1: "f743a53a4ccf48729dcf8f20e6c878b3",
+                k2: "1a2eeaf2193ec8a3dbd667450e4ff5d0"
+            },
+            "FEED_11": {
+                url: "https://mwmpos04.akamaized.net/out/v1/7858540d66b44c0583c19e6b90efdb0b/manifest.mpd",
+                k1: "0ffd62c517de4fc29887c3410ceb8d0b",
+                k2: "e71be77c8149a1aa1dd09c5667700bfb"
+            },
+            "FEED_12": {
+                url: "https://mwmpos01.akamaized.net/out/v1/b37aba4f022f4cab973d80282c616904/manifest.mpd",
+                k1: "e47d842706c048c98cde16f41c8c1f3f",
+                k2: "ce46d2eeb1d648a18185023b7d772913"
+            },
+            "FEED_13": {
+                url: "https://mwmpos02.akamaized.net/out/v1/fce653c6a7d44a0288533b7a03e8dd00/manifest.mpd",
+                k1: "a47d851deaae4504b0fedf842d2db9ef",
+                k2: "943a9749cb54b17d9d0fc7c3ab5b7375"
+            },
+            "FEED_14": {
+                url: "https://mwmpos01.akamaized.net/out/v1/5d9d4e9cc6154bea81321230403e319f/manifest.mpd",
+                k1: "56439911482e4ea29baf9086250d17eb",
+                k2: "4ede19976f7b9f3aba13b572fe193b62"
+            },
+            "FEED_15": {
+                url: "https://mwmpos03.akamaized.net/out/v1/43062599f633463688e28e331f7f0e47/manifest.mpd",
+                k1: "3f32acdabea64b93bfacaa4dc2ccf7fa",
+                k2: "1ca53b84806b4e3d57fa8febafe62656"
+            },
+            "FEED_16": {
+                url: "https://mwmpos01.akamaized.net/out/v1/9d59f6e5e1f84631a9ebd228739a2d4f/manifest.mpd",
+                k1: "c9be41becbf94d169d451b87275d3220",
+                k2: "d8e6327c108a0fda737df0e33b62a0d9"
+            },
+            "FEED_18": {
+                url: "https://do2ibj89ih8kz.cloudfront.net/out/v1/7942a70dc4a64ed2bceb6b933402ffeb/manifest.mpd",
+                k1: "14bc9706a4b044f083401ad4912ff657",
+                k2: "e26b1490488635cdd2dc41c8b81c8cc1"
+            }
+        };
+
+        var id = getParameterByName('id');
+        var config = ConfiguracionCanales[id];
+
+        if (config) {
+            var sources = [];
+
+            if (config.url.includes('.m3u8')) {
+                sources.push({
+                    file: config.url
+                });
+            }
+            
+            if (config.url.includes('.mpd') && config.k1 && config.k2) {
+                sources.push({
+                    file
