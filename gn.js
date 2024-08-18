@@ -1528,14 +1528,14 @@
      
  
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Auxerre",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8583.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "----",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/---.png"
   },
        {
     "name": "____",
