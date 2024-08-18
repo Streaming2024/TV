@@ -520,7 +520,7 @@
        
        
   {
-    "name": "Nepal_",
+    "name": "Nepal",
     "logo": "https://aimages.willow.tv/teamLogos/nepal.png"
   },  
      
