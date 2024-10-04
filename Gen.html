@@ -194,7 +194,7 @@ a:focus,a:hover{color:#b9041a;transition:.5s ease;}
                 <div class="match-timing">
                     <div id="match-hour">7:58 PM</div>
                     <div id="result-now"></div>
-                    <span class="match-date end" data-start="2023-08-20T19:58:00+01:00" data-gameends="2023-08-20T19:58:00+01:00">End</span>
+                    <span class="match-date end" data-start="2023-08-20T19:58:00+05:00" data-gameends="2023-08-20T19:58:00+05:00">End</span>
                 </div>
             </div>
             <div class="left-team away_team">
@@ -210,7 +210,8 @@ a:focus,a:hover{color:#b9041a;transition:.5s ease;}
             </div>
         </div>
     </div>
-    
+    // Combine date and time into a single datetime string
+            const dateTime = `${date}T${time}:00+05:45`; // Setting Nepal Time
     </div>
   
   </div>
@@ -249,7 +250,10 @@ a:focus,a:hover{color:#b9041a;transition:.5s ease;}
         <div class="form-group">
             <label for="matchEnd">Match End Date-Time:</label>
             <input type="datetime-local" class="form-control" id="matchEnd" name="matchEnd">
+       // Combine date and time into a single datetime string
+            const dateTime = `${date}T${time}:00+05:45`; // Setting Nepal Time
         </div>
+               
       
        </div>
       </div>
