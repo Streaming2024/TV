@@ -1364,7 +1364,7 @@
 
            {
     "name": "Nepal.",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/95799.png"
+    "logo": "https://live.mrgamingstream.net/logo/flag.png"
   },  
 
        
