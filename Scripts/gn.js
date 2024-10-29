@@ -521,7 +521,7 @@
        
   {
     "name": "Nepal",
-    "logo": "https://aimages.willow.tv/teamLogos/nepal.png"
+    "logo": "https://live.mrgamingstream.net/logo/can.png"
   },  
      
 {
@@ -1363,7 +1363,7 @@
 
 
            {
-    "name": "Nepal",
+    "name": "Nepal.",
     "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/95799.png"
   },  
 
