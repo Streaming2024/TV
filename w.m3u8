@@ -1,5 +1,16 @@
-#EXTINF:-1 tvg-logo="https://streamed.su/api/images/poster/fallback.webp" group-title="CRICKET",India W v New Zealand W (08:00 AM 10/29/24) [ALPHA]
-#EXTVLCOPT:http-origin=https://embedme.top
-#EXTVLCOPT:http-referrer=https://embedme.top/
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36
-https://rr.vipstreams.in/alpha/js/india-w-vs-new-zealand-w/1/playlist.m3u8
+#EXTM3U
+#EXT-X-TARGETDURATION:6
+#EXT-X-VERSION:3
+#EXT-X-MEDIA-SEQUENCE:23330
+#EXT-X-PROGRAM-DATE-TIME:2024-10-30T15:37:28Z
+#EXTINF:6.000,
+ts.php?ts=http://ufo.xxxcdn.cc:9222/92f82e8d28529a5bb9bab9392fd37c14577cba6a813e0640326b0bf41eb6aab26d30ceed2264afea/tracks-v1a1/2024/10/30/15/37/28-06000.ts?token=21cedccbc6511ab40ff172f753784a90a7ce3fd6aa2d0c401ed694b67704f9cc9521f05c62b5b31ebb59a2f976f6bb63086d65b2f1c9f6a9482f942bf5dc87963b938625-f85fad510f4dbc38dccbca68c6357306
+#EXTINF:6.000,
+ts.php?ts=http://ufo.xxxcdn.cc:9222/92f82e8d28529a5bb9bab9392fd37c14577cba6a813e0640326b0bf41eb6aab26d30ceed2264afea/tracks-v1a1/2024/10/30/15/37/34-06000.ts?token=21cedccbc6511ab40ff172f753784a90a7ce3fd6aa2d0c401ed694b67704f9cc9521f05c62b5b31ebb59a2f976f6bb63086d65b2f1c9f6a9482f942bf5dc87963b938625-f85fad510f4dbc38dccbca68c6357306
+#EXTINF:6.000,
+ts.php?ts=http://ufo.xxxcdn.cc:9222/92f82e8d28529a5bb9bab9392fd37c14577cba6a813e0640326b0bf41eb6aab26d30ceed2264afea/tracks-v1a1/2024/10/30/15/37/40-06000.ts?token=21cedccbc6511ab40ff172f753784a90a7ce3fd6aa2d0c401ed694b67704f9cc9521f05c62b5b31ebb59a2f976f6bb63086d65b2f1c9f6a9482f942bf5dc87963b938625-f85fad510f4dbc38dccbca68c6357306
+#EXTINF:6.000,
+ts.php?ts=http://ufo.xxxcdn.cc:9222/92f82e8d28529a5bb9bab9392fd37c14577cba6a813e0640326b0bf41eb6aab26d30ceed2264afea/tracks-v1a1/2024/10/30/15/37/46-06000.ts?token=21cedccbc6511ab40ff172f753784a90a7ce3fd6aa2d0c401ed694b67704f9cc9521f05c62b5b31ebb59a2f976f6bb63086d65b2f1c9f6a9482f942bf5dc87963b938625-f85fad510f4dbc38dccbca68c6357306
+#EXTINF:6.000,
+ts.php?ts=http://ufo.xxxcdn.cc:9222/92f82e8d28529a5bb9bab9392fd37c14577cba6a813e0640326b0bf41eb6aab26d30ceed2264afea/tracks-v1a1/2024/10/30/15/37/52-06000.ts?token=21cedccbc6511ab40ff172f753784a90a7ce3fd6aa2d0c401ed694b67704f9cc9521f05c62b5b31ebb59a2f976f6bb63086d65b2f1c9f6a9482f942bf5dc87963b938625-f85fad510f4dbc38dccbca68c6357306
+Recent Searches
