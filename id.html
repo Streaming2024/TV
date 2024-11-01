@@ -1,0 +1,182 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>PS PLAY - LINK</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+        <link rel="shortcut icon" type="image/x-icon" href="https://i.ibb.co/t8PFZNB/20231219-100949.png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.6.2/dist/plyr.css">
+        <script src="https://cdn.jsdelivr.net/npm/plyr@3.6.12/dist/plyr.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@1.1.4/dist/hls.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+        <style>
+            video {
+                width: 100%;
+                height: 100%;
+                background: #000;
+                max-width: 100%;
+            }
+            html {
+                font-family: 'Poppins', sans-serif;
+                background: #000;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                margin: 0;
+                font-family: 'Poppins', sans-serif;
+                background-color: #000;
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                justify-content: center;
+                align-items: center;
+            }
+
+            .modal-content {
+                border-radius: 5px;
+                background-color: rgba(255, 255, 255, 0.8);
+                margin: 15% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+                position: relative;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: scale(0.95);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            .close {
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                font-size: 40px;
+                color: #888;
+                cursor: pointer;
+                transition: color 0.3s;
+            }
+
+            .close:hover {
+                color: #333;
+            }
+
+            .modal-body {
+                margin-bottom: 20px;
+                font-size: 14px;
+                color: #333;
+            }
+
+            .modal-body p {
+                font-weight: 300;
+                color: #444;
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+
+            .modal-buttons {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+            }
+
+            .modal-buttons button {
+                padding: 10px 15px;
+                border-radius: 5px;
+                border: none;
+                font-size: 16px;
+                cursor: pointer;
+                flex: 1;
+                transition: background-color 0.3s, transform 0.3s;
+            }
+
+            #joinChannel {
+                background-color: #1a73e8;
+                color: #fff;
+                font-weight: bold;
+            }
+
+            #alreadyJoined {
+                background-color: #f44336;
+                color: #fff;
+                font-weight: bold;
+            }
+
+            #joinChannel,
+            #alreadyJoined {
+                background-color: #1a73e8;
+                color: #fff;
+                font-weight: bold;
+                padding: 15px 20px;
+                border-radius: 5px;
+                border: none;
+                font-size: 13px;
+                cursor: pointer;
+                flex: 1;
+                transition: background-color 0.3s, transform 0.3s;
+                height: 45px;
+                width: 150px;
+            }
+
+            #alreadyJoined {
+                background-color: #f44336;
+                /* Specific background for this button */
+            }
+
+            #joinChannel:hover,
+            #alreadyJoined:hover {
+                transform: scale(1.05);
+            }
+
+            #joinChannel:active,
+            #alreadyJoined:active {
+                transform: scale(1);
+            }
+
+            .modal-content h2 {
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .modal-content p {
+                font-size: 13px;
+                color: #444;
+            }
+        </style>
+    </head>
+    <body>
+        <video autoplay controls crossorigin poster="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/PsCricketLinkPS.png/1280px-PsCricketLinkPS.png" playsinline style="--plyr-color-main:#15b4ff">
+            <source id="m3u8-url" src="" type="application/x-mpegURL">
+        </video>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeModal">×</span>
+                <h2>Join Our Telegram Channel</h2>
+                <p>Stay updated with the latest streams and news.</p>
+                <div class="modal-buttons">
+                    <button id="joinChannel">JOIN NOW</button>
+                    <button id="alreadyJoined">Close</button>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>
