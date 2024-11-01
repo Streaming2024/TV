@@ -1,0 +1,101 @@
+ /* Mobile/PC Style */
+    .ad {
+        display: none;
+    }
+    
+    @media only screen and (max-width: 768px) {
+        /* Mobile styles */
+        .ad.mobile {
+            display: block;
+        }
+        .ad.pc {
+            display: none;
+        }
+    }
+
+    @media only screen and (min-width: 769px) {
+        /* PC styles */
+        .ad.pc {
+            display: block;
+        }
+        .ad.mobile {
+            display: none;
+        }
+    }
+
+ /* Refresh Button Style */
+input.MyButton {
+width: 200px;
+padding: 7px;
+cursor: pointer;
+font-weight: bold;
+font-size: 100%;
+background: #0a0647;
+color: #fff;
+border: 1px solid #0a0647;
+border-radius: 10px;
+}
+input.MyButton:hover {
+color: #ff0000;
+background: #000;
+border: 1px solid #fff;
+}
+
+
+
+
+ /* Add any additional styles here */
+ .header {
+ text-align: center;
+ padding: 0px 0;
+ }
+
+ .header img {
+ max-width: 100%;
+ height: auto;
+ }
+
+ .disclaimer {
+ background: #fff3cd;
+}
+
+
+ /* Player CSS */
+        #container {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 550px;
+          background: #8a0000;
+          color: #fff;
+          overflow: hidden;
+        }
+        #iframe, #jwPlayer {
+          height: 550px !important;
+          padding: 0;
+          margin: 0;
+        }
+        body {
+          height: 100vh;
+          margin: 0;
+          padding: 0;
+        }
+        #container {
+          position: absolute;
+          text-align: center;
+        }
+        video {
+          outline: 0;
+        }
+        #text {
+          position: fixed;
+          border: 0;
+          left: 0;
+          width: 100%;
+          color: #fff;
+          bottom: 50px;
+          text-align: center;
+          font-family: tahoma;
+          font-size: 20px;
+          z-index: 9999;
+        }
