@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href='https://live.mrgamingstream.net/favicon.png' rel='icon' type='image/x-icon'/>
-    <title>YouTube Embed Player</title>
+    <title>YouTube Player</title>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
+
     <style>
                      /*Font Library https://fonts.google.com/ */
    @font-face{font-family:&#39;Neo Sans Arabic&#39;;font-style:normal;font-weight:normal;font-display:swap;src:local(&#39;Neo Sans Arabic&#39;),url(&#39;https://cdn.statically.io/gh/yallashoot808/yalla-shoot-new/6a47ce1e/NeoSansArabic.woff&#39;) format(&#39;woff&#39;)}
@@ -69,26 +69,41 @@
       z-index: 9999;
     }
   </style>
-  
+
+    
 </head>
 <body>
 
-<div id="player-container">
-<iframe id="player-iframe" allowfullscreen></iframe>
-            
+<div class="plyr__video-embed" id="player">
+    <iframe id="player-iframe" width="100%" height="500px"  allowfullscreen allow="autoplay"></iframe>
 </div>
 
+<script src="https://cdn.plyr.io/3.6.8/plyr.polyfilled.js"></script>
 <script>
-    // Get the custom ID from the URL parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const customID = urlParams.get('id');
+    // Function to get URL parameters
+    function getURLParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
 
-    // Replace (custome_ID) in the original URL with the custom ID
-    const originalURL = `https://www.youtube.com/embed/${customID}`;
+    // Get the YouTube video ID from the URL parameter "video"
+    const videoId = getURLParameter('video');
 
-    // Set the iframe source to the modified URL
-    document.getElementById('player-iframe').src = originalURL;
+    // If a video ID is provided, set the iframe source
+    if (videoId) {
+        const iframe = document.querySelector('#player iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?origin=*&enablejsapi=1`;
+        
+        // Initialize the Plyr player
+        const player = new Plyr('#player', {
+            controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+            youtube: { noCookie: true },
+        });
+    } else {
+        // Optionally, handle the case where no video ID is provided
+        alert('No video ID provided in the URL. Please use ?video=YOUR_VIDEO_ID');
+    }
 </script>
-</div>      
+
 </body>
 </html>
