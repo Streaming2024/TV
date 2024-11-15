@@ -12470,9 +12470,9 @@
    ];
       
       
-      var leagueNames = [" Ligue 1", " Premier League", " Bundesliga", " Serie A", " La Liga", " UEFA Champions League", " UEFA Europa League", " African Nations Championship", " AFC Champions League", " Botola Pro", " Serie A Women", " Pro League", " CAF Confederation Cup", " Botola 2"];
-        var commentatorNames = [];
-        var channelNames = [];
+      var leagueNames = ["u19 Women's Asia Cup","U19 women's T20 world cup ","U19 Womens Asia Cup","Champions Trophy"," IPL"," Ligue 1", " Premier League","ICC CWC League 2","Nepal Premier League", " Bundesliga", " Serie A", " La Liga", " UEFA Champions League", " UEFA Europa League", " African Nations Championship", " AFC Champions League", " Botola Pro", " Serie A Women", " Pro League", " CAF Confederation Cup", " Botola 2"];
+        var commentatorNames = [Andrew Leonard];
+        var channelNames = [YoNoTV];
 
         var homeTeamSelect = document.getElementById('homeTeam');
         var awayTeamSelect = document.getElementById('awayTeam');
