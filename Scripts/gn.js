@@ -1534,49 +1534,49 @@
      
      
   {
-    "name": "----",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/---.png"
+    "name": "Biratnagar King",
+    "logo": "https://live.mrgamingstream.net/logo/biratnagar.png"
   },
        {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Sudurpaschim Royal",
+    "logo": "https://live.mrgamingstream.net/logo/sudurpaschim.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Pokhara Avenger",
+    "logo": "https://live.mrgamingstream.net/logo/pokhara.png"
   },  
      
      
  
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Lumbani Lions",
+    "logo": "https://live.mrgamingstream.net/logo/limbani.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Kathmandu Gurkhas",
+    "logo": "https://live.mrgamingstream.net/logo/ktm.png"
   },    
   
        {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Karnali Yaks",
+    "logo": "https://live.mrgamingstream.net/logo/karnali.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Chitwan Rhinos",
+    "logo": "https://live.mrgamingstream.net/logo/chitwan.png"
   },  
      
      
  
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Janakpur Bolts",
+    "logo": "https://live.mrgamingstream.net/logo/janakpur.png"
   },  
      
      
