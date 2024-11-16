@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<HTML class='no-js article-view post-view' data-templateName='era-material' data-templateVersion='1.1' dir='ltr' lang='en' prefix='og: http://ogp.me/ns#'>
+<head>
+<script>
+    
+    var blogid = "<!--Can't find substitution for tag [view.search.query]-->";
+    
+  </script>
+<link crossorigin='anonymous' href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC' rel='stylesheet'/>
+<title>Match Generator</title>
+<meta content='width=device-width, initial-scale=1' name='viewport'/>
+<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'/>
+<style id='page-skin-1' type='text/css'><!--
+
+--></style>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+<link href='https://fonts.googleapis.com' rel='preconnect'/>
+<link crossorigin='' href='https://fonts.gstatic.com' rel='preconnect'/>
+<link href='https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400&display=swap' rel='stylesheet'/>
+<style>
+    a {
+    text-decoration: none;
+}
+    body.container {
+    font-family: 'Tajawal', sans-serif;
+}
+  </style>
+  
+  
+  
+  <!-- ${homeTeamSelectValue} vs ${awayTeamSelectValue} --> 
+     <!--   <div class="match-event" id="match-${randomNumbers}" data-result="vs"> <a title="${homeTeamSelectValue} vs ${awayTeamSelectValue}" id="match-${randomNumbers}" href="${postLinkValue}"> <div id="overlay-match"> <div id="watch-match"></div> </div> </a> <div class="first-team home_team"> <div class="team-logo"> <img loading="lazy" alt="${homeTeamSelectValue}" height="70" src="${homeTeam.logo}" title="${homeTeamSelectValue}" width="70"> </div> <div class="team-name">${homeTeamSelectValue}</div> </div> <div class="match-time" id="match-${randomNumbers}"> <div class="match-timing"> <div id="match-hour">${formatTimeAMPM(matchStartValue)}</div> <div id="result-now">${matchResultValue}</div> <span class="match-date" data-start="${formattedMatchStart}" data-gameends="${formattedMatchEnd}"></span> </div> </div> <div class="left-team away_team"> <div class="team-logo"> <img loading="lazy" alt="${awayTeamSelectValue}" height="70" src="${awayTeam.logo}" title="${awayTeamSelectValue}" width="70"> </div> <div class="team-name">${awayTeamSelectValue}</div> </div> <div class="match-info"> <ul> <li class="leaguename"><span>${leagueNameSelectValue}</span></li> <li class="channelname"><span>${channelNameSelectValue}</span></li> <li class="speakername"><span>${commentatorNameSelectValue}</span></li> </ul> </div> </div> -->
+  
+  
+<link href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css' rel='stylesheet'/>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=7296712852977032480&amp;zx=e3113861-c093-44f6-9c67-6e48a1805997' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=7296712852977032480&amp;zx=e3113861-c093-44f6-9c67-6e48a1805997' rel='stylesheet'/></noscript>
+
+</head>
+<body class='container'>
+<nav class='navbar navbar-expand-mdo bg-dark navbar-dark px-2'>
+<button class='navbar-toggler shadow-none bg-success' data-target='#collapsibleNavbarx' data-toggle='collapse' type='button'>
+</button>
+<a class='text-white p-2' href='/?hl=ar'>
+<a class='navbar-brand'>TV Live Sports Generators </a></a>
+<!-- Toggler/collapsibe Button -->
+<button class='navbar-toggler shadow-none ' data-target='#collapsibleNavbarx' data-toggle='collapse' type='button'>
+<span class='navbar-toggler-icon'></span>
+</button>
+  
+<!-- Navbar links -->
+<div class='collapse navbar-collapse' id='collapsibleNavbarg'>
+<ul class='navbar-nav'>
+<li class='nav-item'>
+<a class='nav-link' href='#'>Link</a>
+</li>
+<li class='nav-item'>
+<a class='nav-link' href='#'>Link</a>
+</li>
+<li class='nav-item'>
+<a class='nav-link' href='#'>Link</a>
+</li>
+</ul>
+</div>
+</nav>
+
+<p bis_skin_checked='1' class='notice' id='notice' style='background: rgb(210, 0, 44); border-radius: 0px; border: 0.01pc solid rgb(0, 52, 70); box-sizing: border-box; color: #003446; font-family: Raleway, Arial, sans-serif; font-size: 1pc; list-style: none; margin: 0.275pc; outline: none; overflow: hidden; padding: 0.2pc; text-align: center; vertical-align: baseline;'><b style='background: 0px 0px; border: 0px; box-sizing: border-box; list-style: none; margin: 0px; outline: none; padding: 0px; vertical-align: baseline;'><a href='https://raw.githubusercontent.com/yosintv/yosintv/main/football/link.txt' style='background: 0px 0px; border: 0px; box-sizing: border-box; color: white; margin: 0px; outline: none; padding: 0px; text-decoration-line: none; transition: all 0s ease 0s; vertical-align: baseline;' target=''> All Match Links </a></b></p>
+
+   <style>
+.match-event.match-not-start div#result-now{display:none;}
+.match-event.match-live  div#match-hour{display:none;}
+.match-timing .live{background:#931800!important;}
+.match-timing  .end,.match-timing .end{background:#474747!important;}
+.match-timing  .not-start,.match-timing .not-start{background:#263545!important;}
+@media screen{
+img{font-size:0;pointer-events:all;}
+*{margin:0;padding:0;outline:0;list-style:none;}
+.team-logo{float:left;width:50%;}
+.team-logo img{margin:0px auto;display:flex;}
+.team-name{margin:28px auto;display:table;font-weight:500;}
+.match-timing{margin:12px auto;}
+@media screen and (max-width: 500px){
+.team-logo img{margin:7px auto 0;}
+.team-name{margin:0 auto 7px;}
+.team-logo{width:100%;}
+}
+@media screen and (max-width: 550px){
+.team-logo img{margin:7px auto 0;width:50px;height:50px;}
+.team-name{margin:0 auto 7px;}
+.match-timing{margin:13px auto;}
+.team-logo{width:100%;}
+}
+}
+img{padding-top:10px;}
+.match-event ul{display:flex;align-items:center;flex-wrap:wrap;justify-content:center;padding: 0;margin: 0;}
+.match-event{/* min-height:106px; */}
+.match-timing{min-height:68px;}
+.match-info{/* border-top:1px solid #ddd; *//* display:table; *//* overflow:hidden; *//* width:100%; */}
+.home_team,.left-team,.match-time{width:33.33333333%;float:left;}
+.match-timing .match-date{color:#fff;border-radius:5px;font-size:14px;width:90px;line-height:1.9;display:table;margin:auto;margin-top:2px;position:relative;line-height:25px;height:25px;}
+#overlay-match{position:absolute;top:0;bottom:0;left:0;right:0;height:100%;width:100%;opacity:0;cursor:pointer;background:rgb(0 0 0 / 60%);z-index:9;}
+.match-event:hover #overlay-match{opacity:1;}
+#watch-match{position:absolute;bottom:0;right:0;height:45px;margin:auto;left:0;top:0;width:45px;background:no-repeat center url("data:image/svg+xml;charset=utf8,%3Csvg aria-hidden=&#39;true&#39;%20role=&#39;img&#39;%20xmlns=&#39;http://www.w3.org/2000/svg&#39;%20viewBox=&#39;0%200%20512%20512&#39;%20%3E%3Cpath%20fill=&#39;%23fff&#39;%20d=&#39;M256,0C114.617,0,0,114.615,0,256s114.617,256,256,256s256-114.615,256-256S397.383,0,256,0z%20M344.48,269.57l-128,80%20%20c-2.59,1.617-5.535,2.43-8.48,2.43c-2.668,0-5.34-0.664-7.758-2.008C195.156,347.172,192,341.82,192,336V176%20c0-5.82,3.156-11.172,8.242-13.992c5.086-2.836,11.305-2.664,16.238,0.422l128,80c4.676,2.93,7.52,8.055,7.52,13.57%20S349.156,266.641,344.48,269.57z&#39;%20class=&#39;&#39;%3E%3C/path%3E%3C/svg%3E");}
+a{color:#222;text-decoration:none;}
+img{font-size:0;pointer-events:all;}
+a:focus,a:hover{color:#b9041a;transition:.5s ease;}
+*{margin:0;padding:0px;outline:0;list-style:none;}
+.match-event{/* border:1px solid #ddd; *//* overflow:hidden; *//* text-align:center; *//* background:#eceef2; *//* margin:6px 0; *//* position:relative; *//* border-radius:5px; */}
+.match-event a{color:#222;}
+.away_team{width:33.33333333%;float:right;}
+.team-logo{float:left;width:30%;}
+.left-team .team-logo{float:right;}
+.team-name{margin:28px auto;display:table;font-weight:500;}
+.match-timing{margin:12px auto;}
+.match-timing .live:before{color:#fff;background:#263545;border-radius:5px;font-size:14px;width:90px;line-height:1.9;display:table;margin:auto;margin-top:6px;position:relative;}
+.match-info{/* border-top:1px solid #ddd; *//* display:table; *//* overflow:hidden; *//* width:100%; */}
+.match-info li{width:33.33333333%;float:right;font-size:14px;font-weight:400;height:30px;line-height:30px;}
+.match-info li:before{content:"📺";margin-right:7px;}
+.match-info li:first-child:before{content:"🎤";}
+.match-info li:last-child:before{content:"🏆";}
+*{margin:0;padding:0;outline:0;list-style:none;}
+*{text-decoration:none;}
+*{margin:0;padding:0;outline:0;list-style:none;}
+.match-event{/* border-radius:5px; *//* padding:5px; */}
+@media screen and (max-width: 550px){
+.team-logo img{margin:7px auto;margin-bottom:0;width:50px;height:50px;}
+.team-name{margin:7px auto;margin-top:7px;float:right;line-height:19px;display:block;text-align:center;width:100%;}
+.match-timing{margin:13px auto;}
+.team-logo{width:100%;}
+.match-info li{width:50%;overflow:hidden;}
+}
+.match-timing .live{animation:blinker 500ms ease-in-out infinite;}
+.match-info li:before{margin-right:5px;}
+.match-info li:nth-child(1):before{content:"🏆";margin-right:5px;height:26px;}
+.match-info li:nth-child(2):before{content:"📺";;  height:26px;}
+.match-info li:nth-child(3):before{content:"🎤";height:26px;}
+.match-timing{position:relative;}
+.match-event{border:1px solid #ddd;overflow:hidden;text-align:center;background:#eceef2;margin:6px 0;position:relative;border-radius:5px;}
+.match-event a{color:#222;}
+.first-team,.left-team,.match-time{width:33.33333333%;float: left;}
+.team-logo{float: left;width:50%;}
+.left-team .team-logo{float: right;}
+.team-name{margin:28px auto;display:table;}
+.match-timing{margin:12px auto;}
+#result-now{font-size:21px;letter-spacing:5px;margin-right:-5px;}
+.match-timing .match-date,.match-timing .live:before{color:#fff;background:#263545;border-radius:5px;font-size:14px;width:90px;line-height:1.9;display:table;margin:auto;margin-top:6px;position:relative;}
+.match-info{display:table;overflow:hidden;width: 100%;margin:4px auto;border-radius:7px;margin: 0 !important;}
+.match-info li{width:33.33333333%;float:right;font-size:14px;font-weight:bold;}
+#overlay-match{position:absolute;top:0;bottom:0;left:0;right:0;height:100%;width:100%;opacity:0;cursor:pointer;background:rgb(0 0 0 / 60%);z-index:9;}
+.match-event:hover #overlay-match{opacity:1;}
+#watch-match{position:absolute;bottom:0;right:0;height:45px;margin:auto;left:0;top:0;width:45px;background:no-repeat center url("data:image/svg+xml;charset=utf8,%3Csvg aria-hidden='true' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' %3E%3Cpath fill='%23fff' d='M256,0C114.617,0,0,114.615,0,256s114.617,256,256,256s256-114.615,256-256S397.383,0,256,0z M344.48,269.57l-128,80  c-2.59,1.617-5.535,2.43-8.48,2.43c-2.668,0-5.34-0.664-7.758-2.008C195.156,347.172,192,341.82,192,336V176 c0-5.82,3.156-11.172,8.242-13.992c5.086-2.836,11.305-2.664,16.238,0.422l128,80c4.676,2.93,7.52,8.055,7.52,13.57 S349.156,266.641,344.48,269.57z' class=''%3E%3C/path%3E%3C/svg%3E");}
+@media screen and (max-width:500px){
+.team-logo img{margin:7px auto;margin-bottom:0;width:50px;height:50px;}
+.team-name{margin:7px auto;margin-top:0;}
+.match-timing{margin:13px auto;}
+.team-logo{width:100%;}
+.match-info li:nth-child(1):before{display:flex;justify-content:center;}
+.match-info li:nth-child(2):before{display:flex;justify-content:center;}
+.match-info li:nth-child(3):before{display:flex;justify-content:center;}
+}
+@media screen and (max-width:500px){
+.match-info{display:none;}
+}
+@-webkit-keyframes blinker{0%{opacity:1;}to{opacity:0;}}
+@keyframes blinker{0%{background:#931800;}50%{background:#570f01;}}
+@keyframes blinker{from{transform:#931800!important;}to{transform:#b71e00!important;}}
+  </style>
+<div class="containerd mt-5">
+  
+ 
+  
+  
+   
+  
+  
+  
+  <div class="card text-center my-3 bg-darkc text-whitec">
+  <div class="card-header card-header border-0">
+   <div id="preview">
+    
+    <div id="preview" class=" text-darkc">
+    
+    <!-- Arsenal vs Brighton -->
+        <div class="match-event match- end">
+            <a title="Arsenal vs Brighton" id="match-29814" href="">
+                <div id="overlay-match">
+                    <div id="watch-match"></div>
+                </div>
+            </a>
+            <div class="first-team home_team">
+                <div class="team-logo"> <img alt="Arsenal" height="70" loading="lazy" src="https://ssl.gstatic.com/onebox/media/sports/logos/4us2nCgl6kgZc0t3hpW75Q_48x48.png" title="Arsenal" width="70"> </div>
+                <div class="team-name">Arsenal</div>
+            </div>
+            <div class="match-time">
+                <div class="match-timing">
+                    <div id="match-hour">7:58 PM</div>
+                    <div id="result-now"></div>
+                    <span class="match-date end" data-start="2023-08-20T19:58:00+05:45" data-gameends="2023-08-20T19:58:00+05:45">End</span>
+                </div>
+            </div>
+            <div class="left-team away_team">
+                <div class="team-logo"> <img alt="Brighton" height="70" loading="lazy" src="https://ssl.gstatic.com/onebox/media/sports/logos/EKIe0e-ZIphOcfQAwsuEEQ_48x48.png" title="Brighton" width="70"> </div>
+                <div class="team-name">Brighton</div>
+            </div>
+            <div class="match-info">
+                <ul>
+                    <li class="leaguename"><span>League</span></li>
+                    <li class="channelname"><span>Channel</span></li>
+                    <li class="speakername"><span>Commentator</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    </div>
+  
+  </div>
+  <div class="card-body">
+   <form class="rosw">
+      
+       <div class="row"> 
+      <div class="col-6"> 
+        <div class="form-group">
+            <label for="homeTeam">Home Team Name:   <span class="text-danger" type="button" data-toggle="modal" data-target="#addTeamModal">Add Team</span></label>
+            <div class="input-group">
+                <select class="form-control select2" id="homeTeam" name="homeTeam"></select>
+                <div class="input-group-append">
+                  
+                </div>
+            </div>
+        </div> </div>
+         <div class="col-6">
+        <div class="form-group">
+            <label for="awayTeam">Away Team Name:  <span class="text-danger" type="button" data-toggle="modal" data-target="#addTeamModal">Add Team</span></label>
+            <select class="form-control select2" id="awayTeam" name="awayTeam"></select>
+        </div>
+      
+      </div>
+      </div>
+      
+       <div class="row"> 
+        <div class="col-6">
+      
+        <div class="form-group">
+            <label for="matchStart">Match Start Date-Time:</label>
+            <input type="datetime-local" class="form-control" id="matchStart" name="matchStart" onchange="updateMatchEnd()">
+        </div>
+          </div>
+           <div class="col-6"> 
+        <div class="form-group">
+            <label for="matchEnd">Match End Date-Time:</label>
+            <input type="datetime-local" class="form-control" id="matchEnd" name="matchEnd">
+        </div>
+               
+      
+       </div>
+      </div>
+      
+       <div class="row">
+        <div class="col-6">
+        <div class="form-group">
+            <label for="leagueName">League Name:   <span  type="button" class="text-danger" data-toggle="modal" data-target="#addLeagueModal">Add League</span></label>
+            <select class="form-control select2" id="leagueName" name="leagueName"></select>
+          
+        </div>
+           </div>
+           <div class="col-6">
+        <div class="form-group">
+            <label for="channelName">Channel Name:  <span class="text-danger" type="button" data-toggle="modal" data-target="#addChannelModal">Add Channel</span></label>
+            <select class="form-control select2" id="channelName" name="channelName"></select>
+           
+        </div>
+      </div>
+       </div>
+      
+       <div class="row">
+        <div class="col-6"> 
+        <div class="form-group">
+            <label for="commentatorName">Commentator Name: <span class="text-danger" type="button" data-toggle="modal" data-target="#addCommentatorModal">Add Commentator</span></label>
+            <select class="form-control select2" id="commentatorName" name="commentatorName"></select>
+            
+        </div>
+      
+      </div>
+      
+      <div class="col-6"> 
+        <div class="form-group">
+            <label for="matchResult">Match Result:</label>
+            <input type="text" class="form-control" id="matchResult" name="matchResult">
+        </div>
+      </div> 
+       </div>
+        <div class="form-group">
+          <label for="postLink"><b>Post Link on Your Site:</b>
+           <span  type="button" class="text-danger d-none" data-toggle="modal" data-target="#blogIdModal">Add Blogid</span>
+          </label>
+   <input type="text" class="form-control" id="postLink" name="postLink">
+
+          
+          
+        </div>
+    </form>
+  
+  </div>
+
+      <p bis_skin_checked='1' class='notice' id='notice' style='background: rgb(210, 0, 44); border-radius: 0px; border: 0.01pc solid rgb(0, 52, 70); box-sizing: border-box; color: #003446; font-family: Raleway, Arial, sans-serif; font-size: 1pc; list-style: none; margin: 0.275pc; outline: none; overflow: hidden; padding: 0.2pc; text-align: center; vertical-align: baseline;'><b style='background: 0px 0px; border: 0px; box-sizing: border-box; list-style: none; margin: 0px; outline: none; padding: 0px; vertical-align: baseline;'><a href='' style='background: 0px 0px; border: 0px; box-sizing: border-box; color: white; margin: 0px; outline: none; padding: 0px; text-decoration-line: none; transition: all 0s ease 0s; vertical-align: baseline;' target=''>
+Refresh Page - Generate New Match</a></b></p>
+
+      
+  <div class="card-footer">
+   <div class="form-group my-3">
+    <label for="exampleFormControlTextarea1">Code:</label>
+    <textarea id="code" onclick="select()" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+  
+
+  </div>
+</div>
+  
+  
+  
+</div>
+
+
+
+    
+<div class="modal fade" id="blogIdModal" tabindex="-1" aria-labelledby="blogIdModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="blogIdModalLabel">Add Blog ID</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" id="blogIdInput" placeholder="Enter Blog ID">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveBlogId">Save</button>
+            </div>
+        </div>
+    </div>
+</div>  
+  
+<div class="modal fade" id="addTeamModal" tabindex="-1" role="dialog" aria-labelledby="addTeamModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+             
+                <h5 class="modal-title" id="addTeamModalLabel">Add New Team</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                 <div class="alert alert-primary" role="alert">
+Data saved in your Device</div>
+                <form id="newTeamForm">
+                    <div class="form-group">
+                        <label for="newTeamName">Team Name:</label>
+                        <input type="text" class="form-control" id="newTeamName" name="newTeamName">
+                    </div>
+                    <div class="form-group">
+                        <label for="newTeamLogo">Team Logo URL:</label>
+                        <input type="url" class="form-control" id="newTeamLogo" name="newTeamLogo">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveTeamButton">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addLeagueModal" tabindex="-1" role="dialog" aria-labelledby="addLeagueModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              
+                <h5 class="modal-title" id="addLeagueModalLabel">Add New League</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                 <div class="alert alert-primary" role="alert">
+Data saved in your pc</div>
+                <form id="newLeagueForm">
+                    <div class="form-group">
+                        <label for="newLeagueName">League Name:</label>
+                        <input type="text" class="form-control" id="newLeagueName" name="newLeagueName">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveLeagueButton">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addChannelModal" tabindex="-1" role="dialog" aria-labelledby="addChannelModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addChannelModalLabel">Add New Channel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                 <div class="alert alert-primary" role="alert">
+Data saved in your pc</div>
+                <form id="newChannelForm">
+                    <div class="form-group">
+                        <label for="newChannelName">Channel Name:</label>
+                        <input type="text" class="form-control" id="newChannelName" name="newChannelName">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveChannelButton">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addCommentatorModal" tabindex="-1" role="dialog" aria-labelledby="addCommentatorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              
+                <h5 class="modal-title" id="addCommentatorModalLabel">Add New Commentator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                 <div class="alert alert-primary" role="alert">
+Data saved in your pc</div>
+                <form id="newCommentatorForm">
+                    <div class="form-group">
+                        <label for="newCommentatorName">Commentator Name:</label>
+                        <input type="text" class="form-control" id="newCommentatorName" name="newCommentatorName">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveCommentatorButton">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+<script src="https://live.mrgamingstream.net/Scripts/gn.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.46/moment-timezone-with-data.min.js"></script>
+</div></div>
+<div class='sidebar no-items section' id='sidebar2'></div>
+
+<script type='text/javascript'>
+window['__wavt'] = 'AOuZoY716S4JRyzvrg0kMoBin2oeQ6DvBA:1701504602803';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d7296712852977032480','//toolsv8.infinyteam.com/p/match-generate-en.html','7296712852977032480');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '7296712852977032480', 'title': 'Match live tools v8', 'url': 'https://toolsv8.infinyteam.com/p/match-generate-en.html', 'canonicalUrl': 'https://toolsv8.infinyteam.com/p/match-generate-en.html', 'homepageUrl': 'https://toolsv8.infinyteam.com/', 'searchUrl': 'https://toolsv8.infinyteam.com/search', 'canonicalHomepageUrl': 'https://toolsv8.infinyteam.com/', 'blogspotFaviconUrl': 'https://toolsv8.infinyteam.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Match live tools v8 - Atom\x22 href\x3d\x22https://toolsv8.infinyteam.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22Match live tools v8 - RSS\x22 href\x3d\x22https://toolsv8.infinyteam.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Match live tools v8 - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/7296712852977032480/posts/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': false, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/20dab6d510b63eb9', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'Twitter', 'key': 'twitter', 'shareMessage': 'Share to Twitter', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'static_page', 'pageId': '3660755891772626358', 'pageName': 'Match generate en', 'pageTitle': 'Match live tools v8: Match generate en'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': 'Match generate en', 'description': '                                                                                                                                            ...', 'featuredImage': 'https://lh3.googleusercontent.com/blogger_img_proxy/ALY8t1tNgH2zPuq_jAAvGd_9ONARmUIhmbXWD7OOt-JLpqHIAOXxIkn6myXwJRsEJapuizpz4aLtuZbpYLP9-gsaJfl_xDeCsbnpnxl2E6198lTv8TTjjM73UgO45qY1AwhKWrO30TfNPn3kxmFXFrA9tNAPGLznsUE', 'url': 'https://toolsv8.infinyteam.com/p/match-generate-en.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': true, 'isPost': false, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'pageId': 3660755891772626358}}]);
+_WidgetManager._RegisterWidget('_LinkListView', new _WidgetInfo('LinkList11', 'section11', document.getElementById('LinkList11'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'Blog', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/2258190084-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/3268905543-lightbox_bundle.css'}, 'displayModeFull'));
+</script>
+</body>
+</HTML>
