@@ -1551,8 +1551,8 @@
      
  
   {
-    "name": "Lumbani Lions",
-    "logo": "https://live.mrgamingstream.net/logo/limbani.png"
+    "name": "Lumbini Lions",
+    "logo": "https://live.mrgamingstream.net/logo/lumbini.png"
   },  
      
      
@@ -12603,7 +12603,7 @@
 }
 
 const formattedDate = formatISODateTime("2023-08-19");
-console.log(formattedDate); // Output: 2023-08-19T00:00:00+03:00
+console.log(formattedDate); // Output: 2023-08-19T00:00:00+05:45
 
       
       
