@@ -12470,7 +12470,7 @@
    ];
       
       
-      var leagueNames = ["T20I"," ODI"," Test Series","Nepal Premier League";"T20 world cup";"ODI world cup";" Women's Asia Cup"," women's World Cup "," Asia cup"," Champions Trophy"," IPL"," Ligue 1", " Premier League"," ICC CWC League 2","NPL ", " Bundesliga", " Serie A", " La Liga", " UEFA Champions League", " UEFA Europa League", " African Nations Championship", " AFC Champions League", " Botola Pro", " Serie A Women", " Pro League", " CAF Confederation Cup", " Botola 2"];
+      var leagueNames = [" T20I", " ODI", " Test Series", " Nepal Premier League"," T20 world cup", " ODI world cup", " Women's Asia Cup", " women's World Cup ", " Asia cup", " Champions Trophy", " IPL", " Ligue 1", " Premier League"," ICC CWC League 2","NPL " , " Bundesliga", " Serie A", " La Liga", " UEFA Champions League", " UEFA Europa League", " African Nations Championship", " AFC Champions League", " Botola Pro", " Serie A Women", " Pro League", " CAF Confederation Cup", " Botola 2"];
         var commentatorNames = [" Andrew Leonard"];
         var channelNames = [" YoNoTV"];
 
