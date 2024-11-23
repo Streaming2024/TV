@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Events - Watch Live Sports and Matches</title>
+    <meta name="description" content=" Stay updated with live sports and matches. Check out the latest live events and upcoming sports matches with detailed information and links.">
+    <meta name="keywords" content="live sports, live matches, sports events, live streaming, sports updates">
+    <link rel="canonical" href="https://cdn.jsdelivr.net/gh/kasintv2-0/kasintv/favicon.png">
+    <meta property="og:title" content=" Live Events - Watch Live Sports and Matches">
+    <meta property="og:description" content="Stay updated with live sports and matches. Check out the latest live events and upcoming sports matches with detailed information and links.">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/kasintv2-0/kasintv/favicon.png">
+    <meta property="og:url" content="https://soccer.kasintv.com/fancode">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KaSin TV">
+    <meta name="robots" content="noindex">
+    <style>
+      .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        text-transform: uppercase;
+        font-family: system-ui;
+      }
+
+      .card {
+        width: 200px;
+        margin: 5px;
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .card img {
+        width: 100%;
+        border-radius: 5px;
+      }
+
+      .card h3 {
+        margin: 10px 0;
+        font-size: 1.2em;
+      }
+
+      .card p {
+        margin: 5px 0;
+        color: #333;
+      }
+
+      .card .status {
+        display: block;
+        margin: 5px 0;
+        padding: 5px;
+        font-size: 0.9em;
+        color: #fff;
+        border-radius: 3px;
+      }
+
+      .card .status.live {
+        background-color: red;
+      }
+
+      .card .status.upcoming {
+        background-color: #007bff;
+      }
+    </style>
+</head>
+<body>
+   <center/> <header>
+        <h1>Live Sports Events</h1>
+        <p>Find the latest live sports events and upcoming matches with detailed information and links to stream them live.</p>
+  </header></center>
+    <main>
+        <section id="cards-container" class="cards-container" aria-labelledby="events-heading">
+            <!-- Match cards will be dynamically inserted here -->
+        </section>
+    </main>
+    <script>
+        function createCard(match) {
+            const card = document.createElement('div');
+            card.classList.add('card');
+
+            const link = document.createElement('a');
+            link.href = match.stream_link ? match.stream_link : '#';
+            link.target = '_blank';
+            link.style.textDecoration = 'none';
+
+            const img = document.createElement('img');
+            img.src = match.src;
+            img.alt = `Image for ${match.match_name}`;
+
+            const title = document.createElement('h3');
+            title.textContent = match.match_name;
+
+            const event = document.createElement('p');
+            event.textContent = `Event: ${match.event_name}`;
+
+            const status = document.createElement('span');
+            status.classList.add('status', match.status.toLowerCase());
+            status.textContent = match.status;
+
+            const time = document.createElement('p');
+            if (match.status.toLowerCase() === 'live' && match.stream_link) {
+                const liveTag = document.createElement('span');
+                liveTag.textContent = '';
+                liveTag.style.color = '#ff0000';
+                time.appendChild(liveTag);
+            } else if (match.startTime) {
+                time.textContent = `Start Time: ${match.startTime}`;
+            } else {
+                time.textContent = 'Details not available';
+            }
+
+            link.appendChild(img);
+            link.appendChild(title);
+            link.appendChild(event);
+            link.appendChild(status);
+            link.appendChild(time);
+
+            card.appendChild(link);
+
+            return card;
+        }
+
+        function displayMatches() {
+            fetch('https://raw.githubusercontent.com/drmlive/fancode-live-events/main/fancode.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data fetched successfully:', data);
+                    const container = document.getElementById('cards-container');
+                    data.matches.forEach(match => {
+                        const card = createCard(match);
+                        container.appendChild(card);
+                    });
+                })
+                .catch(error => console.error('There was a problem with the fetch operation:', error));
+        }
+
+        displayMatches();
+    </script>
+<script type="text/javascript" data-cfasync="false">
+/*<![CDATA[/* */
+(function(){var p=window,j="c96cb7697f905852d4666ace0b2fb7a9",f=[["siteId",227+422+807+5128266],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],m=["d3d3LnByZW1pdW12ZXJ0aXNpbmcuY29tL2VhUlRyL24vbWNob2ljZXMubWluLmpz","ZDJqMDQyY2oxNDIxd2kuY2xvdWRmcm9udC5uZXQvaGpxdWVyeS51bmlmb3JtLmJ1bmRsZWQuanM=","d3d3LnBrY2R2ZWh5Y29vLmNvbS9zaC9CL2RjaG9pY2VzLm1pbi5qcw==","d3d3LmZqdm9qY2xyd2hjb2Z6LmNvbS9vanF1ZXJ5LnVuaWZvcm0uYnVuZGxlZC5qcw=="],g=-1,a,o,k=function(){clearTimeout(o);g++;if(m[g]&&!(1750777782000<(new Date).getTime()&&1<g)){a=p.document.createElement("script");a.type="text/javascript";a.async=!0;var z=p.document.getElementsByTagName("script")[0];a.src="https://"+atob(m[g]);a.crossOrigin="anonymous";a.onerror=k;a.onload=function(){clearTimeout(o);p[j.slice(0,16)+j.slice(0,16)]||k()};o=setTimeout(k,5E3);z.parentNode.insertBefore(a,z)}};if(!p[j]){try{Object.freeze(p[j]=f)}catch(e){}k()}})();
+/*]]>/* */
+</script>
+
+    
+</body>
+</html>
