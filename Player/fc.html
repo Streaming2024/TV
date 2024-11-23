@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video.js HLS Player</title>
+    <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
+    <style>
+        /* Ensure the body and html take up 100% of the viewport */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Make the video player take full width and height */
+        .video-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <video
+      id="my-video"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      data-setup="{}"
+    >
+      <!-- Source will be dynamically inserted -->
+    </video>
+
+    <script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@latest/dist/videojs-contrib-hls.js"></script>
+    <script>
+      // Function to get URL parameters
+      function getParameterByName(name, url = window.location.href) {
+          name = name.replace(/[\[\]]/g, '\\$&');
+          var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+              results = regex.exec(url);
+          if (!results) return null;
+          if (!results[2]) return '';
+          return decodeURIComponent(results[2].replace(/\+/g, ' '));
+      }
+
+      // Define the base URL
+      var baseUrl = 'https://live.mrgamingstream.net/Player/plyrr.html?url=https://psliveapp.site/k/ps_live.m3u8?psplaylink=';
+
+      // Get the 'url' parameter from the URL
+      var videoParam = getParameterByName('src');
+      
+      if (videoParam) {
+        // Construct the final video URL
+        var videoUrl = baseUrl + videoParam;
+
+        var player = videojs('my-video');
+        // Dynamically set the source
+        player.src({
+          src: videoUrl,
+          type: 'application/x-mpegURL'
+        });
+        player.play();
+      } else {
+        console.error('No video URL provided in the parameters.');
+      }
+    </script>
+
+</body>
+</html>
