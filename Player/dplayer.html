@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+   <title> DPlayer - Video Player</title>
+    <meta content="never" name="referrer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <link href='https://live.mrgamingstream.net/logo/favicon.png' rel='icon' type='image/x-icon'/>
+
+    <!-- IE内核 强制使用最新的引擎渲染网页 -->
+    <meta content="webkit" name="renderer">
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0 ,maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="true" name="x5-fullscreen">
+    <!-- 手机H5兼容模式 -->
+    <meta content="app" name="x5-page-mode">
+    <!-- X5  全屏处理 -->
+    <meta content="yes" name="full-screen">
+    <meta content="application" name="browsermode">
+    <!-- UC 全屏应用模式 -->
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" />
+    <!--  苹果全屏应用模式 -->
+    <script charset="utf-8" src="//cdn.jsdelivr.net/npm/hls.js/dist/hls.min.js"></script>
+    <script charset="utf-8" src="//cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.js"></script>
+</head>
+<style>
+     :root {
+        --plyr-color-main: #00b2ff;
+    }
+    
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        background-color: black;
+    }
+    
+    #dplayer {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .plyr--video {
+        height: 100%;
+    }
+    
+    .dplayer-logo {
+        pointer-events: none;
+        position: absolute;
+        right: 10px;
+        left: auto;
+        top: 10px;
+        max-width: 150px;
+        max-height: 150px;
+    }
+    
+    @media (max-width:760px) {
+        .dplayer-logo {
+            max-width: 100px;
+            max-height: 100px;
+        }
+    }
+</style>
+
+<body>
+    <div id="dplayer"></div>
+
+    <script>
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg); //匹配目标参数
+            if (r != null) return unescape(r[2]);
+            return null; //返回参数值
+        }
+
+        var urltext = getUrlParam('url');
+        window.onload = () => {
+            new DPlayer({
+                container: document.getElementById('dplayer'),
+                autoplay: true,
+                video: {
+                    url: urltext,
+                    type: 'hls',
+                },
+                lang: "us-en",
+                pluginOptions: {
+                    hls: {},
+                },
+                logo: " "
+            });
+        }
+    </script>
+
+    
+
+<div style="position:fixed;top:0;left:0;width:100%;height:1px;overflow:hidden;visibility:hidden;z-index:9999;"><script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script><script type="text/javascript">sc_online_i(1709007,"ffffff","e61c1c");</script><noscript><a href="https://www.supercounters.com/" style="visibility:hidden;">free online counter</a></noscript></div>
+
+    
+</body>
+</html>
