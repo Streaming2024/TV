@@ -1,196 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Streaming Coming Soon</title>
-    <style>
-        /* Reset Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            height: 100vh;
-            background: radial-gradient(circle at top, #0f0c29, #302b63, #24243e);
-            overflow: hidden;
-            font-family: 'Poppins', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-        }
+<video id="myVideo" width="100%" height="100%" controls autoplay loop muted style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+    <source src="https://static.vecteezy.com/system/resources/previews/011/818/541/mp4/coming-soon-banner-passion-animation-free-video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
 
-        /* Header Image */
-        .header-image {
-            width: 50%;
-            max-width: 600px; /* Limits size on large screens */
-            height: auto; /* Maintains aspect ratio */
-            margin: 2px 0;
+<script>
+    const video = document.getElementById("myVideo");
+
+    // Restart the video if it stops or encounters an error
+    video.addEventListener("error", () => {
+        video.load();
+        video.play();
+    });
+
+    video.addEventListener("ended", () => {
+        video.currentTime = 0;
+        video.play();
+    });
+
+    // Ensure it plays if paused or stopped unexpectedly
+    setInterval(() => {
+        if (video.paused || video.ended) {
+            video.play();
         }
-
-        /* Particle Background */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            animation: float 10s infinite;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-20vh) rotate(180deg);
-                opacity: 0.5;
-            }
-            100% {
-                transform: translateY(0) rotate(360deg);
-                opacity: 1;
-            }
-        }
-
-        /* Main Container */
-        .container {
-            text-align: center;
-            z-index: 1;
-            animation: zoomIn 2s ease-in-out;
-            padding: 10px;
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            background: linear-gradient(to right, #00f260, #0575e6);
-            -webkit-background-clip: text;
-            color: transparent;
-            animation: glow 2s infinite alternate;
-        }
-
-        p {
-            font-size: 1.3rem;
-            color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            padding: 15px 40px;
-            font-size: 1rem;
-            background: #ff416c;
-            border: none;
-            border-radius: 30px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(255, 65, 108, 0.6);
-            animation: pulse 1.5s infinite;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn:hover {
-            background: #ff4b2b;
-            box-shadow: 0 0 30px rgba(255, 75, 43, 0.8);
-            transform: scale(1.1);
-        }
-
-        /* Social Icons */
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-top: 5px;
-        }
-
-        .social-icons a {
-            font-size: 2rem;
-            color: white;
-            text-decoration: none;
-            transition: transform 0.3s, color 0.3s;
-        }
-
-        .social-icons a:hover {
-            transform: scale(1.2);
-            color: #00c6ff;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            p {
-                font-size: 1rem;
-            }
-            .btn {
-                padding: 10px 30px;
-                font-size: 0.9rem;
-            }
-            .social-icons a {
-                font-size: 1.5rem;
-            }
-            .header-image {
-                max-width: 90%; /* Shrinks for smaller screens */
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Particle Background -->
-    <div class="particles"></div>
-
-    <!-- Header Image -->
-    <img class="header-image" src="https://live.mrgamingstream.net/logo/logo1.png" alt="Header Image">
-
-    <!-- Main Content -->
-    <div class="container">
-        <h1>Streaming Available Soon!</h1>
-        <p>Please share YoNo TV with your friends and stay tuned for live action!</p>
-        <a class="btn" href="https://live.mrgamingstream.net/VIP/ads.html" target="_blank">Click here to Support us</a>
-    </div>
-<!-- Join us for updates -->
-    <p class="update">Join us for daily updates!</p>
-    <!-- Social Icons -->
-    <div class="social-icons">
-        <a href="https://www.youtube.com/@YoNoTVsports" target="_blank" aria-label="YouTube">
-            <img src="https://img.icons8.com/color/48/000000/youtube-play.png" alt="YouTube">
-        </a>
-        <a href="https://t.me/yonotvlive" target="_blank" aria-label="Telegram">
-            <img src="https://img.icons8.com/color/48/000000/telegram-app.png" alt="Telegram">
-        </a>
-        <a href="https://www.tiktok.com/@yono_tv_sports" target="_blank" aria-label="TikTok">
-            <img src="https://img.icons8.com/color/48/000000/tiktok.png" alt="TikTok">
-        </a>
-        <a href="https://whatsapp.com/channel/0029VaIct53KQuJHWpuXQK3F" target="_blank" aria-label="WhatsApp">
-            <img src="https://img.icons8.com/color/48/000000/whatsapp.png" alt="WhatsApp">
-        </a>
-    </div>
-
-    <script>
-        // Generate random particles
-        const particles = document.querySelector('.particles');
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            particle.style.left = `${Math.random() * 100}vw`;
-            particle.style.top = `${Math.random() * 100}vh`;
-            particle.style.animationDuration = `${5 + Math.random() * 5}s`;
-            particles.appendChild(particle);
-        }
-    </script>
-</body>
-</html>
+    }, 3000); // Checks every 3 seconds
+</script>
