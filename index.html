@@ -1,26 +1,138 @@
-<video id="myVideo" width="100%" height="100%" controls autoplay loop  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
-    <source src="https://files.catbox.moe/k3vhgf.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
 
-<script>
-    const video = document.getElementById("myVideo");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href='https://live.mrgamingstream.net/logo/favicon.png' rel='icon' type='image/x-icon'/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starting Soon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset and Font */
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #1b1b3a, #1e215d);
+      animation: gradientMove 5s infinite alternate;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-    // Restart the video if it stops or encounters an error
-    video.addEventListener("error", () => {
-        video.load();
-        video.play();
-    });
+    @keyframes gradientMove {
+      0% { background: linear-gradient(135deg, #1b1b3a, #1e215d); }
+      100% { background: linear-gradient(135deg, #1a0033, #004080); }
+    }
 
-    video.addEventListener("ended", () => {
-        video.currentTime = 0;
-        video.play();
-    });
+    /* Container */
+    .starting-screen {
+      text-align: center;
+      color: white;
+    }
+    
+    .starting-screen div {
+  line-height: 1.1; /* Adjust spacing between lines */
 
-    // Ensure it plays if paused or stopped unexpectedly
-    setInterval(() => {
-        if (video.paused || video.ended) {
-            video.play();
-        }
-    }, 3000); // Checks every 3 seconds
-</script>
+}
+
+/* Drop-in Animation from Outside the Top Window */
+.drop-in {
+  opacity: 0;
+  transform: translateY(-100vh); /* Start from outside the top window */
+  animation: dropIn 1.5s ease forwards;
+}
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-100vh); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+    /* Text Styles */
+    .live-stream {
+      font-size: 40px;
+      letter-spacing: 2px;
+      font-weight: 800;
+      color: #ff85ea;
+          text-align: left;
+
+    }
+
+    .starting {
+font-size: 100px;
+      font-weight: 800;    
+    text-align: left;
+    }
+
+    .soon {
+font-size: 100px;
+            color: #ff85ea;
+                text-align: left;
+
+
+      font-weight: 800;    }
+
+    @keyframes textGlow {
+      0% { text-shadow: 0 0 10px #ff00ff, 0 0 20px #f8b400; }
+      100% { text-shadow: 0 0 20px #ff00ff, 0 0 40px #ffffff; }
+    }
+
+    /* Countdown */
+    .countdown {
+      font-size: 2.5rem;
+      margin-top: 1rem;
+      color: #004080;
+      font-weight: 900;
+      background-color: transparent;
+      border-radius: 5px;
+      -webkit-text-stroke: 2px white; /* Adds white stroke */
+        display: inline-block;
+  padding: 5px 20px; /* Add some padding around text */
+  border-radius: 5px; /* Optional: round the corners */
+  border: 3px dotted #ff7ceb; /* Add border color same as rectangle */
+  letter-spacing: 2px;
+      
+    }
+    
+    
+    /* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  /* For mobile devices */
+  .live-stream {
+    font-size: 30px; /* Smaller font size on mobile */
+  }
+
+  .starting {
+    font-size: 40px; /* Adjust starting text size on mobile */
+  }
+
+  .soon {
+    font-size: 80px; /* Adjust soon text size on mobile */
+  }
+
+  .countdown {
+    font-size: 2rem; /* Slightly smaller countdown on mobile */
+  }
+}
+
+    
+    
+
+
+
+  </style>
+</head>
+<body>
+  <div class="starting-screen">
+    <div class="live-stream drop-in">LIVE STREAM</div>
+    <div class="starting drop-in">NOT STARTED</div>
+    <div class="soon drop-in">YET...</div>
+  </div>
+
+
+
+</body>
+</html>
