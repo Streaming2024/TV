@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title> DMCA Player</title>
+    <style type="text/css">
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        background-color: black;
+    }
+      
+    #text {
+      position: fixed;
+      border: 0;
+      left: 0;
+      width: 100%;
+      color: #fff;
+      bottom: 50px;
+      text-align: center;
+      font-family: tahoma;
+      font-size: 20px;
+      z-index: 9999;
+    }
+
+      
+     #dplayer {
+        width: 100%;
+        height: 100%;
+    }
+      
+      .dplayer-notice {
+        display: none;
+      }
+
+      .dplayer-setting {
+        display: none !important;
+      }
+
+      .dplayer-menu {
+        display: none !important;
+      }
+
+      .dplayer-full-in-icon {
+        display: none !important;
+      }
+      .dplayer-bar-wrap {
+        display: none !important;
+      }
+
+      body.h5 .dplayer-controller {
+        display: none !important;
+      }
+      body.h5 .dplayer-playing .dplayer-controller-mask,
+      body.h5 .dplayer-playing .dplayer-mobile-play {
+        display: none !important;
+      }
+      body.h5 .dplayer.dplayer-paused .dplayer-mobile-play {
+        display: block !important;
+      }
+    </style>
+</head>
+
+  <body>
+
+  
+   <div id="dplayer"></div>
+ 
+
+    <script src="https://www.yosintv.net/proflv.js"></script>
+    <script src="https://www.yosintv.net/prohls.js"></script>
+    <script charset="utf-8" src="//cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.js"></script> 
+    <script>
+      var search = window.location.search || '';
+      var isH5 = search.indexOf('h5=1') > -1;
+      var muted = search.indexOf('muted') > -1;
+
+      if (isH5) {
+        document.body.setAttribute('class', 'h5');
+      }
+      var dp;
+      function getQueryVariable(variable) {
+        var query = search.substring(1);
+        var arr = query.split('url=');
+        return arr[1];
+      }
+      var url = getQueryVariable('url') || '';
+
+      if (url.indexOf('m3u8') !== -1 || isH5) {
+        dp = new DPlayer({
+          container: document.getElementById('dplayer'),
+          autoplay: true,
+          volume: muted ? 0 : 0.5,
+          video: {
+            autoplay: true,
+            url: url || 'https://hls.jwjdsbei.com/live/ai666/playlist.m3u8',
+            type: 'customHls',
+            customType: {
+              customHls: function(video, player) {
+                var hls = new Hls();
+                hls.loadSource(video.src);
+                hls.attachMedia(video);
+              }
+            }
+          }
+        });
+
+        if (muted) {
+          const videoDom = document.getElementsByClassName('dplayer-video');
+          if (videoDom) {
+            videoDom[0].muted = true;
+            videoDom[0].autoplay = true;
+          }
+        }
+      } else if (url.indexOf('mp4') !== -1) {
+        dp = new DPlayer({
+          container: document.getElementById('dplayer'),
+          autoplay: true,
+          volume: muted ? 0 : 0.5,
+          video: {
+            autoplay: true,
+            url,
+            type: 'auto'
+          }
+        });
+      } else {
+        dp = new DPlayer({
+          container: document.getElementById('dplayer'),
+          autoplay: true,
+          volume: muted ? 0 : 0.5,
+          video: {
+            url: url || 'https://hdl.jwjdsbei.com/live/ai666.flv',
+            type: 'customFlv',
+            autoplay: true,
+            customType: {
+              customFlv: function(video, player) {
+                var flvPlayer = flvjs.createPlayer({
+                  type: 'flv',
+                  url: video.src
+                });
+                flvPlayer.attachMediaElement(video);
+                flvPlayer.load();
+              }
+            }
+          }
+        });
+      }
+      if (dp) {
+        // play
+        // pause
+        [
+          {
+            eventName: 'play',
+            type: 'play'
+          },
+          {
+            eventName: 'pause',
+            type: 'pause'
+          },
+          {
+            eventName: 'ended',
+            type: 'pause'
+          },
+          {
+            eventName: 'error',
+            type: 'error'
+          }
+        ].forEach(function(i) {
+          dp.on(i.eventName, function(e) {
+            // iframe
+            window.parent.postMessage(
+              JSON.stringify({
+                type: i.type,
+                value: e
+              }),
+              '*'
+            );
+          });
+        });
+
+        dp.on('canplay', function() {
+          dp.play();
+        });
+      }
+
+      if (isH5) {
+        document.body.addEventListener('click', function(e) {
+          if (dp.paused) return;
+          window.parent.postMessage(
+            JSON.stringify({
+              type: 'toggle'
+            }),
+            '*'
+          );
+        });
+      }
+
+      window.addEventListener('message', function(event) {
+        if (!event.data) return;
+        try {
+          var params = JSON.parse(event.data);
+          if (params.type === 'switch') {
+            dp.switchVideo({
+              url: params.value
+            });
+            dp.play();
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      });
+    </script>
+  </body>
+</html>
