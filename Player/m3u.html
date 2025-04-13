@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3U8 Player</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+        }
+        #video-container {
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            background: #000;
+        }
+        #watermark {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 12px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: Arial, sans-serif;
+        }
+        #fullscreen-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: none;
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+        }
+        #fullscreen-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        #error-message {
+            display: none;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+    <!-- money tag ads -->
+    
+</head>
+<body>
+    <div id="video-container">
+        <video id="video" controls autoplay></video>
+        <div id="watermark">YoNoTV LIVE</div>
+        <button id="fullscreen-button">Make Fullscreen</button>
+        <div id="error-message">We are updating our live link. Please come back after some minutes from the app. Thank you.</div>
+    </div>
+
+    <script>
+        // Get the URL parameter
+        const params = new URLSearchParams(window.location.search);
+        const url = params.get('url');
+
+        const video = document.getElementById('video');
+        const errorMessage = document.getElementById('error-message');
+        const watermark = document.getElementById('watermark');
+        const fullscreenButton = document.getElementById('fullscreen-button');
+
+        if (url) {
+            // Check for browser support and initialize hls.js if needed
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                    video.play();
+                });
+                hls.on(Hls.Events.ERROR, function () {
+                    // showError();
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // For Safari and native HLS support
+                video.src = url;
+                video.addEventListener('error', function () {
+                    // showError();
+                });
+                video.addEventListener('loadedmetadata', function () {
+                    video.play();
+                });
+            } else {
+                showError();
+            }
+        } else {
+            showError();
+        }
+
+        function showError() {
+            errorMessage.style.display = 'block';
+            video.style.display = 'none';
+            watermark.style.display = 'none';
+            fullscreenButton.style.display = 'none';
+        }
+
+        fullscreenButton.addEventListener('click', () => {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitEnterFullscreen) { // Safari
+                video.webkitEnterFullscreen();
+            } else if (video.msRequestFullscreen) { // IE/Edge
+                video.msRequestFullscreen();
+            }
+        });
+    </script>
+</body>
+</html>
