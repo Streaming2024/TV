@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Chat</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: transparent;
+            font-family: Arial, sans-serif;
+        }
+        #chat-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: transparent;
+        }
+        #chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            margin: 5px;
+        }
+        #chat-input {
+            display: flex;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            margin: 5px;
+        }
+        #name-input {
+            width: 100px;
+            padding: 8px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 3px;
+        }
+        #message-input {
+            flex: 1;
+            padding: 8px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 3px;
+        }
+        #send-button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        #send-button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+            word-wrap: break-word;
+        }
+        .sender {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .text {
+            margin: 5px 0;
+        }
+        .time {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-messages"></div>
+        <div id="chat-input">
+            <input type="text" id="name-input" placeholder="Your Name" maxlength="20">
+            <input type="text" id="message-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <!-- Using PubNub for simple real-time chat -->
+    <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.3.0.min.js"></script>
+    
+    <script>
+        // Initialize PubNub with demo keys (free)
+        const pubnub = new Pubnub({
+            publishKey: 'demo',
+            subscribeKey: 'demo',
+            userId: 'user_' + Math.floor(Math.random() * 10000)
+        });
+        
+        // Channel name for your chat
+        const channel = 'streaming_site_chat';
+        
+        // Subscribe to the channel
+        pubnub.subscribe({ channels: [channel] });
+        
+        // Listen for messages
+        pubnub.addListener({
+            message: function(event) {
+                addMessageToChat(event.message.sender, event.message.text, new Date(event.message.time));
+            }
+        });
+        
+        // Send message function
+        function sendMessage() {
+            const nameInput = document.getElementById('name-input');
+            const messageInput = document.getElementById('message-input');
+            
+            const name = nameInput.value.trim();
+            const message = messageInput.value.trim();
+            
+            if (name === '') {
+                alert('Please enter your name');
+                return;
+            }
+            
+            if (message === '') {
+                alert('Please enter a message');
+                return;
+            }
+            
+            // Publish the message
+            pubnub.publish({
+                channel: channel,
+                message: {
+                    sender: name,
+                    text: message,
+                    time: Date.now()
+                }
+            });
+            
+            // Clear the message input
+            messageInput.value = '';
+        }
+        
+        // Add message to chat display
+        function addMessageToChat(sender, text, time) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message';
+            
+            const timeString = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageElement.innerHTML = `
+                <div class="sender">${sender}</div>
+                <div class="text">${text}</div>
+                <div class="time">${timeString}</div>
+            `;
+            
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Event listeners
+        document.getElementById('send-button').addEventListener('click', sendMessage);
+        document.getElementById('message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Welcome message
+        setTimeout(() => {
+            addMessageToChat('Chat Bot', 'Welcome to the live chat! Enter your name and start chatting.', new Date());
+        }, 1000);
+    </script>
+</body>
+</html>
