@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Iframe Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mobile-Friendly Iframe Player</title>
     <style>
         body {
             margin: 0;
@@ -12,6 +12,7 @@
             overflow: hidden;
             height: 100vh;
             font-family: Arial, sans-serif;
+            touch-action: manipulation;
         }
         #player-container {
             position: relative;
@@ -55,6 +56,14 @@
         .control-btn:hover {
             background-color: rgba(255, 255, 255, 0.2);
         }
+        #orientation-btn {
+            display: none; /* Hidden by default, shown on mobile */
+        }
+        @media screen and (max-width: 768px) {
+            #orientation-btn {
+                display: block;
+            }
+        }
         #url-display {
             position: absolute;
             top: 10px;
@@ -70,23 +79,48 @@
             white-space: nowrap;
             z-index: 100;
         }
+        /* Landscape orientation styles */
+        .landscape #stream-iframe {
+            transform: rotate(90deg);
+            transform-origin: left top;
+            width: 100vh;
+            height: 100vw;
+            position: absolute;
+            top: 100%;
+            left: 0;
+        }
+        .landscape #player-container {
+            overflow: visible;
+        }
     </style>
 </head>
 <body>
     <div id="player-container">
         <iframe id="stream-iframe" src="https://reduserx.ifrem.net/iframe/frame.php" allowfullscreen></iframe>
-        <div id="watermark">My Custom Player</div>
+        <div id="watermark">Mobile Player</div>
         <div id="controls">
             <button class="control-btn" onclick="toggleFullscreen()">Fullscreen</button>
+            <button class="control-btn" id="orientation-btn" onclick="toggleOrientation()">Rotate</button>
             <button class="control-btn" onclick="reloadStream()">Reload</button>
         </div>
         <div id="url-display">Stream Source: reduserx.ifrem.net</div>
     </div>
 
     <script>
+        // Detect mobile devices
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
         // Fullscreen toggle
         function toggleFullscreen() {
             const elem = document.getElementById("player-container");
+            
+            if (isMobile) {
+                // On mobile, we'll use our custom fullscreen/rotation
+                toggleOrientation();
+                return;
+            }
+            
+            // Standard fullscreen for desktop
             if (!document.fullscreenElement) {
                 if (elem.requestFullscreen) {
                     elem.requestFullscreen();
@@ -99,11 +133,44 @@
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
+                    document.exitFullscreen();
                 } else if (document.msExitFullscreen) {
                     document.msExitFullscreen();
                 }
             }
+        }
+
+        // Toggle between portrait and landscape
+        function toggleOrientation() {
+            const container = document.getElementById("player-container");
+            const iframe = document.getElementById("stream-iframe");
+            const btn = document.querySelector("#orientation-btn");
+            
+            if (container.classList.contains("landscape")) {
+                // Switch to portrait
+                container.classList.remove("landscape");
+                btn.textContent = "Rotate";
+                iframe.style.width = "100%";
+                iframe.style.height = "100%";
+                iframe.style.transform = "none";
+                iframe.style.position = "relative";
+                iframe.style.top = "auto";
+                iframe.style.left = "auto";
+            } else {
+                // Switch to landscape
+                container.classList.add("landscape");
+                btn.textContent = "Portrait";
+                iframe.style.width = "100vh";
+                iframe.style.height = "100vw";
+                iframe.style.transform = "rotate(90deg)";
+                iframe.style.transformOrigin = "left top";
+                iframe.style.position = "absolute";
+                iframe.style.top = "100%";
+                iframe.style.left = "0";
+            }
+            
+            // Force resize
+            window.dispatchEvent(new Event('resize'));
         }
 
         // Reload iframe
@@ -122,7 +189,20 @@
             if (e.key === 'r' || e.key === 'R') {
                 reloadStream();
             }
+            // O key for orientation (mobile)
+            if (e.key === 'o' || e.key === 'O') {
+                toggleOrientation();
+            }
         });
+
+        // Handle device orientation changes
+        window.addEventListener("orientationchange", function() {
+            if (window.orientation === 90 || window.orientation === -90) {
+                document.getElementById("player-container").classList.add("landscape");
+            } else {
+                document.getElementById("player-container").classList.remove("landscape");
+            }
+        }, false);
     </script>
 </body>
 </html>
