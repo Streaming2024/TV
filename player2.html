@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mobile-Friendly Player</title>
+    <title>Universal Stream Player</title>
     <style>
         body {
             margin: 0;
@@ -30,17 +30,20 @@
             right: 0;
             display: flex;
             justify-content: center;
+            gap: 15px;
             z-index: 100;
         }
         .control-btn {
             background-color: rgba(0, 0, 0, 0.7);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 12px 24px;
+            border-radius: 25px;
             cursor: pointer;
             font-size: 16px;
-            margin: 0 10px;
+            backdrop-filter: blur(5px);
+            min-width: 120px;
+            text-align: center;
         }
         #error-message {
             display: none;
@@ -49,35 +52,38 @@
             left: 50%;
             transform: translate(-50%, -50%);
             color: white;
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 25px;
+            border-radius: 15px;
             text-align: center;
-            max-width: 80%;
+            max-width: 85%;
             z-index: 200;
+            font-size: 18px;
         }
-        
-        /* Fullscreen styles */
-        :fullscreen #stream-iframe {
-            object-fit: contain;
+        #volume-control {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 300px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
-        :-webkit-full-screen #stream-iframe {
-            object-fit: contain;
-        }
-        :-moz-full-screen #stream-iframe {
-            object-fit: contain;
-        }
-        :-ms-fullscreen #stream-iframe {
-            object-fit: contain;
+        #volume-control.show {
+            opacity: 1;
         }
     </style>
 </head>
 <body>
     <div id="player-container">
-        <iframe id="stream-iframe" allowfullscreen></iframe>
+        <iframe id="stream-iframe" sandbox="allow-scripts allow-forms allow-same-origin" allowfullscreen> </iframe>
         <div id="controls">
+            <button id="mute-btn" class="control-btn" onclick="toggleMute()">Mute</button>
             <button class="control-btn" onclick="toggleFullscreen()">Fullscreen</button>
         </div>
+        <input type="range" id="volume-control" min="0" max="1" step="0.01" value="1" oninput="setVolume(this.value)">
         <div id="error-message"></div>
     </div>
 
@@ -88,15 +94,19 @@
         
         const iframe = document.getElementById('stream-iframe');
         const errorMessage = document.getElementById('error-message');
-        
+        const muteBtn = document.getElementById('mute-btn');
+        const volumeControl = document.getElementById('volume-control');
+        let isMuted = false;
+        let lastVolume = 1;
+
+        // Initialize player
         if (streamUrl) {
             iframe.src = streamUrl;
             
             iframe.onload = function() {
-                // Check if iframe is blocked
                 try {
                     if (iframe.contentWindow.document.body.innerHTML === '') {
-                        showError('Website prevents embedding in iframes');
+                        showError('Content cannot be loaded in iframe');
                     }
                 } catch (e) {
                     // Cross-origin error means iframe loaded but we can't access it
@@ -104,52 +114,136 @@
             };
             
             iframe.onerror = function() {
-                showError('Could not load the stream');
+                showError('Failed to load stream');
             };
         } else {
-            showError('Please add ?url=YOUR_STREAM_URL to the address');
+            showError('Add ?url=STREAM_URL to the address');
         }
-        
+
+        // Volume control functions
+        function toggleMute() {
+            try {
+                const iframeVideo = iframe.contentDocument.querySelector('video') || 
+                                    iframe.contentWindow.document.querySelector('video');
+                
+                if (iframeVideo) {
+                    iframeVideo.muted = !iframeVideo.muted;
+                    isMuted = iframeVideo.muted;
+                    updateMuteButton();
+                    return;
+                }
+            } catch (e) {
+                // Cross-origin error - can't access iframe contents
+            }
+            
+            // Fallback behavior when we can't access iframe video
+            isMuted = !isMuted;
+            updateMuteButton();
+            showVolumeControl();
+        }
+
+        function setVolume(volume) {
+            try {
+                const iframeVideo = iframe.contentDocument.querySelector('video') || 
+                                    iframe.contentWindow.document.querySelector('video');
+                if (iframeVideo) {
+                    iframeVideo.volume = volume;
+                    iframeVideo.muted = volume === 0;
+                    isMuted = volume === 0;
+                    lastVolume = volume;
+                    updateMuteButton();
+                    return;
+                }
+            } catch (e) {
+                // Cross-origin error
+            }
+            
+            // Fallback
+            lastVolume = volume;
+            if (volume === 0) {
+                isMuted = true;
+            } else {
+                isMuted = false;
+            }
+            updateMuteButton();
+        }
+
+        function updateMuteButton() {
+            muteBtn.textContent = isMuted ? 'Unmute' : 'Mute';
+        }
+
+        function showVolumeControl() {
+            volumeControl.classList.add('show');
+            setTimeout(() => {
+                volumeControl.classList.remove('show');
+            }, 3000);
+        }
+
+        // Fullscreen functions
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                enterFullscreen();
+            } else {
+                exitFullscreen();
+            }
+        }
+
+        function enterFullscreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+
+        // Error handling
         function showError(message) {
             errorMessage.textContent = message;
             errorMessage.style.display = 'block';
         }
-        
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                // Enter fullscreen
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen();
-                }
+
+        // Event listeners
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                document.body.style.backgroundColor = '#000';
             } else {
-                // Exit fullscreen
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
+                document.body.style.backgroundColor = '#000';
             }
-        }
-        
-        // Handle fullscreen change events
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-        document.addEventListener('msfullscreenchange', handleFullscreenChange);
-        
-        function handleFullscreenChange() {
-            // No rotation needed - browser handles fullscreen
-        }
-        
-        // Keyboard shortcut
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'f' || e.key === 'F') {
-                toggleFullscreen();
+        });
+
+        // Touch events for volume control
+        muteBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            showVolumeControl();
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+            if (e.key === 'm' || e.key === 'M') toggleMute();
+            if (e.key === ' ') {
+                try {
+                    const iframeVideo = iframe.contentDocument.querySelector('video') || 
+                                      iframe.contentWindow.document.querySelector('video');
+                    if (iframeVideo) {
+                        iframeVideo.paused ? iframeVideo.play() : iframeVideo.pause();
+                    }
+                } catch (e) {
+                    // Cross-origin error
+                }
             }
         });
     </script>
