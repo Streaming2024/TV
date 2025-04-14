@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mobile-Friendly Iframe Player</title>
+    <title>Universal Iframe Player</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             background-color: #000;
-            overflow: hidden;
             height: 100vh;
-            font-family: Arial, sans-serif;
-            touch-action: manipulation;
+            overflow: hidden;
         }
         #player-container {
             position: relative;
@@ -24,22 +22,10 @@
             height: 100%;
             border: none;
         }
-        #watermark {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 12px;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 2px 10px;
-            border-radius: 3px;
-            z-index: 100;
-        }
         #controls {
             position: absolute;
             top: 10px;
-            left: 10px;
+            right: 10px;
             z-index: 100;
             display: flex;
             gap: 8px;
@@ -53,74 +39,64 @@
             cursor: pointer;
             font-size: 14px;
         }
-        .control-btn:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        #orientation-btn {
-            display: none; /* Hidden by default, shown on mobile */
-        }
-        @media screen and (max-width: 768px) {
-            #orientation-btn {
-                display: block;
-            }
-        }
-        #url-display {
+        #error-message {
+            display: none;
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             color: white;
-            font-size: 12px;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 4px 8px;
-            border-radius: 3px;
-            max-width: 50%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            z-index: 100;
-        }
-        /* Landscape orientation styles */
-        .landscape #stream-iframe {
-            transform: rotate(90deg);
-            transform-origin: left top;
-            width: 100vh;
-            height: 100vw;
-            position: absolute;
-            top: 100%;
-            left: 0;
-        }
-        .landscape #player-container {
-            overflow: visible;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 80%;
         }
     </style>
 </head>
 <body>
     <div id="player-container">
-        <iframe id="stream-iframe" src="https://reduserx.ifrem.net/iframe/frame.php" allowfullscreen></iframe>
-        <div id="watermark">Mobile Player</div>
+        <iframe id="stream-iframe" allowfullscreen></iframe>
         <div id="controls">
             <button class="control-btn" onclick="toggleFullscreen()">Fullscreen</button>
-            <button class="control-btn" id="orientation-btn" onclick="toggleOrientation()">Rotate</button>
-            <button class="control-btn" onclick="reloadStream()">Reload</button>
         </div>
-        <div id="url-display">Stream Source: reduserx.ifrem.net</div>
+        <div id="error-message"></div>
     </div>
 
     <script>
-        // Detect mobile devices
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        // Get URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const streamUrl = urlParams.get('url');
         
-        // Fullscreen toggle
+        const iframe = document.getElementById('stream-iframe');
+        const errorMessage = document.getElementById('error-message');
+        
+        if (streamUrl) {
+            // Set iframe source
+            iframe.src = streamUrl;
+            
+            // Handle iframe errors
+            iframe.onerror = function() {
+                showError('Could not load the stream. The website may block iframe embedding.');
+            };
+            
+            // Some sites block iframe embedding - check after loading
+            setTimeout(() => {
+                if (iframe.contentWindow?.location.href === 'about:blank') {
+                    showError('This website prevents embedding in iframes.');
+                }
+            }, 2000);
+        } else {
+            showError('No stream URL provided. Use ?url=YOUR_STREAM_URL');
+        }
+        
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+        
         function toggleFullscreen() {
             const elem = document.getElementById("player-container");
-            
-            if (isMobile) {
-                // On mobile, we'll use our custom fullscreen/rotation
-                toggleOrientation();
-                return;
-            }
-            
-            // Standard fullscreen for desktop
             if (!document.fullscreenElement) {
                 if (elem.requestFullscreen) {
                     elem.requestFullscreen();
@@ -133,76 +109,19 @@
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 } else if (document.webkitExitFullscreen) {
-                    document.exitFullscreen();
+                    document.webkitExitFullscreen();
                 } else if (document.msExitFullscreen) {
                     document.msExitFullscreen();
                 }
             }
         }
-
-        // Toggle between portrait and landscape
-        function toggleOrientation() {
-            const container = document.getElementById("player-container");
-            const iframe = document.getElementById("stream-iframe");
-            const btn = document.querySelector("#orientation-btn");
-            
-            if (container.classList.contains("landscape")) {
-                // Switch to portrait
-                container.classList.remove("landscape");
-                btn.textContent = "Rotate";
-                iframe.style.width = "100%";
-                iframe.style.height = "100%";
-                iframe.style.transform = "none";
-                iframe.style.position = "relative";
-                iframe.style.top = "auto";
-                iframe.style.left = "auto";
-            } else {
-                // Switch to landscape
-                container.classList.add("landscape");
-                btn.textContent = "Portrait";
-                iframe.style.width = "100vh";
-                iframe.style.height = "100vw";
-                iframe.style.transform = "rotate(90deg)";
-                iframe.style.transformOrigin = "left top";
-                iframe.style.position = "absolute";
-                iframe.style.top = "100%";
-                iframe.style.left = "0";
-            }
-            
-            // Force resize
-            window.dispatchEvent(new Event('resize'));
-        }
-
-        // Reload iframe
-        function reloadStream() {
-            const iframe = document.getElementById("stream-iframe");
-            iframe.src = iframe.src;
-        }
-
-        // Keyboard shortcuts
+        
+        // Keyboard shortcut for fullscreen
         document.addEventListener('keydown', (e) => {
-            // F key for fullscreen
             if (e.key === 'f' || e.key === 'F') {
                 toggleFullscreen();
             }
-            // R key for reload
-            if (e.key === 'r' || e.key === 'R') {
-                reloadStream();
-            }
-            // O key for orientation (mobile)
-            if (e.key === 'o' || e.key === 'O') {
-                toggleOrientation();
-            }
         });
-
-        // Handle device orientation changes
-        window.addEventListener("orientationchange", function() {
-            if (window.orientation === 90 || window.orientation === -90) {
-                document.getElementById("player-container").classList.add("landscape");
-            } else {
-                document.getElementById("player-container").classList.remove("landscape");
-            }
-        }, false);
     </script>
 </body>
 </html>
