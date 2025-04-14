@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Iframe Player</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            overflow: hidden;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        #player-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        #stream-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #watermark {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 12px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 2px 10px;
+            border-radius: 3px;
+            z-index: 100;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 100;
+            display: flex;
+            gap: 8px;
+        }
+        .control-btn {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .control-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        #url-display {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-size: 12px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 4px 8px;
+            border-radius: 3px;
+            max-width: 50%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div id="player-container">
+        <iframe id="stream-iframe" src="https://reduserx.ifrem.net/iframe/frame.php" allowfullscreen></iframe>
+        <div id="watermark">My Custom Player</div>
+        <div id="controls">
+            <button class="control-btn" onclick="toggleFullscreen()">Fullscreen</button>
+            <button class="control-btn" onclick="reloadStream()">Reload</button>
+        </div>
+        <div id="url-display">Stream Source: reduserx.ifrem.net</div>
+    </div>
+
+    <script>
+        // Fullscreen toggle
+        function toggleFullscreen() {
+            const elem = document.getElementById("player-container");
+            if (!document.fullscreenElement) {
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        // Reload iframe
+        function reloadStream() {
+            const iframe = document.getElementById("stream-iframe");
+            iframe.src = iframe.src;
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // F key for fullscreen
+            if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
+            }
+            // R key for reload
+            if (e.key === 'r' || e.key === 'R') {
+                reloadStream();
+            }
+        });
+    </script>
+</body>
+</html>
