@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Live Stream Player</title>
+    <!-- Load all necessary player libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/4.3.0/dash.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flv.js@latest/dist/flv.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+        }
+        #video-container {
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            background: #000;
+        }
+        #watermark {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 12px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .control-button {
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: none;
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .control-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        #error-message {
+            display: none;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        #stream-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-size: 12px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="video" controls autoplay></video>
+        <div id="watermark">Universal Live Player</div>
+        <div id="controls">
+            <button id="fullscreen-button" class="control-button">Fullscreen</button>
+            <button id="mute-button" class="control-button">Mute</button>
+        </div>
+        <div id="stream-info">Loading stream...</div>
+        <div id="error-message">Unable to load the stream. Please check the URL and try again.</div>
+    </div>
+
+    <script>
+        // Get the URL parameter
+        const params = new URLSearchParams(window.location.search);
+        const url = params.get('url');
+        const type = params.get('type') || detectStreamType(url);
+
+        const video = document.getElementById('video');
+        const errorMessage = document.getElementById('error-message');
+        const watermark = document.getElementById('watermark');
+        const controls = document.getElementById('controls');
+        const streamInfo = document.getElementById('stream-info');
+        const fullscreenButton = document.getElementById('fullscreen-button');
+        const muteButton = document.getElementById('mute-button');
+
+        // Detect stream type based on URL extension
+        function detectStreamType(url) {
+            if (!url) return null;
+            
+            const urlLower = url.toLowerCase();
+            
+            if (urlLower.includes('.m3u8')) return 'hls';
+            if (urlLower.includes('.mpd')) return 'dash';
+            if (urlLower.includes('.flv')) return 'flv';
+            if (urlLower.includes('.mp4') || urlLower.includes('.webm') || urlLower.includes('.ogg')) return 'video';
+            if (urlLower.startsWith('rtmp://')) return 'rtmp';
+            
+            // Default to HLS if no clear extension
+            return 'hls';
+        }
+
+        if (url) {
+            streamInfo.textContent = `Loading ${type.toUpperCase()} stream...`;
+            
+            switch(type) {
+                case 'hls':
+                    loadHlsStream(url);
+                    break;
+                case 'dash':
+                    loadDashStream(url);
+                    break;
+                case 'flv':
+                case 'rtmp':
+                    loadFlvStream(url);
+                    break;
+                case 'video':
+                    loadStandardVideo(url);
+                    break;
+                default:
+                    showError(`Unsupported stream type: ${type}`);
+            }
+        } else {
+            showError('No stream URL provided');
+        }
+
+        function loadHlsStream(url) {
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play();
+                    updateStreamInfo('HLS', url);
+                });
+                hls.on(Hls.Events.ERROR, function(event, data) {
+                    if (data.fatal) {
+                        showError('HLS Error: ' + data.details);
+                    }
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // Native HLS support (Safari)
+                video.src = url;
+                video.addEventListener('loadedmetadata', function() {
+                    video.play();
+                    updateStreamInfo('HLS (Native)', url);
+                });
+                video.addEventListener('error', function() {
+                    showError('Native HLS playback failed');
+                });
+            } else {
+                showError('HLS is not supported in this browser');
+            }
+        }
+
+        function loadDashStream(url) {
+            if (typeof dashjs !== 'undefined') {
+                const player = dashjs.MediaPlayer().create();
+                player.initialize(video, url, true);
+                player.on('error', function() {
+                    showError('DASH playback error');
+                });
+                updateStreamInfo('MPEG-DASH', url);
+            } else {
+                showError('DASH.js library not loaded');
+            }
+        }
+
+        function loadFlvStream(url) {
+            if (flvjs.isSupported()) {
+                const flvPlayer = flvjs.createPlayer({
+                    type: type === 'rtmp' ? 'flv' : type,
+                    url: url
+                });
+                flvPlayer.attachMediaElement(video);
+                flvPlayer.load();
+                flvPlayer.play();
+                
+                flvPlayer.on(flvjs.Events.ERROR, function(errType, errDetail) {
+                    showError('FLV/RTMP Error: ' + errDetail);
+                });
+                
+                updateStreamInfo(type === 'rtmp' ? 'RTMP (FLV)' : 'FLV', url);
+            } else {
+                showError('FLV.js is not supported in this browser');
+            }
+        }
+
+        function loadStandardVideo(url) {
+            video.src = url;
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+                updateStreamInfo('Standard Video', url);
+            });
+            video.addEventListener('error', function() {
+                showError('Video playback failed');
+            });
+        }
+
+        function updateStreamInfo(streamType, url) {
+            const displayUrl = url.length > 40 ? url.substring(0, 40) + '...' : url;
+            streamInfo.textContent = `${streamType} | ${displayUrl}`;
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message || 'Unable to load the stream. Please check the URL and try again.';
+            errorMessage.style.display = 'block';
+            video.style.display = 'none';
+            watermark.style.display = 'none';
+            controls.style.display = 'none';
+            streamInfo.style.display = 'none';
+        }
+
+        // Control buttons
+        fullscreenButton.addEventListener('click', () => {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitEnterFullscreen) { // Safari
+                video.webkitEnterFullscreen();
+            } else if (video.msRequestFullscreen) { // IE/Edge
+                video.msRequestFullscreen();
+            }
+        });
+
+        muteButton.addEventListener('click', () => {
+            video.muted = !video.muted;
+            muteButton.textContent = video.muted ? 'Unmute' : 'Mute';
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'f':
+                    fullscreenButton.click();
+                    break;
+                case 'm':
+                    muteButton.click();
+                    break;
+                case ' ':
+                    video.paused ? video.play() : video.pause();
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
