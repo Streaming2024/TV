@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mobile Iframe Player</title>
+    <title>Mobile-Friendly Player</title>
     <style>
         body {
             margin: 0;
@@ -25,20 +25,22 @@
         }
         #controls {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 100;
+            bottom: 20px;
+            left: 0;
+            right: 0;
             display: flex;
-            gap: 8px;
+            justify-content: center;
+            z-index: 100;
         }
         .control-btn {
             background-color: rgba(0, 0, 0, 0.7);
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 10px 20px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
+            margin: 0 10px;
         }
         #error-message {
             display: none;
@@ -49,17 +51,24 @@
             color: white;
             background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
-            border-radius: 5px;
+            border-radius: 10px;
             text-align: center;
             max-width: 80%;
+            z-index: 200;
         }
         
-        /* Hide controls in fullscreen */
-        :fullscreen #controls,
-        :-webkit-full-screen #controls,
-        :-moz-full-screen #controls,
-        :-ms-fullscreen #controls {
-            display: none;
+        /* Fullscreen styles */
+        :fullscreen #stream-iframe {
+            object-fit: contain;
+        }
+        :-webkit-full-screen #stream-iframe {
+            object-fit: contain;
+        }
+        :-moz-full-screen #stream-iframe {
+            object-fit: contain;
+        }
+        :-ms-fullscreen #stream-iframe {
+            object-fit: contain;
         }
     </style>
 </head>
@@ -83,22 +92,22 @@
         if (streamUrl) {
             iframe.src = streamUrl;
             
-            iframe.onerror = function() {
-                showError('Could not load the stream. The website may block iframe embedding.');
-            };
-            
-            // Check for iframe blocking after load
-            setTimeout(() => {
+            iframe.onload = function() {
+                // Check if iframe is blocked
                 try {
-                    if (iframe.contentWindow?.location.href === 'about:blank') {
-                        showError('This website prevents embedding in iframes.');
+                    if (iframe.contentWindow.document.body.innerHTML === '') {
+                        showError('Website prevents embedding in iframes');
                     }
                 } catch (e) {
-                    showError('Cross-origin restrictions prevent loading this content.');
+                    // Cross-origin error means iframe loaded but we can't access it
                 }
-            }, 2000);
+            };
+            
+            iframe.onerror = function() {
+                showError('Could not load the stream');
+            };
         } else {
-            showError('No stream URL provided. Use ?url=YOUR_STREAM_URL');
+            showError('Please add ?url=YOUR_STREAM_URL to the address');
         }
         
         function showError(message) {
@@ -107,56 +116,38 @@
         }
         
         function toggleFullscreen() {
-            const elem = document.getElementById("player-container");
-            
             if (!document.fullscreenElement) {
                 // Enter fullscreen
-                if (elem.requestFullscreen) {
-                    elem.requestFullscreen();
-                } else if (elem.webkitRequestFullscreen) { /* Safari */
-                    elem.webkitRequestFullscreen();
-                } else if (elem.msRequestFullscreen) { /* IE11 */
-                    elem.msRequestFullscreen();
-                }
-                
-                // Lock orientation on mobile
-                if (screen.orientation && screen.orientation.lock) {
-                    screen.orientation.lock('natural').catch(() => {});
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
                 }
             } else {
                 // Exit fullscreen
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) { /* Safari */
+                } else if (document.webkitExitFullscreen) {
                     document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { /* IE11 */
+                } else if (document.msExitFullscreen) {
                     document.msExitFullscreen();
                 }
-                
-                // Unlock orientation
-                if (screen.orientation && screen.orientation.unlock) {
-                    screen.orientation.unlock();
-                }
             }
         }
         
-        // Handle device rotation changes
-        function handleOrientationChange() {
-            if (window.matchMedia('(orientation: portrait)').matches) {
-                // Portrait mode
-                document.documentElement.style.setProperty('--fullscreen-height', '100vh');
-            } else {
-                // Landscape mode
-                document.documentElement.style.setProperty('--fullscreen-height', '100vw');
-            }
+        // Handle fullscreen change events
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('msfullscreenchange', handleFullscreenChange);
+        
+        function handleFullscreenChange() {
+            // No rotation needed - browser handles fullscreen
         }
         
-        // Initial orientation setup
-        handleOrientationChange();
-        window.addEventListener('orientationchange', handleOrientationChange);
-        
-        // Keyboard shortcut for fullscreen
-        document.addEventListener('keydown', (e) => {
+        // Keyboard shortcut
+        document.addEventListener('keydown', function(e) {
             if (e.key === 'f' || e.key === 'F') {
                 toggleFullscreen();
             }
