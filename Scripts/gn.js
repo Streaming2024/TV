@@ -1579,7 +1579,39 @@
     "logo": "https://live.mrgamingstream.net/logo/janakpur.png"
   },  
      
+   {
+    "name": "MS",
+    "logo": "https://aimages.willow.tv/teamLogos/multansultans.png"
+  },  
      
+     
+  {
+    "name": "ISL",
+    "logo": "https://aimages.willow.tv/teamLogos/islamabadunited.png"
+  },
+       {
+    "name": "KAR",
+    "logo": "https://aimages.willow.tv/teamLogos/karachikings.png"
+  },  
+     
+     
+  {
+    "name": "LQ",
+    "logo": "https://aimages.willow.tv/teamLogos/lahoreqalandars.png"
+  },  
+     
+     
+ 
+  {
+    "name": "PES",
+    "logo": "https://aimages.willow.tv/teamLogos/peshawarzalmi.png"
+  },  
+     
+     
+  {
+    "name": "QG",
+    "logo": "https://aimages.willow.tv/teamLogos/quettagladiators.png"
+  },  
   {
     "name": "____",
     "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
