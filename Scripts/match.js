@@ -1528,37 +1528,37 @@
      
  
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "MS",
+    "logo": "https://aimages.willow.tv/teamLogos/multansultans.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "ISL",
+    "logo": "https://aimages.willow.tv/teamLogos/islamabadunited.png"
   },
        {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "KAR",
+    "logo": "https://aimages.willow.tv/teamLogos/karachikings.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "LQ",
+    "logo": "https://aimages.willow.tv/teamLogos/lahoreqalandars.png"
   },  
      
      
  
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "PES",
+    "logo": "https://aimages.willow.tv/teamLogos/peshawarzalmi.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "QG",
+    "logo": "https://aimages.willow.tv/teamLogos/quettagladiators.png"
   },    
   
        {
