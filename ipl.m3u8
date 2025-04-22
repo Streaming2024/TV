@@ -1,14 +1,1 @@
-#EXTM3U
-#EXT-X-VERSION:3
-#EXT-X-TARGETDURATION:1
-#EXT-X-MEDIA-SEQUENCE:1
-#EXTINF:1.000,
-http://xtv.ooo:8080/danyear12/am809100/167575.ts
-#EXTINF:1.000,
-http://xtv.ooo:8080/danyear12/am809100/167575.ts
-#EXTINF:1.000,
-http://xtv.ooo:8080/danyear12/am809100/167575.ts
-#EXTINF:1.000,
-http://xtv.ooo:8080/danyear12/am809100/167575.ts
-#EXTINF:1.000,
-http://xtv.ooo:8080/danyear12/am809100/167575.ts
+#EXTM3U #EXT-X-VERSION:3 #EXT-X-MEDIA-SEQUENCE:948 #EXT-X-TARGETDURATION:10 #EXTINF:7.160, https://pol6.dunyapurkaraja.com:999/hls/starhindi-948.ts #EXTINF:7.680, https://pol6.dunyapurkaraja.com:999/hls/starhindi-949.ts #EXTINF:10.000, https://pol6.dunyapurkaraja.com:999/hls/starhindi-950.ts #EXTINF:10.000, https://pol6.dunyapurkaraja.com:999/hls/starhindi-951.ts #EXTINF:10.000, https://pol6.dunyapurkaraja.com:999/hls/starhindi-952.ts #EXTINF:10.000, https://pol6.dunyapurkaraja.com:999/hls/starhindi-953.ts #EXTINF:10.000, https://pol6.dunyapurkaraja.com:999/hls/starhindi-954.ts #EXTINF:10.000, https://pol6.dunyapurkaraja.com:999/hls/starhindi-955.ts #EXTINF:10.000, https://pol6.dunyapurkaraja.com:999/hls/starhindi-956.ts #EXTINF:10.000, https://pol6.dunyapurkaraja.com:999/hls/starhindi-957.ts #EXTINF:9.800, https://pol6.dunyapurkaraja.com:999/hls/starhindi-958.ts #EXTINF:10.000, https://pol6.dunyapurkaraja.com:999/hls/starhindi-959.ts #EXTINF:10.000, https://pol6.dunyapurkaraja.com:999/hls/starhindi-960.ts #EXTINF:10.000, https://pol6.dunyapurkaraja.com:999/hls/starhindi-961.ts #EXTINF:10.000, https://pol6.dunyapurkaraja.com:999/hls/starhindi-962.ts
