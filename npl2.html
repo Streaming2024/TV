@@ -3,66 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal HLS Player</title>
+    <title>Plyrr HLS Player</title>
+    <!-- Plyrr CSS -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+    <!-- HLS.js -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         body {
             margin: 0;
-            padding: 0;
-            background: #000;
+            padding: 20px;
+            background: #111;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             color: white;
         }
-        #player-container {
+        .container {
             width: 100%;
             max-width: 800px;
-            position: relative;
         }
-        #video {
+        #player {
             width: 100%;
-            background: #000;
-        }
-        #controls {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            display: flex;
-            gap: 5px;
-            z-index: 100;
-        }
-        .control-btn {
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .control-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        #status {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
-            border-radius: 3px;
-            font-size: 12px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
         #loading {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 14px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px 20px;
-            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            z-index: 10;
         }
         #error {
             display: none;
@@ -72,78 +49,127 @@
             transform: translate(-50%, -50%);
             background: rgba(200, 0, 0, 0.8);
             padding: 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             text-align: center;
             max-width: 80%;
+            z-index: 10;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 60px;
+            right: 20px;
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            z-index: 5;
         }
     </style>
 </head>
 <body>
-    <div id="player-container">
-        <video id="video" controls></video>
-        <div id="controls">
-            <button id="play-btn" class="control-btn">Play</button>
-            <button id="fullscreen-btn" class="control-btn">Fullscreen</button>
-            <button id="reload-btn" class="control-btn">Reload</button>
+    <div class="container">
+        <div id="player" data-plyr-provider="html5" data-plyr-embed-id="hls-player">
+            <video id="video" playsinline controls>
+                <!-- Source will be added by HLS.js -->
+            </video>
+            <div class="watermark">Plyrr HLS Player</div>
         </div>
-        <div id="status">Ready</div>
-        <div id="loading">Loading HLS stream...</div>
+        
+        <div id="loading">
+            <h3>Loading HLS Stream...</h3>
+            <p>Please wait while we initialize the player</p>
+        </div>
+        
         <div id="error">
             <h3>Stream Error</h3>
             <p id="error-message"></p>
-            <button id="retry-btn" class="control-btn">Retry</button>
+            <button id="retry-btn" class="plyr__control">Retry</button>
         </div>
     </div>
 
+    <!-- Plyrr JS -->
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    
     <script>
         // DOM Elements
         const video = document.getElementById('video');
-        const playBtn = document.getElementById('play-btn');
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        const reloadBtn = document.getElementById('reload-btn');
-        const retryBtn = document.getElementById('retry-btn');
-        const statusEl = document.getElementById('status');
         const loadingEl = document.getElementById('loading');
         const errorEl = document.getElementById('error');
         const errorMsg = document.getElementById('error-message');
-
-        // HLS.js Config (supports all HLS variants)
-        const hlsConfig = {
-            maxBufferLength: 30,          // Reduce buffering
-            maxMaxBufferLength: 600,      // For live streams
-            maxBufferSize: 60 * 1000 * 1000, // 60MB buffer
-            maxBufferHole: 0.5,          // Skip small gaps
-            lowLatencyMode: true,         // Enable for LL-HLS
-            enableWorker: true,           // Better performance
-            startLevel: -1,               // Auto-select best quality
-            abrEwmaDefaultEstimate: 500000, // Default bandwidth estimate (500kbps)
-            backBufferLength: 30          // Keep 30s of back buffer
-        };
-
-        let hls = null;
-
-        // Initialize player
-        function initPlayer() {
-            const url = new URLSearchParams(window.location.search).get('url');
-            if (!url) {
-                showError("No HLS URL provided. Add ?url=your_stream.m3u8");
-                return;
+        const retryBtn = document.getElementById('retry-btn');
+        
+        // Get stream URL from query parameter
+        const params = new URLSearchParams(window.location.search);
+        const streamUrl = params.get('url') || 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'; // Default test stream
+        
+        // Initialize Plyrr player
+        const player = new Plyr('#video', {
+            controls: [
+                'play-large',
+                'play',
+                'progress',
+                'current-time',
+                'mute',
+                'volume',
+                'captions',
+                'settings',
+                'pip',
+                'airplay',
+                'fullscreen'
+            ],
+            settings: ['quality', 'speed'],
+            quality: {
+                default: 0,
+                options: [0, 480, 720, 1080]
+            },
+            speed: {
+                selected: 1,
+                options: [0.5, 0.75, 1, 1.25, 1.5, 2]
             }
-
-            resetPlayer();
+        });
+        
+        // HLS.js Config
+        const hlsConfig = {
+            maxBufferLength: 30,
+            maxMaxBufferLength: 600,
+            maxBufferSize: 60 * 1000 * 1000,
+            maxBufferHole: 0.5,
+            lowLatencyMode: true,
+            enableWorker: true,
+            startLevel: -1,
+            abrEwmaDefaultEstimate: 500000,
+            backBufferLength: 30
+        };
+        
+        let hls = null;
+        
+        // Initialize HLS playback
+        function initHls() {
+            hideError();
             showLoading();
-
+            
             if (Hls.isSupported()) {
                 hls = new Hls(hlsConfig);
-                hls.loadSource(url);
+                hls.loadSource(streamUrl);
                 hls.attachMedia(video);
-
+                
                 hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-                    updateStatus(`Loaded ${data.levels.length} quality levels`);
+                    // Update quality options if available
+                    if (data.levels && data.levels.length > 1) {
+                        const qualityOptions = {};
+                        data.levels.forEach((level, index) => {
+                            qualityOptions[index] = level.height + 'p';
+                        });
+                        player.options.quality = {
+                            default: data.levels.length - 1, // Highest quality by default
+                            options: qualityOptions,
+                            forced: true
+                        };
+                        player.updateOptions({ quality: player.options.quality });
+                    }
+                    
                     hideLoading();
-                    video.play().catch(e => showError("Autoplay blocked: " + e.message));
+                    player.play().catch(e => console.log("Autoplay prevented:", e));
                 });
-
+                
                 hls.on(Hls.Events.ERROR, (event, data) => {
                     if (data.fatal) {
                         switch (data.type) {
@@ -157,21 +183,17 @@
                                 break;
                             default:
                                 showError("Fatal HLS error: " + data.details);
-                                destroyPlayer();
+                                destroyHls();
                         }
                     }
                 });
-
-                hls.on(Hls.Events.FRAG_BUFFERED, () => {
-                    updateStatus("Playing (Live Latency: " + Math.round(hls.latency) + "s)");
-                });
-
+                
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                // Native HLS (Safari/iOS)
-                video.src = url;
+                // Native HLS support (Safari)
+                video.src = streamUrl;
                 video.addEventListener('loadedmetadata', () => {
                     hideLoading();
-                    video.play();
+                    player.play();
                 });
                 video.addEventListener('error', () => {
                     showError("Native HLS playback failed");
@@ -180,72 +202,41 @@
                 showError("HLS not supported in this browser");
             }
         }
-
+        
         // Helper functions
-        function resetPlayer() {
-            if (hls) {
-                hls.destroy();
-                hls = null;
-            }
-            video.removeAttribute('src');
-            video.load();
-            hideError();
-        }
-
         function showLoading() {
             loadingEl.style.display = 'block';
         }
-
+        
         function hideLoading() {
             loadingEl.style.display = 'none';
         }
-
+        
         function showError(msg) {
             errorMsg.textContent = msg;
             errorEl.style.display = 'block';
-            statusEl.textContent = "Error";
+            hideLoading();
         }
-
+        
         function hideError() {
             errorEl.style.display = 'none';
         }
-
-        function updateStatus(msg) {
-            statusEl.textContent = msg;
-        }
-
-        function destroyPlayer() {
+        
+        function destroyHls() {
             if (hls) {
                 hls.destroy();
                 hls = null;
             }
         }
-
+        
         // Event listeners
-        playBtn.addEventListener('click', () => {
-            if (video.paused) {
-                video.play();
-                playBtn.textContent = "Pause";
-            } else {
-                video.pause();
-                playBtn.textContent = "Play";
-            }
-        });
-
-        fullscreenBtn.addEventListener('click', () => {
-            if (video.requestFullscreen) video.requestFullscreen();
-            else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
-            else if (video.msRequestFullscreen) video.msRequestFullscreen();
-        });
-
-        reloadBtn.addEventListener('click', initPlayer);
-        retryBtn.addEventListener('click', initPlayer);
-
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', initPlayer);
-
+        retryBtn.addEventListener('click', initHls);
+        
+        // Initialize when Plyrr is ready
+        player.on('ready', initHls);
+        
         // Cleanup
-        window.addEventListener('beforeunload', destroyPlayer);
+        window.addEventListener('beforeunload', destroyHls);
     </script>
 </body>
 </html>
