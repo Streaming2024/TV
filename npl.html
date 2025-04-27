@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M3U8 Player</title>
-    <link href="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.4/css/halfmoon.min.css" rel="stylesheet" />
- <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
- <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script src="https://cdn.plyr.io/3.6.2/plyr.polyfilled.js"></script>
- 
+    <title>Universal Live Stream Player</title>
+    <!-- Load all necessary streaming libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dashjs/dist/dash.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flv.js/dist/flv.min.js"></script>
     <style>
         body {
             display: flex;
@@ -16,7 +15,9 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #000;
+            background-color: #111;
+            font-family: Arial, sans-serif;
+            color: white;
         }
         #video-container {
             width: 100%;
@@ -33,17 +34,20 @@
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
-            color: white;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 12px;
             background-color: rgba(0, 0, 0, 0.5);
             padding: 2px 5px;
             border-radius: 3px;
-            font-family: Arial, sans-serif;
         }
-        #fullscreen-button {
+        #controls {
             position: absolute;
             top: 10px;
             left: 10px;
+            display: flex;
+            gap: 5px;
+        }
+        .control-button {
             color: white;
             background-color: rgba(0, 0, 0, 0.7);
             border: none;
@@ -51,9 +55,8 @@
             font-size: 14px;
             border-radius: 5px;
             cursor: pointer;
-            font-family: Arial, sans-serif;
         }
-        #fullscreen-button:hover {
+        .control-button:hover {
             background-color: rgba(255, 255, 255, 0.3);
         }
         #error-message {
@@ -64,74 +67,166 @@
             background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
             border-radius: 10px;
-            font-family: Arial, sans-serif;
+        }
+        #loading-spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #fff;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
     </style>
-    <!-- money tag ads -->
-    
 </head>
 <body>
     <div id="video-container">
         <video id="video" controls autoplay></video>
-        <div id="watermark">YoNoTV LIVE</div>
-        <button id="fullscreen-button">Make Fullscreen</button>
-        <div id="error-message">We are updating our live link. Please come back after some minutes from the app. Thank you.</div>
+        <div id="watermark">Universal Stream Player</div>
+        <div id="controls">
+            <button id="fullscreen-button" class="control-button">Fullscreen</button>
+            <button id="reload-button" class="control-button">Reload Stream</button>
+        </div>
+        <div id="loading-spinner"></div>
+        <div id="error-message">
+            Stream failed to load. <br>
+            <button id="retry-button" class="control-button">Retry</button>
+        </div>
     </div>
 
     <script>
-        // Get the URL parameter
-        const params = new URLSearchParams(window.location.search);
-        const url = params.get('url');
-
+        // DOM Elements
         const video = document.getElementById('video');
         const errorMessage = document.getElementById('error-message');
         const watermark = document.getElementById('watermark');
         const fullscreenButton = document.getElementById('fullscreen-button');
+        const reloadButton = document.getElementById('reload-button');
+        const retryButton = document.getElementById('retry-button');
+        const loadingSpinner = document.getElementById('loading-spinner');
 
-        if (url) {
-            // Check for browser support and initialize hls.js if needed
-            if (Hls.isSupported()) {
-                const hls = new Hls();
-                hls.loadSource(url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                    video.play();
-                });
-                hls.on(Hls.Events.ERROR, function () {
-                    // showError();
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                // For Safari and native HLS support
-                video.src = url;
-                video.addEventListener('error', function () {
-                    // showError();
-                });
-                video.addEventListener('loadedmetadata', function () {
-                    video.play();
-                });
-            } else {
-                showError();
-            }
-        } else {
-            showError();
+        // Get URL parameters
+        const params = new URLSearchParams(window.location.search);
+        const url = params.get('url');
+        const streamType = params.get('type') || detectStreamType(url);
+
+        // Detect stream type from URL
+        function detectStreamType(url) {
+            if (!url) return null;
+            if (url.match(/\.m3u8/)) return 'hls';
+            if (url.match(/\.mpd/)) return 'dash';
+            if (url.match(/\.flv/)) return 'flv';
+            if (url.match(/rtmp:\/\//)) return 'rtmp';
+            if (url.match(/webrtc:\/\//)) return 'webrtc';
+            if (url.match(/\.(mp4|webm)/)) return 'html5';
+            return 'unknown';
         }
 
-        function showError() {
+        // Load stream based on type
+        function loadStream() {
+            if (!url) {
+                showError("No stream URL provided");
+                return;
+            }
+
+            showLoading();
+            video.style.display = 'block';
+            errorMessage.style.display = 'none';
+
+            try {
+                switch (streamType) {
+                    case 'hls':
+                        if (Hls.isSupported()) {
+                            const hls = new Hls();
+                            hls.loadSource(url);
+                            hls.attachMedia(video);
+                            hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+                            hls.on(Hls.Events.ERROR, () => showError("HLS stream error"));
+                        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                            video.src = url;
+                            video.addEventListener('loadedmetadata', () => video.play());
+                        } else {
+                            showError("HLS not supported in this browser");
+                        }
+                        break;
+
+                    case 'dash':
+                        if (typeof dashjs !== 'undefined') {
+                            const player = dashjs.MediaPlayer().create();
+                            player.initialize(video, url, true);
+                        } else {
+                            showError("DASH.js not loaded");
+                        }
+                        break;
+
+                    case 'flv':
+                        if (flvjs.isSupported()) {
+                            const flvPlayer = flvjs.createPlayer({ type: 'flv', url });
+                            flvPlayer.attachMediaElement(video);
+                            flvPlayer.load();
+                            flvPlayer.play();
+                        } else {
+                            showError("FLV not supported in this browser");
+                        }
+                        break;
+
+                    case 'rtmp':
+                        showError("RTMP requires Flash fallback (not supported in modern browsers)");
+                        break;
+
+                    case 'webrtc':
+                        showError("WebRTC support requires custom implementation");
+                        break;
+
+                    case 'html5':
+                        video.src = url;
+                        video.play().catch(e => showError("HTML5 video error: " + e.message));
+                        break;
+
+                    default:
+                        showError("Unsupported stream type");
+                }
+            } catch (e) {
+                showError("Player error: " + e.message);
+            }
+        }
+
+        // Helper functions
+        function showLoading() {
+            loadingSpinner.style.display = 'block';
+        }
+
+        function hideLoading() {
+            loadingSpinner.style.display = 'none';
+        }
+
+        function showError(message = "") {
+            errorMessage.innerHTML = message || "Stream failed to load. <br><button id='retry-button' class='control-button'>Retry</button>";
             errorMessage.style.display = 'block';
             video.style.display = 'none';
-            watermark.style.display = 'none';
-            fullscreenButton.style.display = 'none';
+            hideLoading();
         }
 
+        // Event listeners
         fullscreenButton.addEventListener('click', () => {
-            if (video.requestFullscreen) {
-                video.requestFullscreen();
-            } else if (video.webkitEnterFullscreen) { // Safari
-                video.webkitEnterFullscreen();
-            } else if (video.msRequestFullscreen) { // IE/Edge
-                video.msRequestFullscreen();
-            }
+            if (video.requestFullscreen) video.requestFullscreen();
+            else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+            else if (video.msRequestFullscreen) video.msRequestFullscreen();
         });
+
+        reloadButton.addEventListener('click', loadStream);
+        retryButton.addEventListener('click', loadStream);
+
+        // Initialize
+        if (url) loadStream();
+        else showError("No stream URL provided");
     </script>
 </body>
 </html>
