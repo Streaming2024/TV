@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal HLS Player</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+        #player-container {
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+        }
+        #video {
+            width: 100%;
+            background: #000;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 5px;
+            z-index: 100;
+        }
+        .control-btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        #status {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        #error {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(200, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div id="player-container">
+        <video id="video" controls></video>
+        <div id="controls">
+            <button id="play-btn" class="control-btn">Play</button>
+            <button id="fullscreen-btn" class="control-btn">Fullscreen</button>
+            <button id="reload-btn" class="control-btn">Reload</button>
+        </div>
+        <div id="status">Ready</div>
+        <div id="loading">Loading HLS stream...</div>
+        <div id="error">
+            <h3>Stream Error</h3>
+            <p id="error-message"></p>
+            <button id="retry-btn" class="control-btn">Retry</button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const video = document.getElementById('video');
+        const playBtn = document.getElementById('play-btn');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const reloadBtn = document.getElementById('reload-btn');
+        const retryBtn = document.getElementById('retry-btn');
+        const statusEl = document.getElementById('status');
+        const loadingEl = document.getElementById('loading');
+        const errorEl = document.getElementById('error');
+        const errorMsg = document.getElementById('error-message');
+
+        // HLS.js Config (supports all HLS variants)
+        const hlsConfig = {
+            maxBufferLength: 30,          // Reduce buffering
+            maxMaxBufferLength: 600,      // For live streams
+            maxBufferSize: 60 * 1000 * 1000, // 60MB buffer
+            maxBufferHole: 0.5,          // Skip small gaps
+            lowLatencyMode: true,         // Enable for LL-HLS
+            enableWorker: true,           // Better performance
+            startLevel: -1,               // Auto-select best quality
+            abrEwmaDefaultEstimate: 500000, // Default bandwidth estimate (500kbps)
+            backBufferLength: 30          // Keep 30s of back buffer
+        };
+
+        let hls = null;
+
+        // Initialize player
+        function initPlayer() {
+            const url = new URLSearchParams(window.location.search).get('url');
+            if (!url) {
+                showError("No HLS URL provided. Add ?url=your_stream.m3u8");
+                return;
+            }
+
+            resetPlayer();
+            showLoading();
+
+            if (Hls.isSupported()) {
+                hls = new Hls(hlsConfig);
+                hls.loadSource(url);
+                hls.attachMedia(video);
+
+                hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+                    updateStatus(`Loaded ${data.levels.length} quality levels`);
+                    hideLoading();
+                    video.play().catch(e => showError("Autoplay blocked: " + e.message));
+                });
+
+                hls.on(Hls.Events.ERROR, (event, data) => {
+                    if (data.fatal) {
+                        switch (data.type) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                showError("Network error. Trying to recover...");
+                                hls.startLoad();
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                showError("Media error. Recovering...");
+                                hls.recoverMediaError();
+                                break;
+                            default:
+                                showError("Fatal HLS error: " + data.details);
+                                destroyPlayer();
+                        }
+                    }
+                });
+
+                hls.on(Hls.Events.FRAG_BUFFERED, () => {
+                    updateStatus("Playing (Live Latency: " + Math.round(hls.latency) + "s)");
+                });
+
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // Native HLS (Safari/iOS)
+                video.src = url;
+                video.addEventListener('loadedmetadata', () => {
+                    hideLoading();
+                    video.play();
+                });
+                video.addEventListener('error', () => {
+                    showError("Native HLS playback failed");
+                });
+            } else {
+                showError("HLS not supported in this browser");
+            }
+        }
+
+        // Helper functions
+        function resetPlayer() {
+            if (hls) {
+                hls.destroy();
+                hls = null;
+            }
+            video.removeAttribute('src');
+            video.load();
+            hideError();
+        }
+
+        function showLoading() {
+            loadingEl.style.display = 'block';
+        }
+
+        function hideLoading() {
+            loadingEl.style.display = 'none';
+        }
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorEl.style.display = 'block';
+            statusEl.textContent = "Error";
+        }
+
+        function hideError() {
+            errorEl.style.display = 'none';
+        }
+
+        function updateStatus(msg) {
+            statusEl.textContent = msg;
+        }
+
+        function destroyPlayer() {
+            if (hls) {
+                hls.destroy();
+                hls = null;
+            }
+        }
+
+        // Event listeners
+        playBtn.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+                playBtn.textContent = "Pause";
+            } else {
+                video.pause();
+                playBtn.textContent = "Play";
+            }
+        });
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (video.requestFullscreen) video.requestFullscreen();
+            else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+            else if (video.msRequestFullscreen) video.msRequestFullscreen();
+        });
+
+        reloadBtn.addEventListener('click', initPlayer);
+        retryBtn.addEventListener('click', initPlayer);
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initPlayer);
+
+        // Cleanup
+        window.addEventListener('beforeunload', destroyPlayer);
+    </script>
+</body>
+</html>
