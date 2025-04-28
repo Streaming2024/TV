@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>M3U8 Player</title>
     <!-- Plyr CSS -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
@@ -24,7 +24,7 @@
         }
         #watermark {
             position: absolute;
-            bottom: 30px; /* Adjusted to account for Plyr controls */
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             color: white;
@@ -33,7 +33,7 @@
             padding: 2px 5px;
             border-radius: 3px;
             font-family: Arial, sans-serif;
-            z-index: 10; /* Ensure it's above the player controls */
+            z-index: 10;
         }
         #fullscreen-button {
             position: absolute;
@@ -47,7 +47,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-family: Arial, sans-serif;
-            z-index: 10; /* Ensure it's above the player controls */
+            z-index: 10;
         }
         #fullscreen-button:hover {
             background-color: rgba(255, 255, 255, 0.3);
@@ -62,7 +62,7 @@
             border-radius: 10px;
             font-family: Arial, sans-serif;
         }
-        /* Custom Plyr styles to match your original design */
+        /* Custom Plyr styles */
         .plyr {
             background: #000;
         }
@@ -75,9 +75,19 @@
         .plyr--video .plyr__controls {
             background: rgba(0, 0, 0, 0.7);
         }
+        /* Force landscape orientation in fullscreen */
+        @media screen and (orientation: portrait) {
+            .plyr--fullscreen-fallback {
+                transform: rotate(90deg);
+                transform-origin: top left;
+                width: 100vh;
+                height: 100vw;
+                position: fixed;
+                top: 0;
+                left: 100vw;
+            }
+        }
     </style>
-    <!-- money tag ads -->
-    
 </head>
 <body>
     <div id="video-container">
@@ -99,7 +109,7 @@
         const watermark = document.getElementById('watermark');
         const fullscreenButton = document.getElementById('fullscreen-button');
 
-        // Initialize Plyr player
+        // Initialize Plyr player with fullscreen options
         const player = new Plyr('#video', {
             autoplay: true,
             controls: [
@@ -113,7 +123,12 @@
                 'fullscreen'
             ],
             settings: ['quality', 'speed'],
-            ratio: '16:9'
+            ratio: '16:9',
+            fullscreen: {
+                enabled: true,
+                fallback: true,
+                iosNative: true  // Important for iOS fullscreen
+            }
         });
 
         if (url) {
@@ -159,17 +174,58 @@
             fullscreenButton.style.display = 'none';
         }
 
+        // Enhanced fullscreen handling
         fullscreenButton.addEventListener('click', () => {
-            player.fullscreen.enter();
+            toggleFullscreen();
         });
 
-        // Handle fullscreen change to update UI if needed
+        function toggleFullscreen() {
+            if (player.fullscreen.active) {
+                player.fullscreen.exit();
+            } else {
+                player.fullscreen.enter();
+                // Lock orientation to landscape when entering fullscreen
+                if (screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock('landscape').catch(e => {
+                        console.log('Orientation lock failed: ', e);
+                    });
+                }
+            }
+        }
+
+        // Handle orientation changes
+        function handleOrientationChange() {
+            if (player.fullscreen.active) {
+                if (window.orientation === 90 || window.orientation === -90) {
+                    // Landscape
+                    document.documentElement.classList.add('landscape');
+                } else {
+                    // Portrait
+                    document.documentElement.classList.remove('landscape');
+                }
+            }
+        }
+
+        // Add orientation change listener
+        window.addEventListener('orientationchange', handleOrientationChange);
+
+        // Handle fullscreen change to update UI
         player.on('enterfullscreen', () => {
             fullscreenButton.textContent = 'Exit Fullscreen';
+            // Try to force landscape on mobile
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(e => {
+                    console.log('Orientation lock failed: ', e);
+                });
+            }
         });
         
         player.on('exitfullscreen', () => {
             fullscreenButton.textContent = 'Make Fullscreen';
+            // Unlock orientation when exiting fullscreen
+            if (screen.orientation && screen.orientation.unlock) {
+                screen.orientation.unlock();
+            }
         });
     </script>
 </body>
