@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M3U8 Player</title>
+    <!-- Plyr CSS -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <!-- hls.js for HLS support -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         body {
@@ -20,14 +22,9 @@
             max-width: 800px;
             position: relative;
         }
-        #player {
-            width: 100%;
-            height: auto;
-            background: #000;
-        }
         #watermark {
             position: absolute;
-            bottom: 30px;
+            bottom: 30px; /* Adjusted to account for Plyr controls */
             left: 50%;
             transform: translateX(-50%);
             color: white;
@@ -36,7 +33,24 @@
             padding: 2px 5px;
             border-radius: 3px;
             font-family: Arial, sans-serif;
-            z-index: 10;
+            z-index: 10; /* Ensure it's above the player controls */
+        }
+        #fullscreen-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: none;
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            z-index: 10; /* Ensure it's above the player controls */
+        }
+        #fullscreen-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
         }
         #error-message {
             display: none;
@@ -48,56 +62,88 @@
             border-radius: 10px;
             font-family: Arial, sans-serif;
         }
+        /* Custom Plyr styles to match your original design */
+        .plyr {
+            background: #000;
+        }
+        .plyr--full-ui input[type=range] {
+            color: #fff;
+        }
+        .plyr__control--overlaid {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .plyr--video .plyr__controls {
+            background: rgba(0, 0, 0, 0.7);
+        }
     </style>
     <!-- money tag ads -->
     
 </head>
 <body>
     <div id="video-container">
-        <video id="player" playsinline controls></video>
+        <video id="video" playsinline controls data-plyr-config='{ "autoplay": true }'></video>
         <div id="watermark">YoNoTV LIVE</div>
+        <button id="fullscreen-button">Make Fullscreen</button>
         <div id="error-message">We are updating our live link. Please come back after some minutes from the app. Thank you.</div>
     </div>
 
+    <!-- Plyr JS -->
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script>
         // Get the URL parameter
         const params = new URLSearchParams(window.location.search);
         const url = params.get('url');
 
-        const playerElement = document.getElementById('player');
+        const videoContainer = document.getElementById('video-container');
         const errorMessage = document.getElementById('error-message');
         const watermark = document.getElementById('watermark');
+        const fullscreenButton = document.getElementById('fullscreen-button');
+
+        // Initialize Plyr player
+        const player = new Plyr('#video', {
+            autoplay: true,
+            controls: [
+                'play-large',
+                'play',
+                'progress',
+                'current-time',
+                'mute',
+                'volume',
+                'settings',
+                'fullscreen'
+            ],
+            settings: ['quality', 'speed'],
+            ratio: '16:9'
+        });
 
         if (url) {
-            // Initialize Plyrr player
-            const player = new Plyr('#player', {
-                controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
-                settings: ['quality', 'speed'],
-                autoplay: true
-            });
-
             // Check for browser support and initialize hls.js if needed
             if (Hls.isSupported()) {
                 const hls = new Hls();
                 hls.loadSource(url);
-                hls.attachMedia(playerElement);
+                hls.attachMedia(player.media);
                 hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    playerElement.play();
+                    player.play();
                 });
                 hls.on(Hls.Events.ERROR, function(event, data) {
                     if (data.fatal) {
                         showError();
                     }
                 });
-            } else if (playerElement.canPlayType('application/vnd.apple.mpegurl')) {
+            } else if (player.media.canPlayType('application/vnd.apple.mpegurl')) {
                 // For Safari and native HLS support
-                playerElement.src = url;
-                playerElement.addEventListener('error', function() {
+                player.source = {
+                    type: 'video',
+                    sources: [{
+                        src: url,
+                        type: 'application/x-mpegURL'
+                    }]
+                };
+                player.on('error', function() {
                     showError();
                 });
-                playerElement.addEventListener('loadedmetadata', function() {
-                    playerElement.play();
+                player.on('ready', function() {
+                    player.play();
                 });
             } else {
                 showError();
@@ -108,9 +154,23 @@
 
         function showError() {
             errorMessage.style.display = 'block';
-            playerElement.style.display = 'none';
+            player.elements.container.style.display = 'none';
             watermark.style.display = 'none';
+            fullscreenButton.style.display = 'none';
         }
+
+        fullscreenButton.addEventListener('click', () => {
+            player.fullscreen.enter();
+        });
+
+        // Handle fullscreen change to update UI if needed
+        player.on('enterfullscreen', () => {
+            fullscreenButton.textContent = 'Exit Fullscreen';
+        });
+        
+        player.on('exitfullscreen', () => {
+            fullscreenButton.textContent = 'Make Fullscreen';
+        });
     </script>
 </body>
 </html>
