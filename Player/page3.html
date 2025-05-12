@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TV Live Streaming - Watch Your Favorite Shows and News Online</title>
+  <meta name="keywords" content="live streaming, online TV, watch shows online, cryptocurrency news, top cryptocurrencies">
+  <link href='https://live.mrgamingstream.net/logo/favicon.png' rel='icon' type='image/x-icon'/>
+  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' rel='stylesheet'/>
+  <meta content='width=device-width,minimum-scale=1,initial-scale=1' name='viewport'/>
+  <meta name="description" content="YoNoTV provides live updates, highlights, predictions, previews, and schedules for cricket, football, and other sports.">
+
+  <style>
+    #container {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 550px;
+      background: #8a0000;
+      color: #fff;
+      overflow: hidden;
+      position: relative;
+      text-align: center;
+    }
+    #iframe {
+      width: 100%;
+      height: 550px !important;
+      padding: 0;
+      margin: 0;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    .MyButton {
+      padding: 5px 10px;
+      background: linear-gradient(to bottom, #4CAF50, #45a049);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      margin: 3px 0px;
+    }
+    .MyButton:hover {
+      background: linear-gradient(to bottom, #45a049, #3d8b40);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .MyButton:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+    }
+  </style>
+
+  <script>
+    function getParam(name) {
+      var params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+  </script>
+</head>
+
+<body onload="init()">
+  <script src="https://live.mrgamingstream.net/Scripts/jwplayer.js"></script>
+  <script src='https://live.mrgamingstream.net/Scripts/clicks.js'></script>
+
+  <!-- Fullscreen Button Above the Iframe -->
+  <div style="text-align:center; margin-top: 10px;">
+    <button class="MyButton" onclick="enterFullscreen()">⛶ Fullscreen</button>
+  </div>
+
+  <!-- Player Container -->
+  <div id="container">
+    <iframe id="iframe"
+      allow="encrypted-media; autoplay; fullscreen"
+      allowfullscreen
+      allowtransparency="true"
+      frameborder="0"
+      scrolling="no">
+    </iframe>
+  </div>
+
+  <center style="margin-top:10px;">
+    <form>
+      <input class="MyButton" onclick="window.location.reload()" type="button" value="Refresh Live" />
+    </form>
+  </center>
+
+  <script>
+    const srcParam = getParam('src');
+    const videoUrl = getParam('url');
+
+    if (srcParam) {
+      document.getElementById('iframe').src = srcParam;
+    } else if (videoUrl) {
+      jwplayer("jwPlayer").setup({
+        file: videoUrl,
+      });
+      document.getElementById('iframe').style.display = 'none';
+    }
+
+    function enterFullscreen() {
+      const container = document.getElementById("container");
+
+      if (container.requestFullscreen) {
+        container.requestFullscreen();
+      } else if (container.webkitRequestFullscreen) {
+        container.webkitRequestFullscreen();
+      } else if (container.mozRequestFullScreen) {
+        container.mozRequestFullScreen();
+      } else if (container.msRequestFullscreen) {
+        container.msRequestFullscreen();
+      }
+
+      // Try to lock landscape orientation on mobile
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("landscape").catch(function(error) {
+          console.log("Orientation lock not supported or failed:", error);
+        });
+      }
+    }
+  </script>
+</body>
+</html>
