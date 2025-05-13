@@ -13,7 +13,7 @@
 
     .chat-container {
       width: 100%;
-      height: 540px;
+      height: 440px;
       display: flex;
       flex-direction: column;
       font-family: 'Inter', sans-serif;
@@ -151,85 +151,112 @@
     <button id="set-username">Join Chat</button>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-    import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded, onValue, remove } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCY9naMDqRwB85xWuVrIGZ2a4RirsK9YKo",
-      authDomain: "yonotvchat.firebaseapp.com",
-      databaseURL: "https://yonotvchat-default-rtdb.firebaseio.com",
-      projectId: "yonotvchat",
-      storageBucket: "yonotvchat.appspot.com",
-      messagingSenderId: "6864259825",
-      appId: "1:6864259825:web:c5fd1dd33d853cc8f67750",
-      measurementId: "G-W38MTCC9VZ"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyCY9naMDqRwB85xWuVrIGZ2a4RirsK9YKo",
+    authDomain: "yonotvchat.firebaseapp.com",
+    databaseURL: "https://yonotvchat-default-rtdb.firebaseio.com",
+    projectId: "yonotvchat",
+    storageBucket: "yonotvchat.firebasestorage.app",
+    messagingSenderId: "6864259825",
+    appId: "1:6864259825:web:c5fd1dd33d853cc8f67750",
+    measurementId: "G-W38MTCC9VZ"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-    const messagesContainer = document.getElementById('chat-messages');
-    const messageInput = document.getElementById('message-input');
-    const sendButton = document.getElementById('send-button');
-    const usernameModal = document.getElementById('username-modal');
-    const usernameInput = document.getElementById('username-input');
+  const messagesContainer = document.getElementById('chat-messages');
+  const messageInput = document.getElementById('message-input');
+  const sendButton = document.getElementById('send-button');
+  const usernameModal = document.getElementById('username-modal');
+  const usernameInput = document.getElementById('username-input');
 
-    let username = localStorage.getItem('chatUsername');
-    if (!username) {
-      usernameModal.style.display = 'block';
+  let username = localStorage.getItem('chatUsername');
+  if (!username) {
+    usernameModal.style.display = 'block';
+  }
+
+  document.getElementById('set-username').addEventListener('click', () => {
+    const name = usernameInput.value.trim();
+    if (name) {
+      username = name;
+      localStorage.setItem('chatUsername', username);
+      usernameModal.style.display = 'none';
     }
+  });
 
-    document.getElementById('set-username').addEventListener('click', () => {
-      if (usernameInput.value.trim()) {
-        username = usernameInput.value.trim();
-        localStorage.setItem('chatUsername', username);
-        usernameModal.style.display = 'none';
-      }
-    });
-
-    function sendMessage() {
-      const message = messageInput.value.trim();
-      if (message && username) {
-        const messageRef = ref(database, 'messages');
-        push(messageRef, {
-          username: username,
-          message: message,
-          timestamp: Date.now()
-        });
-        messageInput.value = '';
-      }
+  function getAvatarColor(name) {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
     }
+    const hue = hash % 360;
+    return `hsl(${hue}, 70%, 50%)`;
+  }
 
-    const messagesRef = ref(database, 'messages');
-    onChildAdded(messagesRef, (snapshot) => {
-      const message = snapshot.val();
-      const firstLetter = message.username.charAt(0).toUpperCase();
-      const avatarColor = getColorFromUsername(message.username);
-
-      const messageElement = document.createElement('div');
-      messageElement.className = 'message';
-      messageElement.innerHTML = `
-        <div class="user-avatar" style="background-color:${avatarColor}">${firstLetter}</div>
-        <div class="message-content"><strong>${message.username}:</strong> ${message.message}</div>
-      `;
-      messagesContainer.appendChild(messageElement);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    });
-
-    sendButton.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') sendMessage();
-    });
-
-    function getColorFromUsername(name) {
-      let hash = 0;
-      for (let i = 0; i < name.length; i++) {
-        hash = name.charCodeAt(i) + ((hash << 5) - hash);
-      }
-      const hue = hash % 360;
-      return `hsl(${hue}, 70%, 50%)`;
+  function sendMessage() {
+    const text = messageInput.value.trim();
+    if (text && username) {
+      const msgRef = ref(db, 'messages');
+      push(msgRef, {
+        username: username,
+        message: text,
+        timestamp: Date.now()
+      });
+      messageInput.value = '';
     }
-  </script>
+  }
+
+  sendButton.addEventListener('click', sendMessage);
+  messageInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  const messagesRef = ref(db, 'messages');
+
+  // Delete messages older than 24 hours
+  function deleteOldMessages() {
+    const now = Date.now();
+    const maxAge = 24 * 60 * 60 * 1000; // 24 hours in ms
+    onValue(messagesRef, snapshot => {
+      snapshot.forEach(child => {
+        const data = child.val();
+        if (data.timestamp && now - data.timestamp > maxAge) {
+          remove(ref(db, `messages/${child.key}`));
+        }
+      });
+    });
+  }
+
+  // Run deletion once at load and then every hour
+  deleteOldMessages();
+  setInterval(deleteOldMessages, 60 * 60 * 1000); // every 1 hour
+
+  // Display new messages
+  onChildAdded(messagesRef, (snapshot) => {
+    const { username: name, message } = snapshot.val();
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'message';
+
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar';
+    avatar.style.backgroundColor = getAvatarColor(name);
+    avatar.textContent = name[0];
+
+    const content = document.createElement('div');
+    content.className = 'message-content';
+    content.innerHTML = `<strong>${name}:</strong> ${message}`;
+
+    msgDiv.appendChild(avatar);
+    msgDiv.appendChild(content);
+    messagesContainer.appendChild(msgDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  });
+</script>
+
 </body>
 </html>
