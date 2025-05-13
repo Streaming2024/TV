@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YonoTV Live Chat</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+    }
+
+    .chat-container {
+      width: 100%;
+      height: 430px;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Inter', sans-serif;
+      color: white;
+      background: #0f0f0f;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 16px;
+      border-bottom: 1px solid #303030;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      scroll-behavior: smooth;
+      min-height: 0;
+    }
+
+    .message {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #fff;
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+
+    .message-content {
+      background: #272727;
+      border-radius: 12px;
+      padding: 6px 12px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    .chat-input {
+      padding: 12px 16px;
+      border-top: 1px solid #303030;
+      display: flex;
+      gap: 8px;
+      position: sticky;
+      bottom: 0;
+      background: #0f0f0f;
+      z-index: 10;
+    }
+
+    #message-input {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 20px;
+      background: #272727;
+      color: white;
+    }
+
+    #send-button {
+      background: #3EA6FF;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 18px;
+      cursor: pointer;
+    }
+
+    #username-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.95);
+      padding: 24px;
+      border-radius: 12px;
+      color: white;
+      z-index: 999;
+      text-align: center;
+    }
+
+    #username-modal input {
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: none;
+      width: 80%;
+    }
+
+    #set-username {
+      margin-top: 12px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      background: #3EA6FF;
+      color: white;
+      cursor: pointer;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <h3>⚡ Live Chat</h3>
+      <div class="active-users">👥 <span id="online-count">500+</span> online</div>
+    </div>
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-input">
+      <input type="text" id="message-input" placeholder="Type your message..." maxlength="200">
+      <button id="send-button">Send</button>
+    </div>
+  </div>
+
+  <div id="username-modal">
+    <h3>Choose Your Chat Name</h3>
+    <input type="text" id="username-input" placeholder="Enter display name" maxlength="20">
+    <br>
+    <button id="set-username">Join Chat</button>
+  </div>
+
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded, onValue, remove } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCY9naMDqRwB85xWuVrIGZ2a4RirsK9YKo",
+    authDomain: "yonotvchat.firebaseapp.com",
+    databaseURL: "https://yonotvchat-default-rtdb.firebaseio.com",
+    projectId: "yonotvchat",
+    storageBucket: "yonotvchat.firebasestorage.app",
+    messagingSenderId: "6864259825",
+    appId: "1:6864259825:web:c5fd1dd33d853cc8f67750",
+    measurementId: "G-W38MTCC9VZ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const messagesContainer = document.getElementById('chat-messages');
+  const messageInput = document.getElementById('message-input');
+  const sendButton = document.getElementById('send-button');
+  const usernameModal = document.getElementById('username-modal');
+  const usernameInput = document.getElementById('username-input');
+
+  let username = localStorage.getItem('chatUsername');
+  if (!username) {
+    usernameModal.style.display = 'block';
+  }
+
+  document.getElementById('set-username').addEventListener('click', () => {
+    const name = usernameInput.value.trim();
+    if (name) {
+      username = name;
+      localStorage.setItem('chatUsername', username);
+      usernameModal.style.display = 'none';
+    }
+  });
+
+  function getAvatarColor(name) {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const hue = hash % 360;
+    return `hsl(${hue}, 70%, 50%)`;
+  }
+
+  function sendMessage() {
+    const text = messageInput.value.trim();
+    if (text && username) {
+      const msgRef = ref(db, 'messages');
+      push(msgRef, {
+        username: username,
+        message: text,
+        timestamp: Date.now()
+      });
+      messageInput.value = '';
+    }
+  }
+
+  sendButton.addEventListener('click', sendMessage);
+  messageInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  const messagesRef = ref(db, 'messages');
+
+  // Delete messages older than 24 hours
+  function deleteOldMessages() {
+    const now = Date.now();
+    const maxAge = 24 * 60 * 60 * 1000; // 24 hours in ms
+    onValue(messagesRef, snapshot => {
+      snapshot.forEach(child => {
+        const data = child.val();
+        if (data.timestamp && now - data.timestamp > maxAge) {
+          remove(ref(db, `messages/${child.key}`));
+        }
+      });
+    });
+  }
+
+  // Run deletion once at load and then every hour
+  deleteOldMessages();
+  setInterval(deleteOldMessages, 60 * 60 * 1000); // every 1 hour
+
+  // Display new messages
+  onChildAdded(messagesRef, (snapshot) => {
+    const { username: name, message } = snapshot.val();
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'message';
+
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar';
+    avatar.style.backgroundColor = getAvatarColor(name);
+    avatar.textContent = name[0];
+
+    const content = document.createElement('div');
+    content.className = 'message-content';
+    content.innerHTML = `<strong>${name}:</strong> ${message}`;
+
+    msgDiv.appendChild(avatar);
+    msgDiv.appendChild(content);
+    messagesContainer.appendChild(msgDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  });
+</script>
+
+
+</body>
+</html>
