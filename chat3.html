@@ -3,32 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>YonoTV Live Chat</title>
+  <title>Live Chat</title>
   <style>
-    body {
+    :root {
+      --primary-color: #3EA6FF;
+      --background-dark: #0f0f0f;
+      --background-medium: #272727;
+      --border-color: #303030;
+      --text-color: #ffffff;
+      --text-secondary: #aaaaaa;
+    }
+
+    html, body {
       margin: 0;
       padding: 0;
       background: transparent;
+      height: 100%;
     }
 
     .chat-container {
       width: 100%;
-      height: 440px;
+      height: 100%;
+      max-height: 600px;
       display: flex;
       flex-direction: column;
       font-family: 'Inter', sans-serif;
-      color: white;
-      background: #0f0f0f;
-      border-radius: 16px;
+      color: var(--text-color);
+      background: var(--background-dark);
+      border-radius: 12px;
       overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
 
     .chat-header {
-      padding: 16px;
-      border-bottom: 1px solid #303030;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background: var(--background-dark);
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .settings-btn {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      transition: background 0.2s;
+      font-size: 16px;
+    }
+
+    .settings-btn:hover {
+      background: var(--background-medium);
     }
 
     .chat-messages {
@@ -36,68 +72,122 @@
       overflow-y: auto;
       padding: 16px;
       scroll-behavior: smooth;
-      min-height: 0;
     }
 
     .message {
-      margin-bottom: 12px;
       display: flex;
-      align-items: center;
-      gap: 10px;
+      gap: 12px;
+      margin-bottom: 16px;
       animation: fadeIn 0.3s ease-in;
     }
 
-    .avatar {
-      width: 32px;
-      height: 32px;
+    .message.reply {
+      margin-left: 48px;
+      position: relative;
+    }
+
+    .message.reply::before {
+      content: "";
+      position: absolute;
+      left: -32px;
+      top: 24px;
+      width: 24px;
+      height: 1px;
+      background: var(--border-color);
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: bold;
-      color: #fff;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
       flex-shrink: 0;
-      text-transform: uppercase;
     }
 
     .message-content {
-      background: #272727;
-      border-radius: 12px;
-      padding: 6px 12px;
+      flex: 1;
+    }
+
+    .message-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .username {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .timestamp {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .message-text {
+      background: var(--background-medium);
+      padding: 8px 16px;
+      border-radius: 18px;
+      display: inline-block;
       max-width: 80%;
-      word-wrap: break-word;
+      word-break: break-word;
+      line-height: 1.4;
+    }
+
+    .reply-indicator {
+      font-size: 12px;
+      color: var(--primary-color);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .reply-btn {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 2px 4px;
+      margin-top: 4px;
     }
 
     .chat-input {
-      padding: 12px 16px;
-      border-top: 1px solid #303030;
-      display: flex;
-      gap: 8px;
-      position: sticky;
-      bottom: 0;
-      background: #0f0f0f;
-      z-index: 10;
+      padding: 16px;
+      border-top: 1px solid var(--border-color);
+      background: var(--background-dark);
     }
 
     #message-input {
-      flex: 1;
-      padding: 10px 16px;
+      width: 100%;
+      padding: 12px 16px;
       border: none;
-      border-radius: 20px;
-      background: #272727;
-      color: white;
+      border-radius: 24px;
+      background: var(--background-medium);
+      color: var(--text-color);
+      resize: none;
+      min-height: 44px;
+      font-family: inherit;
     }
 
-    #send-button {
-      background: #3EA6FF;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 18px;
-      cursor: pointer;
+    #message-input:focus {
+      outline: 2px solid var(--primary-color);
     }
 
-    #username-modal {
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Modal Styles */
+    .modal {
       display: none;
       position: fixed;
       top: 50%;
@@ -107,162 +197,248 @@
       padding: 24px;
       border-radius: 12px;
       color: white;
-      z-index: 999;
       text-align: center;
+      z-index: 1000;
+      width: 90%;
+      max-width: 400px;
+      border: 1px solid var(--border-color);
     }
 
-    #username-modal input {
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 6px;
-      border: none;
-      width: 80%;
+    .modal h3 {
+      margin-bottom: 16px;
     }
 
-    #set-username {
-      margin-top: 12px;
-      padding: 8px 16px;
-      border-radius: 6px;
+    .modal input {
+      padding: 12px;
+      margin: 12px 0;
+      width: 100%;
+      background: var(--background-medium);
       border: none;
-      background: #3EA6FF;
+      border-radius: 8px;
       color: white;
-      cursor: pointer;
+      font-family: inherit;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .modal button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .modal button:hover {
+      opacity: 0.9;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .chat-container {
+        max-height: none;
+        height: 100vh;
+        border-radius: 0;
+      }
+      
+      .message {
+        gap: 8px;
+      }
+      
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+      }
+      
+      .message.reply {
+        margin-left: 32px;
+      }
     }
   </style>
 </head>
 <body>
-
   <div class="chat-container">
     <div class="chat-header">
-      <h3>⚡ Live Chat</h3>
-      <div class="active-users">👥 <span id="online-count">500+</span> online</div>
+      <div class="header-title">
+        <span>⚡</span>
+        <span>Live Chat</span>
+      </div>
+      <button class="settings-btn" onclick="showUsernameModal()">⚙️</button>
     </div>
     <div class="chat-messages" id="chat-messages"></div>
     <div class="chat-input">
-      <input type="text" id="message-input" placeholder="Type your message..." maxlength="200">
-      <button id="send-button">Send</button>
+      <textarea 
+        id="message-input" 
+        placeholder="Type your message..." 
+        maxlength="200"
+        rows="1"
+      ></textarea>
     </div>
   </div>
 
-  <div id="username-modal">
+  <div id="username-modal" class="modal">
     <h3>Choose Your Chat Name</h3>
-    <input type="text" id="username-input" placeholder="Enter display name" maxlength="20">
+    <input type="text" id="username-input" placeholder="Enter name" maxlength="20" />
     <br>
-    <button id="set-username">Join Chat</button>
+    <button onclick="setUsername()">Continue</button>
   </div>
 
   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded, onValue, remove } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded, query, limitToLast, remove } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCY9naMDqRwB85xWuVrIGZ2a4RirsK9YKo",
-    authDomain: "yonotvchat.firebaseapp.com",
-    databaseURL: "https://yonotvchat-default-rtdb.firebaseio.com",
-    projectId: "yonotvchat",
-    storageBucket: "yonotvchat.firebasestorage.app",
-    messagingSenderId: "6864259825",
-    appId: "1:6864259825:web:c5fd1dd33d853cc8f67750",
-    measurementId: "G-W38MTCC9VZ"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCY9naMDqRwB85xWuVrIGZ2a4RirsK9YKo",
+      authDomain: "yonotvchat.firebaseapp.com",
+      databaseURL: "https://yonotvchat-default-rtdb.firebaseio.com",
+      projectId: "yonotvchat",
+      storageBucket: "yonotvchat.firebasestorage.app",
+      messagingSenderId: "6864259825",
+      appId: "1:6864259825:web:c5fd1dd33d853cc8f67750",
+      measurementId: "G-W38MTCC9VZ"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const messagesRef = ref(database, 'messages');
+    const messagesContainer = document.getElementById('chat-messages');
+    let currentReplyParent = null;
 
-  const messagesContainer = document.getElementById('chat-messages');
-  const messageInput = document.getElementById('message-input');
-  const sendButton = document.getElementById('send-button');
-  const usernameModal = document.getElementById('username-modal');
-  const usernameInput = document.getElementById('username-input');
+    // User management
+    let currentUser = {
+      name: localStorage.getItem('chatUsername') || '',
+      color: ''
+    };
 
-  let username = localStorage.getItem('chatUsername');
-  if (!username) {
-    usernameModal.style.display = 'block';
-  }
-
-  document.getElementById('set-username').addEventListener('click', () => {
-    const name = usernameInput.value.trim();
-    if (name) {
-      username = name;
-      localStorage.setItem('chatUsername', username);
-      usernameModal.style.display = 'none';
+    function generateColor(username) {
+      let hash = 0;
+      for (let i = 0; i < username.length; i++) {
+        hash = username.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return `hsl(${Math.abs(hash) % 360}, 70%, 45%)`;
     }
-  });
 
-  function getAvatarColor(name) {
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    function showUsernameModal() {
+      const modal = document.getElementById('username-modal');
+      const usernameInput = document.getElementById('username-input');
+      usernameInput.value = currentUser.name;
+      modal.style.display = 'block';
+      usernameInput.focus();
     }
-    const hue = hash % 360;
-    return `hsl(${hue}, 70%, 50%)`;
-  }
 
-  function sendMessage() {
-    const text = messageInput.value.trim();
-    if (text && username) {
-      const msgRef = ref(db, 'messages');
-      push(msgRef, {
-        username: username,
-        message: text,
+    function setUsername() {
+      const usernameInput = document.getElementById('username-input');
+      const newName = usernameInput.value.trim();
+      if (newName) {
+        currentUser.name = newName;
+        currentUser.color = generateColor(currentUser.name);
+        localStorage.setItem('chatUsername', currentUser.name);
+        document.getElementById('username-modal').style.display = 'none';
+      }
+    }
+
+    // Message handling
+    function sendMessage(text) {
+      if (!text.trim() || !currentUser.name) return;
+
+      const messageData = {
+        text: text.trim(),
+        user: currentUser.name,
+        color: currentUser.color,
         timestamp: Date.now()
-      });
-      messageInput.value = '';
+      };
+
+      if (currentReplyParent) {
+        messageData.parent = currentReplyParent;
+        messageData.parentUser = document.querySelector(`[data-key="${currentReplyParent}"] .username`).textContent;
+        currentReplyParent = null;
+      }
+
+      push(messagesRef, messageData);
+      document.getElementById('message-input').value = '';
     }
-  }
 
-  sendButton.addEventListener('click', sendMessage);
-  messageInput.addEventListener('keypress', e => {
-    if (e.key === 'Enter') sendMessage();
-  });
+    // Create message element
+    function createMessageElement(data) {
+      const messageEl = document.createElement('div');
+      messageEl.className = `message${data.parent ? ' reply' : ''}`;
+      messageEl.dataset.key = data.key;
 
-  const messagesRef = ref(db, 'messages');
+      messageEl.innerHTML = `
+        <div class="user-avatar" style="background:${data.color}">
+          ${data.user.charAt(0).toUpperCase()}
+        </div>
+        <div class="message-content">
+          <div class="message-header">
+            <span class="username">${data.user}</span>
+            <span class="timestamp">${formatTime(data.timestamp)}</span>
+          </div>
+          ${data.parent ? `<div class="reply-indicator">↩ Replying to ${data.parentUser}</div>` : ''}
+          <div class="message-text">${data.text}</div>
+          <button class="reply-btn" onclick="prepareReply('${data.key}')">Reply</button>
+        </div>
+      `;
 
-  // Delete messages older than 24 hours
-  function deleteOldMessages() {
-    const now = Date.now();
-    const maxAge = 24 * 60 * 60 * 1000; // 24 hours in ms
-    onValue(messagesRef, snapshot => {
-      snapshot.forEach(child => {
-        const data = child.val();
-        if (data.timestamp && now - data.timestamp > maxAge) {
-          remove(ref(db, `messages/${child.key}`));
-        }
-      });
+      return messageEl;
+    }
+
+    function formatTime(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // Real-time listener
+    onChildAdded(query(messagesRef, limitToLast(100)), (snapshot) => {
+      const data = snapshot.val();
+      data.key = snapshot.key;
+      
+      // Check if message is older than 24 hours
+      const now = Date.now();
+      if (now - data.timestamp > 24 * 60 * 60 * 1000) {
+        remove(ref(database, `messages/${data.key}`));
+        return;
+      }
+      
+      messagesContainer.appendChild(createMessageElement(data));
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
     });
-  }
 
-  // Run deletion once at load and then every hour
-  deleteOldMessages();
-  setInterval(deleteOldMessages, 60 * 60 * 1000); // every 1 hour
+    // Input handling
+    document.getElementById('message-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage(e.target.value);
+      }
+    });
 
-  // Display new messages
-  onChildAdded(messagesRef, (snapshot) => {
-    const { username: name, message } = snapshot.val();
-    const msgDiv = document.createElement('div');
-    msgDiv.className = 'message';
+    // Auto-resize textarea
+    const textarea = document.getElementById('message-input');
+    textarea.addEventListener('input', () => {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    });
 
-    const avatar = document.createElement('div');
-    avatar.className = 'avatar';
-    avatar.style.backgroundColor = getAvatarColor(name);
-    avatar.textContent = name[0];
+    // Initialize user
+    if (!currentUser.name) {
+      showUsernameModal();
+    } else {
+      currentUser.color = generateColor(currentUser.name);
+    }
 
-    const content = document.createElement('div');
-    content.className = 'message-content';
-    content.innerHTML = `<strong>${name}:</strong> ${message}`;
-
-    msgDiv.appendChild(avatar);
-    msgDiv.appendChild(content);
-    messagesContainer.appendChild(msgDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-  });
-</script>
-
-
+    // Expose functions to global scope
+    window.prepareReply = (key) => {
+      const messageEl = document.querySelector(`[data-key="${key}"]`);
+      const username = messageEl.querySelector('.username').textContent;
+      textarea.value = `@${username} `;
+      textarea.focus();
+      currentReplyParent = key;
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    };
+    window.showUsernameModal = showUsernameModal;
+    window.setUsername = setUsername;
+  </script>
 </body>
 </html>
