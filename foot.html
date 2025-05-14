@@ -1,0 +1,736 @@
+<!DOCTYPE html><html>
+
+
+
+<head>
+ 
+
+  
+  <title>footem</title>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.js' crossorigin='anonymous'></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/controls.min.css" crossorigin="anonymous">
+  
+
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+</head><body bgcolor='black' style='margin:0' oncontextmenu='return false' onkeydown='return false' onmousedown='return false'>
+    <style>
+    
+.shaka-spinner-container { display: none; }
+  .video-fill video {
+        object-fit: fill cover;
+      }
+  
+   /* Overflow menu style */
+
+.shaka-overflow-menu {
+    background-color: rgb(35, 35, 35);
+    color: rgb(255, 255, 255);
+}
+
+.shaka-overflow-menu button:hover {
+    background-color: rgb(45, 45, 45);
+}
+
+.shaka-overflow-button-label {
+    color: rgb(245, 245, 245);
+}
+
+.shaka-current-selection-span {
+    color: rgb(202, 202, 202);
+}
+
+.material-icons-round {
+    color: rgb(230, 230, 230);
+}
+
+/* Overflow sub menu style */
+
+.shaka-settings-menu {
+    background-color: rgb(35, 35, 35);
+    color: rgb(255, 255, 255);
+}
+
+.shaka-settings-menu button {
+    color: rgb(255, 255, 255);
+}
+
+.shaka-settings-menu button:hover {
+    background-color: rgb(45, 45, 45);
+
+}
+
+.shaka-bottom-controls {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+
+
+#tglogo {
+position: absolute;
+right: 80px;
+top: 30px;
+height: 60px;
+width: 100px;
+} 
+</style>
+
+ <script>
+<script type="text/javascript">
+	
+$(document).ready(function() {
+	$('body').bind('cut copy paste', function (e) {
+		e.preventDefault();
+	})
+	$(".code").on("contextmenu", function(e) {
+		return false;
+	})
+})
+
+</script>
+
+
+
+    <div class="container video-fill" data-shaka-player-container style='position:absolute;z-index: -1;top: 0;left: 0;width: 100%; height: 100%;object-fit:fill cover;'>
+      <video autoplay data-shaka-player id='video' style='width:100%;height:100%;'>
+
+</video>
+
+    
+ 
+<script>
+        (async function() {
+            // Function to get the value of a query parameter by name
+            function getQueryParameter(name) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(name);
+            }
+
+            // Define multiple manifest URIs and DRM configurations
+            const videoConfigs = [
+              
+               
+         
+       
+
+		    {
+                    id: 'USANETWORK',
+                    manifestUri: 'https://fsly.stream.peacocktv.com/Content/CMAF_OL1-CTR-4s/Live/channel(usa-east)/master.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '78ab64fa90f137a697743b5dc27b2f96': 'de4d31c7fc6005ede28abab2a0720a9f'
+                        }
+                    }
+                },
+         
+          {
+                    id: 'NBC',
+                    manifestUri: 'https://fsly.stream.peacocktv.com/Content/CMAF_CTR-4s/Live/channel(vc122ycnuy)/master.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '0020d88a6713159839743f655c5da7de': 'ba9f34226301f69a4f0f13f65a1f92ec'
+                        }
+                    }
+                },
+         
+          {
+                    id: 'UNIVERSO',
+                    manifestUri: 'https://live-oneapp-prd-news.akamaized.net/Content/CMAF_OL1-CTR-4s/Live/channel(universo-east)/master.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'a42669eafed7349499aab7df588b3ccf': '0fbff143ebd097060a377e4ade033288'
+                        }
+                    }
+                }, 
+                  
+                  {
+                    id: 'TELEMUNDO',
+                    manifestUri: 'https://live-oneapp-prd-news.akamaized.net/Content/CMAF_OL1-CTR-4s/Live/channel(WSNS)/master.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '7d6bb9f86e133e4cb33440b493b6b672': '584ad285dcb9e7d42cf3e93f1cc3fe11'
+                        }
+                    }
+                }, 
+              
+              
+              
+         
+         
+         
+              
+               {
+                    id: 'TNT_1_GB',
+                    manifestUri: 'https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/clients/dash/enc/wf8usag51e/out/v1/bd3b0c314fff4bb1ab4693358f3cd2d3/cenc.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'ae26845bd33038a9c0774a0981007294': '63ac662dde310cfb4cc6f9b43b34196d'
+                        }
+                    }
+                },
+                {
+                    id: 'TNT_2_GB',
+                    manifestUri: 'https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/clients/dash/enc/f0qvkrra8j/out/v1/f8fa17f087564f51aa4d5c700be43ec4/cenc.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '6d1708b185c6c4d7b37600520c7cc93c': '1aace05f58d8edef9697fd52cb09f441'
+                        }
+                    }
+                },
+                {
+                    id: 'TNT_3_GB',
+                    manifestUri: 'https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/clients/dash/enc/lsdasbvglv/out/v1/bb548a3626cd4708afbb94a58d71dce9/cenc.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '4e993aa8c1f295f8b94e8e9e6f6d0bfe': '86a1ed6e96caab8eb1009fe530d2cf4f'
+                        }
+                    }
+                },
+                {
+                    id: 'TNT_4_GB',
+                    manifestUri: 'https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/clients/dash/enc/i2pcjr4pe5/out/v1/912e9db56d75403b8a9ac0a719110f36/cenc.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'e31a5a81caff5d07ea2411a571fc2e59': '96c5ef69479732ae734f962748c19729'
+                        }
+                    }
+                },
+                {
+                    id: 'TNT_5_GB',
+                    manifestUri: 'https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/clients/dash/enc/gesdwrdncn/out/v1/79e752f1eccd4e18b6a8904a0bc01f2d/cenc.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '60c0d9b41475e01db4ffb91ed557fbcc': '36ee40e58948ca15e3caba8d47b8f34b'
+                        }
+                    }
+                },
+              {
+                    id: 'DAZN-LALIGA',
+                    manifestUri: 'https://live.ll.ww.aiv-cdn.net/OTTB/dub-nitro/live/clients/dash/enc/wjgklbtvhh/out/v1/659736a1e24c40e4865a80ffd75e7de7/cenc.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '43d1c3b25207ff38b22ccfe17d302367': '7b1f85f6e81059473b114c16a25c829a'
+                        }
+                    }
+                },
+              {
+                    id: 'DAZN1',
+                    manifestUri: 'https://ottb.live.cf.ww.aiv-cdn.net/dub-nitro/live/clients/dash/enc/bmnelo5c7a/out/v1/3ce2cdc4589f46189322bd3717c77957/cenc.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '44dd9cd370b08a868ead115fe84ecfde': 'bff19ab0a51cf14e848389b152913fd0'
+                        }
+                    }
+                },
+              {
+                    id: 'DAZN2',
+                    manifestUri: 'https://ottb.live.cf.ww.aiv-cdn.net/dub-nitro/live/clients/dash/enc/xnk4m9bnxt/out/v1/4ced7b7329a54652b9bb0521ed38bd4d/cenc.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '0eab5a3f3e3b4ba5d42d40ca30d17571': 'f3f061ded9b70e8160590d5802ecda6d'
+                        }
+                    }
+                },
+              {
+                    id: 'DAZN3',
+                    manifestUri: 'https://live.ll.ww.aiv-cdn.net/OTTB/dub-nitro/live/clients/dash/enc/zy1ee5sshp/out/v1/bdcffa69fa3b4f3bb3569c9c73ee1c01/cenc.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'bad8efff688c0dbb3711e4a7114c22a3': '6ba800673b20776c0c850130d45e1920'
+                        }
+                    }
+                },
+              {
+                    id: 'DAZN4',
+                    manifestUri: 'https://live.ll.ww.aiv-cdn.net/OTTB/dub-nitro/live/clients/dash/enc/up7qpwch9b/out/v1/a6d5d1a1287b4893b859c2d6ccf2c65d/cenc.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '16bf72dc22743d929c4318e193408373': 'eae51a1e3904124963074cbf432c7c8e'
+                        }
+                    }
+                }, 
+              
+               {
+                    id: 'ZIGGO',
+                    manifestUri: 'https://da-d436234620010b88000103020000000000000008.id.cdn.upcbroadband.com/wp/wp2-anp-g05060506-hzn-nl.t1.prd.dyncdn.dmdsdp.com/live/disk1/NL_000095_019371/go-dash-fhd-avc/NL_000095_019371.mpd?p=web',
+                    drmConfig: {
+                        clearKeys: {
+                            'd27104d427e4f87e75b19395a9f8796b': '723593c70e2d4c4862754398e80168f8'
+                        }
+                    }
+                }, 
+              
+              {
+                    id: 'ARENA1P',
+                    manifestUri: 'https://bpcdnmanprod.nexttv.ht.hr/bpk-tv/arena1_n/default/index.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                           '9002ec8c3dbc55c5bccdcd6871d80fd0': '7099325123bae7810db508727bb0bc7d',
+                     'c43c83acda60593d8e3607efd5010d7d': '526f4a760ef52ab85056fbc10ea27584',
+                    '712090aae2065c21951b170bc3002330':'a97774e4175b80205c3cf104e9574208'
+                        }
+                    }
+                }, 
+              
+              {
+                    id: 'ARENA2P',
+                    manifestUri: 'https://bpcdnmanprod.nexttv.ht.hr/bpk-tv/arena2/default/index.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'c5e5ac1b3cc15fe790f1bc96535fe329': '3defe59c38079ccad25a436200ad3bd7',
+                     'b2f22f5d7ca35910a73fbabc524954de': 'd87d08fbe6505ad7099b8c258f396d15',
+                    'd256b403efcc5c3db701fc696885e102':'d46e4215e279b224e9d2a772db9c74a1'
+                        }
+                    }
+                }, 
+
+              
+               {
+                    id: 'ARENA3P',
+                    manifestUri: 'https://bpcdnmanprod.nexttv.ht.hr/bpk-tv/arena3/default/index.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '3bedf4a896695958907e0984165090f0': 'a58317ffddf318f1540f31f67d95b5fb',
+                     '25c3df3202005cc98c47700295be59ca': '073f5a39d84dd14a9debd1a72bb1f055',
+                    'ccebefcba0a3546ba34d3fc587651708':'18f2b2027ce26867c23dcd7f57faa245'
+                        }
+                    }
+                }, 
+              
+              {
+                    id: 'ARENA4P',
+                    manifestUri: 'https://bpcdnmanprod.nexttv.ht.hr/bpk-tv/arena4/default/index.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                           '77ce6938c781526e999b688992f27764': 'bf1178841770fdba74f8629f0f06d2c0',
+                     '68cd661dbc8352fda000c532840f6340': '0255fb620f4f707ea7ba090058718306',
+                    '89d1dc54692e5b4fb5995fc0953bf5bf':'31b8953ab60b90fefc93d9bd1b806fbc'
+                        }
+                    }
+                }, 
+              
+               {
+                    id: 'ARENA5P',
+                    manifestUri: 'https://bpcdnmanprod.nexttv.ht.hr/bpk-tv/arena5/default/index.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'e473ec5d96f45a9f9a22eb665b5b1ea9': 'ace54ce15b69d249b00395c9e6b85b90',
+                     '34a709bbeac052f293c778c0770829fd': '2b801fde1ad4839d4080d6ec6b0ec4ce',
+                    '18d3fba08f3152c38f14151219fa9792':'78b0c5b961351e482be81287466ecb08'
+                        }
+                    }
+                }, 
+
+              
+                {
+                    id: 'ARENA6P',
+                    manifestUri: 'https://bpcdnmanprod.nexttv.ht.hr/bpk-tv/arena6/default/index.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'b3b60e79989a5b2799fa3a2394b8749f': 'a25d21e333dad3d131f126b7b57730be',
+                     'bfd8ff04a3625fcea8335c9575401697': '769d61a2d6fd7030a5088df2e70c2654',
+                    '5a86e42c58cf5d008546861c0f0fb22a':'67b1172a05bcb38a91a304d7098ce7f5'
+                        }
+                    }
+                }, 
+              
+               {
+                    id: 'ARENA9P',
+                    manifestUri: 'https://bpcdnmanprod.nexttv.ht.hr/bpk-tv/arena9/default/index.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '91a56f5aab4c56cb88fbf787187acafe': '0000816079a5ec4f093e3274bda26f2a',
+                     'a2ff372a21b35653a88592abfec3f9a7': 'd5bc25088d1fda12849aad90716de750',
+                    '7ecfd12eb26258c381afadac16ac8fc9':'b4f351533d633abf76cda47fe75d579b'
+                        }
+                    }
+                }, 
+
+              
+               {
+                    id: 'ESPN1',
+                    manifestUri: 'https://vcdn.mn10.entel.bo/Content/DASH/Live/Channel(8757cb0a-3584-40cd-901e-8937c7deba83)/master.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'cb004fb100bd92f23793562891e3236b': 'b3e4e74ae2080b137e68bbd0ef8a7e05'
+                        }
+                    }
+                }, 
+              
+              
+                {
+                    id: 'ESPN2',
+                    manifestUri: 'https://vcdn.mn10.entel.bo/Content/DASH/Live/Channel(62567d5c-295c-4ffd-ac7e-c9749e874884)/master.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'a81ee4a694fecd6aa8a682e5024b313c': '6d15568e1dab59e7202ae12e71505185'
+                        }
+                    }
+                }, 
+              
+              
+              
+              
+               {
+                    id: 'ESPN3',
+                    manifestUri: 'https://vcdn.mn10.entel.bo/Content/DASH/Live/Channel(a38d1401-ee01-4802-812a-7cb460c9832c)/master.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '8a60d7889ff126ee1895335e92254f8e': 'de1b0ce19fa804a1c473eb8ef2d5cf6d'
+                        }
+                    }
+                }, 
+              
+              
+              {
+                    id: 'ESPN4',
+                    manifestUri: 'https://vcdn.mn10.entel.bo/Content/DASH/Live/Channel(9500bf02-0001-4199-a150-58dc5d692cca)/master.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '54a2c11085c315ed6ff85c340a86095d': '5f0d10cf4a5c7e22e286b7e8cb4e79f4'
+                        }
+                    }
+                }, 
+
+              
+              {
+                    id: 'ESPN5',
+                    manifestUri: 'https://vcdn.mn10.entel.bo/Content/DASH/Live/Channel(80c74968-a2ef-4005-8661-045fe97408a8)/master.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '4e126297fc7af35c736bdffe98eecaaa': 'fdb0091cf67d9c596dbfb07cf6f4c8f5'
+                        }
+                    }
+                }, 
+              
+              
+              
+              {
+                    id: 'ESPN6',
+                    manifestUri: 'https://vcdn.mn10.entel.bo/Content/DASH/Live/Channel(b30aa51e-97fa-4354-bb38-871fb360e984)/master.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'f5836382452cdca1e1c8bf8b9a713534': '7d261930c3309ed2b06d2abb34a64410'
+                        }
+                    }
+                }, 
+              
+              
+              {
+                    id: 'ESPN7',
+                    manifestUri: 'https://vcdn.mn10.entel.bo/Content/DASH/Live/Channel(5ab5db84-2235-4c10-9066-be9bc2ee087a)/master.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '98ea1e32227adcd3618baac2bbf36814': '72a03a09d33e412f14a9bfa4ef24b542'
+                        }
+                    }
+                }, 
+              
+              
+              
+              {
+                    id: 'ESPNNL1',
+                    manifestUri: 'https://da-d436234520010b88000103020000000000000007.id.cdn.upcbroadband.com/wp/wp1-anp-g05060506-hzn-nl.t1.prd.dyncdn.dmdsdp.com/live/disk1/NL_000107_019441/go-dash-fhd-avc/NL_000107_019441.mpd?p=starballtv',
+                    drmConfig: {
+                        clearKeys: {
+                            '3e999e38253834baa63881ea451f2839': '99b88d9cde1d8986decbc5985da87187'
+                        }
+                    }
+                }, 
+              
+              
+                {
+                    id: 'SKYSPORTS',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/3/out/u/dash/SKY-SPORTS-HD/default.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '335511dfdf0d03bc06f1fdead5870b5a': '1a022fb33ad3de4d4579b04966551488'
+                        }
+                    }
+                }, 
+
+              
+                {
+                    id: 'SKYSPORTS2',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/3/out/u/dash/SKY-SPORTS-21-HD/default.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '99909032389c6ee41c3d2f3ec829f804': '41fbc575c8ef1cdac1dca990c9a0df9d'
+                        }
+                    }
+                }, 
+              
+              
+              
+              {
+                    id: 'SKYSPORTS_LALIGA',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/2/out/u/dash/SKY-SPORTS-16-HD/default.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'c88dc6c668cac3b468d4a4c7e176ff3d': '1aeb739de2c14ed0ad658ca8043208d8'
+                        }
+                    }
+                }, 
+              
+              
+              
+                {
+                    id: 'SKYSPORTS_BUDESLIGA',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/5/out/u/dash/SKY-SPORTS-24-HD/manifest.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'd8d5823d92a9ef9306a4cc4bd634b4b4': 'df9fbdaa0ef9e905b75f4692f213af19'
+                        }
+                    }
+                }, 
+              
+               {
+                    id: 'SKYSPORTS_LIVE1',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/1/out/u/dash/SKY-LIVE-EVENT-1-HD/manifest.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'a3636a51227fa338cdddf5892d8a621c': '1444ee3c4d08bf39454b914f797968eb'
+                        }
+                    }
+                }, 
+              
+               {
+                    id: 'SKYSPORTS_LIVE2',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/5/out/u/dash/SKY-LIVE-EVENT-2-HD/manifest.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '7239a58fb7388b222a834d549bf18d8f': '8b04a883e88dbdebc43673d998ea1cb2'
+                        }
+                    }
+                }, 
+              
+              
+               {
+                    id: 'SKYSPORTS_LIVE3',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/1/out/u/dash/SKY-LIVE-EVENT-3-HD/manifest.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '561a21ad50f806b77d328dedbe59f93e': 'edf3e70cc9de81a73e2a00fe9c0611a8'
+                        }
+                    }
+                }, 
+              
+              
+              
+              {
+                    id: 'SKYSPORTS_LIVE4',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/1/out/u/dash/SKY-LIVE-EVENT-4-HD/manifest.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'a931b2e953695ffb0cfd38573e97ba33': '4ddd99cc4fb168d7f0e20be8a3287100'
+                        }
+                    }
+                }, 
+              
+             
+              
+              {
+                    id: 'SKYSPORTS_BUDESLIGA2',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/2/out/u/dash/SKY-SPORTS-16-HD/default.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'c88dc6c668cac3b468d4a4c7e176ff3d': '1aeb739de2c14ed0ad658ca8043208d8'
+                        }
+                    }
+                }, 
+         
+         
+         
+         
+         
+              {
+                    id: 'FOXSPORTS',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/1/out/u/dash/FOX-SPORTS-HD/default.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '9e276bd34034a2c4dcf61d74e1242fbf': '4b466a4affb61d2672a4194b14e10ef2'
+                        }
+                    }
+                }, 
+              
+              
+
+           {
+                    id: 'FOXSPORTS2',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/4/out/u/dash/FOX-SPORTS-2-HD/default.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '23986dae03fa883ed8e489cbf70f9ec3': '6a42c42732a9dd1da1205971b2c5c535'
+                        }
+                    }
+                }, 
+         
+          {
+                    id: 'FOXSPORTS3',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/1/out/u/dash/FOX-SPORTS-3-HD/default.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            'ed8dd7562fd9f9064bed8d52fa42cc11': 'd65a22cfe5bfbd33d8d25b183649e44f'
+                        }
+                    }
+                }, 
+              
+         {
+                    id: 'FOXSPORTS_PREMIUM',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/1/out/u/dash/FOX-SPORTS-PREMIUM-HD/default.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '0fefd5d94a8cb5b40c057ab182f7dc27': '5548c4823ff7f1ea61bafb7cbc19e005'
+                        }
+                    }
+                }, 
+              
+         
+          {
+                    id: 'TUDN',
+                    manifestUri: 'https://aka-live1-ott.izzigo.tv/1/out/u/dash/TUDN-HD/default.mpd',
+                    drmConfig: {
+                        clearKeys: {
+                            '2722647f77b44824c432a3c4555830a2': '1734befb82f4b438bd84195f6c212e7b'
+                        }
+                    }
+                }, 
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+               {
+                    id: 'ZIGGO1',
+                    manifestUri: 'https://mag04.tvx.prd.tv.odido.nl/wh7f454c46tw75168188_-627298088/PLTV/86/224/3221241590/3221241590.mpd?accountinfo=~~V2.0~qbcsJh_jU5C9BcZc959e_wae44b4867b3417aa76b5db2da20fe46c~KZzTWjB8qD1zdgbJjRPVLJX-tV0qiN9RBHC_iseGrsmTSRjj06oGDtGlpSCRGOwF3626cf085c08d024c7e4aafc18c32440:UTC,',
+                    drmConfig: {
+                        clearKeys: {
+                            'ef34ae91b4f2415e8439b2ad105e7488': '243248d8de1ff8c7c587ee2057317523'
+                        }
+                    }
+                }, 
+              
+              
+              {
+                    id: 'ZIGGO2',
+                    manifestUri: 'https://mag04.tvx.prd.tv.odido.nl/wh7f454c46tw266117884_-1972819316/PLTV/86/224/3221241560/3221241560.mpd?zoneoffset=0&devkbps=1-7000&servicetype=1&icpid=86&accounttype=1&limitflux=-1&limitdur=-1&tenantId=3103&accountinfo=%7E%7EV2.0%7EOhA1DF4svOZppKxb-t-Ngw144cce44121c63284a33d5453493e5c8%7E1_Fmlu5PevHMYnEi9Z_HX2goKAd0VHSuxZMoIcAXcawYvG1meqGp2eQ2Ibhjvh7e59e7f6df3d57f23a32024ad67f0f19dc%7EExtInfo5Ro3VppWiUusj2ippqUPkQ%3D%3D4a2d2c8ce133f43026d0e31b822b8474%3A20240601013140%3AUTC%2C10001003329222%2C87.212.140.171%2C20240601013140%2C3103_SP1V%2C10001003329222%2C-1%2C0%2C1%2C%2C%2C2%2C3103_Sport1%2C%2C%2C2%2C10000044444303%2C0%2C10000025050255%2CNDEzODg2NTY3MzEwMzI2NzMwNjMwNTY%3D%2C%2C%2C5%2C1%2CEND&GuardEncType=2&_=1717205500296&RTS=1717205500&from=11&hms_devid=579&online=1717205500&mag_hms=579',
+                    drmConfig: {
+                        clearKeys: {
+                            '3cfa8625f650406ebf6a4d1ea737f572': '0534e747c70b364aa7210e1bf3191df0'
+                        }
+                    }
+                }, 
+              
+              
+               {
+                    id: 'ZIGGO3',
+                    manifestUri: 'https://mag02.tvx.prd.tv.odido.nl/wh7f454c46tw407556707_-381738111/PLTV/86/224/3221241511/3221241511.mpd?accountinfo=~~V2.0~yVi0dMX4icO5Ka9e92EQfg8812e1c1044f7d357066472e3ee99ef4~2dRB9E-vDtoAbYl169LbcJpxUgWVJtbeU_PlhGfNUflphvljOb5VaEhxruETYG9qcccaf5c5b655bf7504ed7ec5a1dd798f:UTC,',
+                    drmConfig: {
+                        clearKeys: {
+                            '4dbea4b5713a4aa1ae3a2544cd522fc7': 'a8323ea99b2d6200a48e1bc27322d548'
+                        }
+                    }
+                }, 
+              
+              
+               {
+                    id: 'ZIGGO_SELECT',
+                    manifestUri: 'https://da-d436236720010b88000103030000000000000009.id.cdn.upcbroadband.com/wp/wp1-anp-g05060506-hzn-nl.t1.prd.dyncdn.dmdsdp.com/live/disk1/NL_000094_019321/_shared_cc010062b17300c4504b6ab5681b5417/NL_000094_019321.mpd?p=web',
+                    drmConfig: {
+                        clearKeys: {
+                            '16bf72dc22743d929c4318e193408373': 'eae51a1e3904124963074cbf432c7c8e'
+                        }
+                    }
+                }, 
+              
+               {
+                    id: 'ZIGGO_SELECT_2',
+                    manifestUri: 'https://mag03.tvx.prd.tv.odido.nl/wh7f454c46tw75168188_-627298088/PLTV/86/224/3221241590/3221241590.mpd?zoneoffset=0&devkbps=1-7000&servicetype=1&icpid=86&accounttype=1&limitflux=-1&limitdur=-1&tenantId=3103&accountinfo=%7E%7EV2.0%7EqbcsJh_jU5C9BcZc959e_wae44b4867b3417aa76b5db2da20fe46c%7EKZzTWjB8qD1zdgbJjRPVLJX-tV0qiN9RBHC_iseGrsmTSRjj06oGDtGlpSCRGOwF3626cf085c08d024c7e4aafc18c32440%7EExtInfo5Ro3VppWiUusj2ippqUPkQ%3D%3D4a2d2c8ce133f43026d0e31b822b8474%3A20240601012829%3AUTC%2C10001003329222%2C87.212.140.171%2C20240601012829%2C3103_SP1S%2C10001003329222%2C-1%2C0%2C1%2C%2C%2C2%2C3103_Sport1%2C%2C%2C2%2C10000044444303%2C0%2C10000025050255%2CNDEzODg2NTY3MzEwMzI2NzMwNjMwNTY%3D%2C%2C%2C5%2C1%2CEND&GuardEncType=2&RTS=1717205309&from=11&hms_devid=1008&online=1717205309&mag_hms=1008,311,305&_=1717205322621',
+                    drmConfig: {
+                        clearKeys: {
+                            'ef34ae91b4f2415e8439b2ad105e7488': '243248d8de1ff8c7c587ee2057317523'
+                        }
+                    }
+                }, 
+
+              
+               {
+                    id: 'ZIGGO_SPORT',
+                    manifestUri: 'https://mag03.tvx.prd.tv.odido.nl/wh7f454c46tw75168188_-627298088/PLTV/86/224/3221241590/3221241590.mpd?zoneoffset=0&devkbps=1-7000&servicetype=1&icpid=86&accounttype=1&limitflux=-1&limitdur=-1&tenantId=3103&accountinfo=%7E%7EV2.0%7EqbcsJh_jU5C9BcZc959e_wae44b4867b3417aa76b5db2da20fe46c%7EKZzTWjB8qD1zdgbJjRPVLJX-tV0qiN9RBHC_iseGrsmTSRjj06oGDtGlpSCRGOwF3626cf085c08d024c7e4aafc18c32440%7EExtInfo5Ro3VppWiUusj2ippqUPkQ%3D%3D4a2d2c8ce133f43026d0e31b822b8474%3A20240601012829%3AUTC%2C10001003329222%2C87.212.140.171%2C20240601012829%2C3103_SP1S%2C10001003329222%2C-1%2C0%2C1%2C%2C%2C2%2C3103_Sport1%2C%2C%2C2%2C10000044444303%2C0%2C10000025050255%2CNDEzODg2NTY3MzEwMzI2NzMwNjMwNTY%3D%2C%2C%2C5%2C1%2CEND&GuardEncType=2&RTS=1717205309&from=11&hms_devid=1008&online=1717205309&mag_hms=1008,311,305&_=1717205322621',
+                    drmConfig: {
+                        clearKeys: {
+                            'ef34ae91b4f2415e8439b2ad105e7488': '243248d8de1ff8c7c587ee2057317523'
+                        }
+                    }
+                },
+
+
+              
+                // Add more configurations as needed
+            ];
+
+            // Function to initialize the video player
+            async function init() {
+                const id = getQueryParameter('id');
+                const config = videoConfigs.find(cfg => cfg.id === id);
+
+                if (!config) {
+                    console.error('No valid configuration found for the provided id.');
+                    return;
+                }
+
+                const video = document.getElementById('video');
+                const ui = video['ui'];
+                ui.configure({
+                    seekBarColors: {
+                        base: 'rgba(255,255,255,.2)',
+                        buffered: 'rgba(255,255,255,.4)',
+                        played: 'rgb(255,0,0)',
+                    }
+                });
+
+                const controls = ui.getControls();
+                const player = controls.getPlayer();
+
+                // Apply DRM configuration to the player
+                player.configure({
+                    drm: config.drmConfig
+                });
+
+                try {
+                    await player.load(config.manifestUri);
+                    // Mute the video to allow autoplay
+                    video.muted = false;
+                    await video.play(); // Attempt to autoplay
+                } catch (error) {
+                    console.error('Error loading manifest or autoplay failed:', error);
+                }
+
+                // Replace jQuery with vanilla JavaScript for modifying button text
+                document.querySelectorAll('.shaka-overflow-menu-button').forEach(button => {
+                    button.textContent = 'settings';
+                });
+document.querySelectorAll('.shaka-back-to-overflow-button .material-icons-round').forEach(icon => {
+                    icon.textContent = 'arrow_back_ios_new';
+                });
+            }
+                
+
+            document.addEventListener('shaka-ui-loaded', init);
+// Display a pop-up message when the page starts
+            
+        })();
+            
+    </script>
+  <a href="https://t.me/yonotvlive" target="_blank">
+<span style="position: absolute; z-index: 100; top: 6px; left: 5px; height: 30px; width: 100px; color: rgb(204, 204, 204); border: 2px solid rgb(204, 204, 204); padding: 1px 0px; border-radius: 2px; text-align: center;">
+Join us
+</span>
+</a>
+</body></html>
