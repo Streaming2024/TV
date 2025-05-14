@@ -1616,8 +1616,8 @@
     "logo": "https://aimages.willow.tv/teamLogos/quettagladiators.png"
   },  
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Earthquake",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6603.png"
   },
        {
     "name": "____",
