@@ -212,11 +212,14 @@
      
      
   {
-    "name": "Valencia",
+    "name": "Alaves",
     "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9866.png"
   },  
      
-     
+     {
+    "name": "Leganes",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/7854.png"
+  },  
  
   {
     "name": "Osasuna",
