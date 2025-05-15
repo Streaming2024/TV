@@ -1302,7 +1302,7 @@
     "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/578653.png"
   },  
      
-     
+     //IPL TEAM FULL LIST
  
   {
     "name": "CSK",
@@ -1620,8 +1620,8 @@
     "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6603.png"
   },
        {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Espanyol",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8558.png"
   },  
      
      
