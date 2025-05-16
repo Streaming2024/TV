@@ -1,0 +1,86 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0 , user-scalable=no">
+  <meta name="viewport" content="width=device-width" />
+  <link href='https://live.mrgamingstream.net/logo/favicon.png' rel='icon' type='image/x-icon'/>
+  <meta name="author" content="T20HD Embed" />
+  <meta name="designer" content="T20 " />
+  <meta name="description" content="Watch Live Streaming T20. No signup required">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
+  <link rel="stylesheet" href="/dist/wmlogo.css" />
+  <script src="https://kit.fontawesome.com/bf2610f0a2.js" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.4/css/halfmoon.min.css" rel="stylesheet" />
+  <title>Plyr Player</title>
+</head>
+<body class="dark-mode with-custom-scrollbars with-custom-css-scrollbars">
+
+  <!-- Plyr Video Player -->
+  <video id="player" controls preload="metadata" poster="https://live.mrgamingstream.net/logo/image.png" class="plyr">
+    <source id="videoSource" type="application/x-mpegURL"/>
+  </video>
+
+  <!-- HLS.js and Plyr Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.plyr.io/3.6.2/plyr.polyfilled.js"></script>
+
+  <script>
+    // Get URL parameter
+    function getParameterByName(name, url) {
+      if (!url) url = window.location.href;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    // Load HLS + Plyr with auto quality
+    document.addEventListener("DOMContentLoaded", () => {
+      const video = document.getElementById("player");
+      const source = document.getElementById("videoSource");
+      const videoUrl = getParameterByName('url');
+
+      if (videoUrl) {
+        source.setAttribute('src', videoUrl);
+        video.load();
+
+        if (Hls.isSupported()) {
+          const hls = new Hls({
+            maxMaxBufferLength: 100
+          });
+
+          hls.loadSource(videoUrl);
+          hls.attachMedia(video);
+          window.hls = hls;
+
+          hls.on(Hls.Events.MANIFEST_PARSED, function () {
+            const availableQualities = hls.levels.map(level => level.height).sort((a, b) => a - b);
+
+            // Start in auto quality mode
+            hls.currentLevel = -1;
+
+            const player = new Plyr(video, {
+              quality: {
+                default: availableQualities[availableQualities.length - 1],
+                options: availableQualities,
+                forced: false,
+                onChange: quality => {
+                  const level = hls.levels.findIndex(level => level.height === quality);
+                  hls.currentLevel = level;
+                }
+              }
+            });
+          });
+        } else {
+          // Fallback if HLS not supported (e.g., Safari)
+          new Plyr(video);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
