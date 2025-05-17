@@ -117,7 +117,7 @@
             streamBtn.className = "stream-button";
             streamBtn.textContent = `Player ${i + 1}`;
             streamBtn.onclick = () => {
-              const finalURL = `https://live.mrgamingstream.net/mdp3#id=${urlData.url}&key=${key}&keyid=${keyid}`;
+              const finalURL = `https://live.mrgamingstream.net/mdp3?id=${urlData.url}&key=${key}&keyid=${keyid}`;
               window.open(finalURL, '_blank');
             };
             streamsDiv.appendChild(streamBtn);
