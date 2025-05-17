@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Live Chat</title>
+  <style>
+    :root {
+      --primary-color: #3EA6FF;
+      --reply-color: #fa020f;
+      --background-dark: #0f0f0f;
+      --background-medium: #272727;
+      --border-color: #303030;
+      --text-color: #ffffff;
+      --text-secondary: #aaaaaa;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      height: 100%;
+    }
+
+    .chat-container {
+      width: 100%;
+      height: 100%;
+      max-height: 600px;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-color);
+      background: var(--background-dark);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .chat-header {
+      padding: 5px 15px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--background-dark);
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .settings-btn {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      transition: background 0.2s;
+      font-size: 16px;
+    }
+
+    .settings-btn:hover {
+      background: var(--background-medium);
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      scroll-behavior: smooth;
+    }
+
+    .message {
+      display: flex;
+      gap: 1px;
+      margin-bottom: 12px;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .message.reply {
+      margin-left: 48px;
+      position: relative;
+    }
+
+    .message.reply::before {
+      content: "";
+      position: absolute;
+      left: -32px;
+      top: 24px;
+      width: 24px;
+      height: 1px;
+      background: var(--reply-color);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .message-content {
+      flex: 1;
+    }
+
+    .message-header {
+      display: flex;
+      align-items: center;
+      gap: 0px;
+      margin-bottom: 0px;
+    }
+
+    .username {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .timestamp {
+      color: var(--text-secondary);
+      font-size: 10px;
+    }
+
+    .message-text {
+      background: var(--background-medium);
+      padding: 6px 12px;
+      border-radius: 18px;
+      display: inline-block;
+      max-width: 100%;
+      word-break: break-word;
+      line-height: 1;
+      font-size: 13px; /* Added font size */
+    }
+
+    .reply-indicator {
+      font-size: 12px;
+      color: var(--primary-color);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .reply-btn {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      cursor: pointer;
+      font-size: 10px;
+      padding: 2px 4px;
+      margin-top: 4px;
+    }
+
+    .chat-input {
+      padding: 5px;
+      border-top: 1px solid var(--border-color);
+      background: var(--background-dark);
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    #message-input {
+      flex: 1;
+      padding: 8px 10px;
+      border: none;
+      border-radius: 40px;
+      background: var(--background-medium);
+      color: var(--text-color);
+      resize: none;
+      min-height: 25px;
+      font-family: inherit;
+    }
+
+    #message-input:focus {
+      outline: 3px solid var(--primary-color);
+    }
+
+    #send-button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: opacity 0.2s;
+    }
+
+    #send-button:hover {
+      opacity: 0.9;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.95);
+      padding: -20px;
+      border-radius: 10px;
+      color: white;
+      text-align: center;
+      z-index: 1000;
+      width: 80%;
+      max-width: 400px;
+      border: 10px solid var(--border-color);
+    }
+
+    .modal h3 {
+      margin-bottom: 1px;
+    }
+
+    .modal input {
+      padding: 15px;
+      margin: 12px 0;
+      width: 60%;
+      background: var(--background-medium);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-family: inherit;
+    }
+
+    .modal button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .modal button:hover {
+      opacity: 0.9;
+    }
+
+    @media (max-width: 480px) {
+      .chat-container {
+        max-height: none;
+        height: 100vh;
+        border-radius: 0;
+      }
+      
+      .message {
+        gap: 5px;
+      }
+      
+      .user-avatar {
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+      }
+      
+      .message.reply {
+        margin-left: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="header-title">
+        <span>⚡</span>
+        <span>Live Chat</span>
+      </div>
+      <button class="settings-btn" onclick="showUsernameModal()">⚙️</button>
+    </div>
+    <div class="chat-messages" id="chat-messages"></div>
+    <!-- Change the chat-input section to this -->
+<div class="chat-input">
+  <textarea 
+    id="message-input" 
+    placeholder="Type your message..." 
+    maxlength="200"
+    rows="1"
+  ></textarea>
+  <button id="send-button">Send</button>
+</div>
+  </div>
+
+  <div id="username-modal" class="modal">
+    <h3>Enter Your Name</h3>
+    <input type="text" id="username-input" placeholder="Enter name" maxlength="20" />
+    <br>
+    <button onclick="setUsername()">Join Chat</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded, query, limitToLast, remove } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCY9naMDqRwB85xWuVrIGZ2a4RirsK9YKo",
+      authDomain: "yonotvchat.firebaseapp.com",
+      databaseURL: "https://yonotvchat-default-rtdb.firebaseio.com",
+      projectId: "yonotvchat",
+      storageBucket: "yonotvchat.firebasestorage.app",
+      messagingSenderId: "6864259825",
+      appId: "1:6864259825:web:c5fd1dd33d853cc8f67750",
+      measurementId: "G-W38MTCC9VZ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const messagesRef = ref(database, 'messages');
+    const messagesContainer = document.getElementById('chat-messages');
+    let currentReplyParent = null;
+
+    // User management
+    let currentUser = {
+      name: localStorage.getItem('chatUsername') || '',
+      color: ''
+    };
+
+    function generateColor(username) {
+      let hash = 0;
+      for (let i = 0; i < username.length; i++) {
+        hash = username.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return `hsl(${Math.abs(hash) % 360}, 70%, 45%)`;
+    }
+
+    function showUsernameModal() {
+      const modal = document.getElementById('username-modal');
+      const usernameInput = document.getElementById('username-input');
+      usernameInput.value = currentUser.name;
+      modal.style.display = 'block';
+      usernameInput.focus();
+    }
+
+    function setUsername() {
+      const usernameInput = document.getElementById('username-input');
+      const newName = usernameInput.value.trim();
+      if (newName) {
+        currentUser.name = newName;
+        currentUser.color = generateColor(currentUser.name);
+        localStorage.setItem('chatUsername', currentUser.name);
+        document.getElementById('username-modal').style.display = 'none';
+      }
+    }
+
+    // Message handling
+    function sendMessage(text) {
+      if (!text.trim() || !currentUser.name) return;
+
+      const messageData = {
+        text: text.trim(),
+        user: currentUser.name,
+        color: currentUser.color,
+        timestamp: Date.now()
+      };
+
+      if (currentReplyParent) {
+        messageData.parent = currentReplyParent;
+        messageData.parentUser = document.querySelector(`[data-key="${currentReplyParent}"] .username`).textContent;
+        currentReplyParent = null;
+      }
+
+      push(messagesRef, messageData);
+      document.getElementById('message-input').value = '';
+    }
+
+    // Create message element
+    function createMessageElement(data) {
+      const messageEl = document.createElement('div');
+      messageEl.className = `message${data.parent ? ' reply' : ''}`;
+      messageEl.dataset.key = data.key;
+
+      messageEl.innerHTML = `
+        <div class="user-avatar" style="background:${data.color}">
+          ${data.user.charAt(0).toUpperCase()}
+        </div>
+        <div class="message-content">
+          <div class="message-header">
+            <span class="username">${data.user}</span>
+            <span class="timestamp">${formatTime(data.timestamp)}</span>
+          </div>
+          ${data.parent ? `<div class="reply-indicator">↩ Replying to ${data.parentUser}</div>` : ''}
+          <div class="message-text">${data.text}</div>
+          <button class="reply-btn" onclick="prepareReply('${data.key}')">Reply</button>
+        </div>
+      `;
+
+      return messageEl;
+    }
+
+    function formatTime(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // Real-time listener
+    onChildAdded(query(messagesRef, limitToLast(100)), (snapshot) => {
+      const data = snapshot.val();
+      data.key = snapshot.key;
+      
+      // Check if message is older than 24 hours
+      const now = Date.now();
+      if (now - data.timestamp > 24 * 60 * 60 * 1000) {
+        remove(ref(database, `messages/${data.key}`));
+        return;
+      }
+      
+      messagesContainer.appendChild(createMessageElement(data));
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
+
+    // Input handling
+    const textarea = document.getElementById('message-input');
+    document.getElementById('send-button').addEventListener('click', () => {
+      sendMessage(textarea.value);
+    });
+
+    textarea.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage(e.target.value);
+      }
+    });
+
+    // Auto-resize textarea
+    textarea.addEventListener('input', () => {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    });
+
+    // Initialize user
+    if (!currentUser.name) {
+      showUsernameModal();
+    } else {
+      currentUser.color = generateColor(currentUser.name);
+    }
+
+    // Expose functions to global scope
+    window.prepareReply = (key) => {
+      const messageEl = document.querySelector(`[data-key="${key}"]`);
+      const username = messageEl.querySelector('.username').textContent;
+      textarea.value = ` `;
+      textarea.focus();
+      currentReplyParent = key;
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    };
+    window.showUsernameModal = showUsernameModal;
+    window.setUsername = setUsername;
+  </script>
+</body>
+</html>
