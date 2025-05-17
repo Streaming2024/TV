@@ -25,7 +25,7 @@
       color: #fff;
       overflow: hidden;
       position: relative;
-      margin-bottom: 20px; /* Add gap between iframe and legal disclaimer */
+      margin-bottom: 10px;
     }
 
     #iframe {
@@ -50,7 +50,7 @@
     }
 
     .MyButton:hover {
-      background: linear-gradient(to bottom, #45a049, #3d8b40);
+      background: linear-gradient(to bottom, #023cf7, #22ff05);
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
@@ -73,7 +73,16 @@
       background-color: #023cf7;
       padding: 5px;
       font-weight: bold;
-      margin-top: 1px; /* Add some margin between iframe and disclaimer */
+      margin-top: 1px;
+    }
+
+    /* Ensure fullscreen fills entire screen */
+    #container:fullscreen,
+    #container:-webkit-full-screen,
+    #container:-moz-full-screen,
+    #container:-ms-fullscreen {
+      width: 100vw;
+      height: 100vh;
     }
   </style>
 </head>
@@ -87,15 +96,28 @@
     <input class="MyButton" onclick="window.location.reload()" type="button" value="Refresh LIVE" />
   </center>
 
+  <!----------------TOP ADS...HERE------------------>
+  <center>
+    <script type="text/javascript">
+      atOptions = {
+        'key': '30099acc1f859db497ee36d0e8a18597',
+        'format': 'iframe',
+        'height': 50,
+        'width': 320,
+        'params': {}
+      };
+    </script>
+    <script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
+  </center>
+
   <div id="container">
-    <iframe id="iframe" sandbox="allow-scripts allow-forms allow-same-origin" allow="encrypted-media; autoplay" allowfullscreen scrolling="no"></iframe>
+    <iframe id="iframe" allow="encrypted-media; autoplay" sandbox="allow-scripts allow-forms allow-same-origin" allowfullscreen webkitallowfullscreen mozallowfullscreen scrolling="no"></iframe>
     <button id="fullscreenBtn" class="MyButton">⛶ Fullscreen</button>
   </div>
 
   <div id="jwPlayer" style="display:none;"></div>
 
   <script>
-    // Detect src or url from query
     const urlParams = new URLSearchParams(window.location.search);
     const srcParam = urlParams.get('src');
     const videoUrl = urlParams.get('url');
@@ -111,45 +133,62 @@
       document.getElementById('iframe').style.display = 'none';
     }
 
-    // Fullscreen Button Behavior
+    // Fullscreen for container to support iOS, Android, Desktop
     document.getElementById("fullscreenBtn").addEventListener("click", function () {
-      const iframe = document.getElementById("iframe");
+      const container = document.getElementById("container");
 
-      if (iframe.requestFullscreen) {
-        iframe.requestFullscreen();
-      } else if (iframe.webkitRequestFullscreen) {
-        iframe.webkitRequestFullscreen();
-      } else if (iframe.msRequestFullscreen) {
-        iframe.msRequestFullscreen();
+      if (container.requestFullscreen) {
+        container.requestFullscreen();
+      } else if (container.webkitRequestFullscreen) {
+        container.webkitRequestFullscreen();
+      } else if (container.mozRequestFullScreen) {
+        container.mozRequestFullScreen();
+      } else if (container.msRequestFullscreen) {
+        container.msRequestFullscreen();
       }
 
-      // Lock to landscape on mobile
+      // Lock orientation to landscape (only works on mobile)
       if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock("landscape").catch(err => {
-          console.log("Orientation lock not supported", err);
+        screen.orientation.lock("landscape").catch((err) => {
+          console.log("Orientation lock not supported:", err.message);
         });
       }
 
-      // Hide the fullscreen button
       this.style.display = "none";
     });
 
-    // Show button again when exiting fullscreen
-    document.addEventListener("fullscreenchange", function () {
-      if (!document.fullscreenElement) {
-        document.getElementById("fullscreenBtn").style.display = "block";
-      }
+    // Show button again on exit fullscreen
+    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(function (eventType) {
+      document.addEventListener(eventType, function () {
+        const isFull = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+        if (!isFull) {
+          document.getElementById("fullscreenBtn").style.display = "block";
+        }
+      });
     });
   </script>
 
-<!----------------CHAT BOX HERE------------------>
-<iframe height="440px"  width="100%" src="https://live.mrgamingstream.net/chat"></iframe>
-  
+  <!----------------ADS CENTER------------------>
+  <center>
+    <script type="text/javascript">
+      atOptions = {
+        'key': '30099acc1f859db497ee36d0e8a18597',
+        'format': 'iframe',
+        'height': 50,
+        'width': 320,
+        'params': {}
+      };
+    </script>
+    <script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
+  </center>
+ <!----------------CHAT BOX HERE------------------>
+<iframe height="440px"  width="100%" src="https://live.mrgamingstream.net/chat3"></iframe>
+
   <div class="disclaimer">Legal Disclaimer</div>
   <div><b>Content Hosting:</b> YoNo TV does not host or upload any video content. All streams are embedded from publicly available third-party sources.</div>
-  <div><b>Copyright Notice:</b> All trademarks, logos, and media belong to their respective owners.</div>
-  <div><b>Legal Responsibility:</b> Users must ensure content access legality in their region.</div>
-  <div><b>DMCA Compliance:</b> Contact hosting providers directly. We will honor proper DMCA requests.</div>
+  <div><b>Copyright Notice:</b> We do not claim ownership of any content displayed on this platform. All trademarks, logos, and media belong to their respective owners.</div>
+  <div><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties. Users must ensure content access legality in their region.</div>
+  <div><b>DMCA Compliance:</b> If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</div>
 
   <center>
     <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
