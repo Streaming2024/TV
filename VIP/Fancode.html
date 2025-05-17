@@ -19,7 +19,7 @@
     }
     .matches-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       gap: 1rem;
     }
     .match {
@@ -89,14 +89,18 @@
         div.appendChild(img);
 
         if (match.status === "LIVE") {
-          const playButton = document.createElement("button");
-          playButton.className = "play-button";
-          playButton.textContent = "Play Now";
-          playButton.onclick = () => {
-            const finalURL = `https://live.mrgamingstream.net/Player/plyrr1?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=${encodeURIComponent(match.adfree_url)}`;
-            window.open(finalURL, '_blank');
-          };
-          div.appendChild(playButton);
+          if (match.adfree_url) {
+            const playButton = document.createElement("button");
+            playButton.className = "play-button";
+            playButton.textContent = "Play Now";
+            playButton.onclick = () => {
+              const finalURL = 
+                "https://live.mrgamingstream.net/Player/plyrr1?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=" 
+                + match.adfree_url;
+              window.open(finalURL, '_blank');
+            };
+            div.appendChild(playButton);
+          }
           liveMatchesDiv.appendChild(div);
         } else if (match.status === "UPCOMING") {
           const startTime = document.createElement("div");
