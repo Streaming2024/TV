@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TV Live Streaming Online</title>
+  <meta name="keywords" content="live streaming, online TV, watch shows online, cryptocurrency news, top cryptocurrencies">
+  <meta content="width=device-width,minimum-scale=1,initial-scale=1" name="viewport"/>
+  <meta name="description" content="YoNoTV provides live updates, highlights, predictions, previews, and schedules for cricket, football, and other sports.">
+  <link href="https://live.mrgamingstream.net/logo/favicon.png" rel="icon" type="image/x-icon"/>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://live.mrgamingstream.net/Scripts/clicks.js"></script>
+  <script src="https://live.mrgamingstream.net/Scripts/jwplayer.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    #container {
+      width: 100%;
+      height: 500px;
+      background: #0a0a0a;
+      color: #fff;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    #iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .MyButton {
+      padding: 5px 10px;
+      background: linear-gradient(to bottom, #fc0019, #fc0019);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      margin: 3px 0px;
+    }
+
+    .MyButton:hover {
+      background: linear-gradient(to bottom, #023cf7, #22ff05);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .MyButton:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+    }
+
+    #fullscreenBtn {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      z-index: 9999;
+    }
+
+    .disclaimer {
+      text-align: center;
+      color: #fff;
+      background-color: #023cf7;
+      padding: 5px;
+      font-weight: bold;
+      margin-top: 1px;
+    }
+
+    /* Ensure fullscreen fills entire screen */
+    #container:fullscreen,
+    #container:-webkit-full-screen,
+    #container:-moz-full-screen,
+    #container:-ms-fullscreen {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+
+<body onload="init()">
+
+<div class="container">
+  <div class="disclaimer">Wait for Loading & Skip 1–2 ads (press back)</div>
+
+  <center>
+    <input class="MyButton" onclick="window.location.reload()" type="button" value="Refresh LIVE" />
+  </center>
+
+  <!----------------TOP ADS...HERE------------------>
+  <center>
+    <script type="text/javascript">
+      atOptions = {
+        'key': '30099acc1f859db497ee36d0e8a18597',
+        'format': 'iframe',
+        'height': 50,
+        'width': 320,
+        'params': {}
+      };
+    </script>
+    <script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
+  </center>
+
+  <div id="container">
+    <iframe id="iframe" allow="encrypted-media; autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen scrolling="no"></iframe>
+    <button id="fullscreenBtn" class="MyButton">⛶ Fullscreen</button>
+  </div>
+
+  <div id="jwPlayer" style="display:none;"></div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const srcParam = urlParams.get('src');
+    const videoUrl = urlParams.get('url');
+
+    if (srcParam) {
+      document.getElementById('iframe').src = srcParam;
+    } else if (videoUrl) {
+      jwplayer("jwPlayer").setup({
+        file: videoUrl,
+        width: "100%",
+        height: 480
+      });
+      document.getElementById('iframe').style.display = 'none';
+    }
+
+    // Fullscreen for container to support iOS, Android, Desktop
+    document.getElementById("fullscreenBtn").addEventListener("click", function () {
+      const container = document.getElementById("container");
+
+      if (container.requestFullscreen) {
+        container.requestFullscreen();
+      } else if (container.webkitRequestFullscreen) {
+        container.webkitRequestFullscreen();
+      } else if (container.mozRequestFullScreen) {
+        container.mozRequestFullScreen();
+      } else if (container.msRequestFullscreen) {
+        container.msRequestFullscreen();
+      }
+
+      // Lock orientation to landscape (only works on mobile)
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("landscape").catch((err) => {
+          console.log("Orientation lock not supported:", err.message);
+        });
+      }
+
+      this.style.display = "none";
+    });
+
+    // Show button again on exit fullscreen
+    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(function (eventType) {
+      document.addEventListener(eventType, function () {
+        const isFull = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+        if (!isFull) {
+          document.getElementById("fullscreenBtn").style.display = "block";
+        }
+      });
+    });
+  </script>
+
+  <!----------------ADS CENTER------------------>
+  <center>
+    <script type="text/javascript">
+      atOptions = {
+        'key': '30099acc1f859db497ee36d0e8a18597',
+        'format': 'iframe',
+        'height': 50,
+        'width': 320,
+        'params': {}
+      };
+    </script>
+    <script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
+  </center>
+ <!----------------CHAT BOX HERE------------------>
+<iframe height="440px"  width="100%" src="https://live.mrgamingstream.net/chat3"></iframe>
+
+  <div class="disclaimer">Legal Disclaimer</div>
+  <div><b>Content Hosting:</b> YoNo TV does not host or upload any video content. All streams are embedded from publicly available third-party sources.</div>
+  <div><b>Copyright Notice:</b> We do not claim ownership of any content displayed on this platform. All trademarks, logos, and media belong to their respective owners.</div>
+  <div><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties. Users must ensure content access legality in their region.</div>
+  <div><b>DMCA Compliance:</b> If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</div>
+
+  <center>
+    <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
+    <script type="text/javascript">sc_online_i(1704055,"ffffff","e61c1c");</script>
+    <br><noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
+  </center>
+</div>
+
+</body>
+</html>
