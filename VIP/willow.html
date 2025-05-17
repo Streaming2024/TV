@@ -13,18 +13,23 @@
       padding: 0;
     }
     .container {
-      max-width: 800px;
+      max-width: 1200px;
       margin: auto;
       padding: 1rem;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
     }
     .match {
       background: #1e1e1e;
       border-radius: 8px;
-      margin-bottom: 1rem;
       padding: 1rem;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      text-align: center;
     }
     .thumbnail {
       width: 100%;
@@ -42,18 +47,21 @@
       border-radius: 6px;
       cursor: pointer;
       font-size: 1rem;
+      margin-top: 0.5rem;
     }
     .stream-list {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
+      justify-content: center;
+      margin-top: 0.5rem;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Willow Live Matches</h2>
-    <div id="matches"></div>
+    <div id="matches" class="grid-container"></div>
   </div>
 
   <script>
