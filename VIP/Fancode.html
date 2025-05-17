@@ -13,14 +13,18 @@
       padding: 0;
     }
     .container {
-      max-width: 800px;
+      max-width: 1000px;
       margin: auto;
       padding: 1rem;
+    }
+    .matches-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
     }
     .match {
       background: #1e1e1e;
       border-radius: 8px;
-      margin-bottom: 1rem;
       padding: 1rem;
       display: flex;
       flex-direction: column;
@@ -55,10 +59,10 @@
     <h2>Fancode Live Matches</h2>
 
     <h3 class="section-header">Live Now</h3>
-    <div id="live-matches"></div>
+    <div id="live-matches" class="matches-grid"></div>
 
     <h3 class="section-header">Upcoming Matches</h3>
-    <div id="upcoming-matches"></div>
+    <div id="upcoming-matches" class="matches-grid"></div>
   </div>
 
   <script>
