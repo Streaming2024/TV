@@ -12536,19 +12536,20 @@
             commentatorNames = storedCommentatorNames;
         }
 
-      // Populate select options
-teamNamesAndLogos.forEach(function(team) {
+        // Populate select options
+        teamNamesAndLogos.forEach(function(team) {
     var homeOption = document.createElement('option');
     homeOption.text = team.name;
-    homeOption.value = team.name; // <-- Set value attribute!
+    homeOption.value = team.name;
+    homeOption.setAttribute('data-logo', team.logo); // ADD THIS LINE
     homeTeamSelect.add(homeOption);
 
     var awayOption = document.createElement('option');
     awayOption.text = team.name;
-    awayOption.value = team.name; // <-- Set value attribute!
+    awayOption.value = team.name;
+    awayOption.setAttribute('data-logo', team.logo); // ADD THIS LINE
     awayTeamSelect.add(awayOption);
 });
-        });
 
         leagueNames.forEach(function(league) {
             var option = document.createElement('option');
@@ -12575,12 +12576,17 @@ teamNamesAndLogos.forEach(function(team) {
             if (newTeamName && newTeamLogo) {
                 teamNamesAndLogos.push({ name: newTeamName, logo: newTeamLogo });
                 localStorage.setItem('teamNamesAndLogos', JSON.stringify(teamNamesAndLogos));
-                var newOption1 = document.createElement('option');
-                newOption1.text = newTeamName;
-                homeTeamSelect.add(newOption1);
-                var newOption2 = document.createElement('option');
-                newOption2.text = newTeamName;
-                awayTeamSelect.add(newOption2);
+               var newOption1 = document.createElement('option');
+newOption1.text = newTeamName;
+newOption1.value = newTeamName;
+newOption1.setAttribute('data-logo', newTeamLogo); // ADD THIS LINE
+homeTeamSelect.add(newOption1);
+
+var newOption2 = document.createElement('option');
+newOption2.text = newTeamName;
+newOption2.value = newTeamName;
+newOption2.setAttribute('data-logo', newTeamLogo); // ADD THIS LINE
+awayTeamSelect.add(newOption2);
                 $('#addTeamModal').modal('hide');
             }
         });
@@ -12755,10 +12761,6 @@ function formatTimeAMPM(dateTime) {
         const homeTeam = teamNamesAndLogos.find(team => team.name === homeTeamSelectValue);
         const awayTeam = teamNamesAndLogos.find(team => team.name === awayTeamSelectValue);
 
-           
-        const homeLogo = homeTeam ? homeTeam.logo : '';
-
-        const awayLogo = awayTeam ? awayTeam.logo : '';
        const previewHtml = 
 
            <!-- href="${postLinkValue}" -->
