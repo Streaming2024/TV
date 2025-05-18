@@ -66,7 +66,7 @@
 
   <script>
     async function loadMatches() {
-      const res = await fetch("https://raw.githubusercontent.com/drmlive/willow-live-events/ff19de3a5ce38bd9aaff61e23e73d11792911284/willow.json");
+      const res = await fetch("https://raw.githubusercontent.com/drmlive/willow-live-events/refs/heads/main/willow.json");
       const data = await res.json();
       const matchesDiv = document.getElementById("matches");
 
@@ -105,7 +105,7 @@
 
       if (streamsDiv.childElementCount > 0) return;
 
-      fetch("https://raw.githubusercontent.com/drmlive/willow-live-events/ff19de3a5ce38bd9aaff61e23e73d11792911284/willow.json")
+      fetch("https://raw.githubusercontent.com/drmlive/willow-live-events/refs/heads/main/willow.json")
         .then((res) => res.json())
         .then((data) => {
           const matchData = data.matches[index];
