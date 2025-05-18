@@ -39,77 +39,6 @@ body {
 <iframe id="player" loading="lazy" allowfullscreen></iframe>
   
 
-    
-<script>
-const channels = {
-//IPL2025
-hindi: "https://live.mrgamingstream.net/Player/jwads.html?src=https://play.footfy.xyz/cric/1/player.php?id=starhindi",    // IPLPPV
-hindi2: "https://live.mrgamingstream.net/Player/jwads.html?src=https://reduserx.ifrem.net/iframe/frame.php",    // IPL T20
-hindi3:  "https://live.mrgamingstream.net/Player/jwads.html?src=https://me.webcric.com/hindi.htm",    // IPL T20
-hindi4: "https://live.mrgamingstream.net/Player/jwads.html?src=https://play.footfy.xyz/cric/1/player.php?id=willowextra",    // IPL T20
-//FOOTFY LIVE
-
-sky: "https://live.mrgamingstream.net/Player/jwads.html?src=https://play.footfy.xyz/cric/1/player.php?id=skyscric",    // IPLPPV
-sky1: "https://live.mrgamingstream.net/Player/jwads.html?src=https://play.footfy.xyz/cric/1/player.php?id=star1in",    // IPL T20
-astro: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr?url=https://maxplay-tv.fun/cric.php?id=fox501",    // IPL T20
-   
-tsports: "https://live.mrgamingstream.net/mdp2?id=https://a99aivottepl-a.akamaihd.net/pdx-nitro/live/clients/dash/enc/bddbffo4cx/out/v1/c73bdd7f6a7441adbee2294cb6a2dc02/cenc.mpd&key=98d7d278031b3f0420b2f1fb583c1da1&keyid=c94fb563c0449c90e701100241c68f28",    // IPLPPV  // IPLPPV 
-
-sky11: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/mplyrr?url=https://wikihznew.newkso.ru/wikihz/wikicric1/mono.m3u8",
-sky22: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/mplyrr?url=https://top1-cdnnew.newkso.ru/top1-cdn/FyhUIxpQBd/mono.m3u8",    // IPL T20
-
-
-
-  //U19 FOOOT
-u19: "https://live.mrgamingstream.net/mdp3?id=https://ABGQJFUAAAAAAAAMCDPADDTSSLFBM.bcfe18adea144c378b20e6b5485e939e.emt.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/wzpciu2j5y/out/v1/c667ed163dd747a59c88a81d10b6a4db/cenc.mpd&key=ef94fda012a15d43bda732d2856d9487&keyid=ece9c98389916bb83f9c12544d90548e",  
-u19a: "https://live.mrgamingstream.net/mdp3?id=https://a163aivottepl-a.akamaihd.net/pdx-nitro/live/clients/dash/enc/iuh3zntdmm/out/v1/2b7a950a8a624ff0ad68c22adcf816dd/cenc.mpd&key=d55e79fdfcf3e98459938f674ed09159&keyid=f45a78625e41a525fb3ad51a2b91c1bd",  
-  
-  
-  //Nepal LIVE
-
-t10: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr1?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/125805_english_hls_56076ta-di_h264/index.m3u8",    // NEPAL
-nepal: "https://live.mrgamingstream.net/Player/jwads.html?src=https://www.youtube.com/embed/x2h75JpDiIs",    // NEPAL
-nepal2: "https://live.mrgamingstream.net/Player/jwads.html?src=https://www.youtube.com/embed/x2h75JpDiIs",    // NEPAL
-
-//Kasintv
-    
-fancode: "https://blogs231.github.io/apii/hls.html?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/125805_english_hls_56076ta-di_h264/index.m3u8",    // NEPAL
-rumble: "https://blogs231.github.io/apii/hls.html?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/125805_english_hls_56076ta-di_h264/index.m3u8",    // NEPAL  
-    
-    //ICC CWC 
-icc: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/foot?id=USAVSCA",    // ICC CWC
-icc2: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr1?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/124500_english_hls_14307ta-di_h264/index.m3u8",    // ICC CWC
-
-//WOMEN WC QF
-UAE: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr1?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/125493_english_hls_83824ta-di_h264/index.m3u8",    // WOMEN WC QF
-women: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr1?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/124524_english_hls_16942ta-di_h264/index.m3u8",    // WOMEN WC QF
-women2: "https://topembed.pw/channel/ex7973427 ",  
-
-   //PSL 2025 
-psl: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr1?url=https://stream2.aryzap.com/v1/018a8885b8951eb401a603639363/018a88860ada09831f17035d95dd/main.m3u8 ",     // NEPAL
-psl1: " https://live.mrgamingstream.net/mdp3?id=https://otte.live.fly.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/usbz98rrrb/out/v1/b07d1e28975644358f39450ae0feba6a/cenc.mpd&key=b723193f40639356893ae8c8dad27058&keyid=9eac6c35c35d9cb3487d9360ebb23c62",     // NEPAL
-
-
-  //WILLOW
-w: "https://topembed.pw/channel/WillowXtra2[USA] ",  
-w2: "https://topembed.pw/channel/WillowXtra[USA] ",  
-  
-
-};
-
-
-
-    
-const urlParams = new URLSearchParams(window.location.search);
-const channel = urlParams.get('id');
-function setChannel(channel) {
-const iframe = document.getElementById('player');
-iframe.src = channels[channel] || channels.tnt1;
-}
-setChannel(channel);
-</script>
-
-
 <script>
 (function() {
     // Redirect URL
@@ -182,6 +111,77 @@ setChannel(channel);
     detectDevTools();
 })();
 </script> 
+
+    
+<script>
+const channels = {
+//IPL2025
+hindi: "https://live.mrgamingstream.net/Player/jwads.html?src=https://play.footfy.xyz/cric/1/player.php?id=starhindi",    // IPLPPV
+hindi2: "https://live.mrgamingstream.net/Player/jwads.html?src=https://reduserx.ifrem.net/iframe/frame.php",    // IPL T20
+hindi3:  "https://live.mrgamingstream.net/Player/jwads.html?src=https://me.webcric.com/hindi.htm",    // IPL T20
+hindi4: "https://live.mrgamingstream.net/Player/jwads.html?src=https://play.footfy.xyz/cric/1/player.php?id=willowextra",    // IPL T20
+//FOOTFY LIVE
+
+sky: "https://live.mrgamingstream.net/Player/jwads.html?src=https://play.footfy.xyz/cric/1/player.php?id=skyscric",    // IPLPPV
+sky1: "https://live.mrgamingstream.net/Player/jwads.html?src=https://play.footfy.xyz/cric/1/player.php?id=star1in",    // IPL T20
+astro: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr?url=https://maxplay-tv.fun/cric.php?id=fox501",    // IPL T20
+   
+tsports: "https://live.mrgamingstream.net/mdp2?id=https://a99aivottepl-a.akamaihd.net/pdx-nitro/live/clients/dash/enc/bddbffo4cx/out/v1/c73bdd7f6a7441adbee2294cb6a2dc02/cenc.mpd&key=98d7d278031b3f0420b2f1fb583c1da1&keyid=c94fb563c0449c90e701100241c68f28",    // IPLPPV  // IPLPPV 
+
+sky11: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/mplyrr?url=https://wikihznew.newkso.ru/wikihz/wikicric1/mono.m3u8",
+sky22: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/mplyrr?url=https://top1-cdnnew.newkso.ru/top1-cdn/FyhUIxpQBd/mono.m3u8",    // IPL T20
+
+
+
+  //U19 FOOOT
+u19: "https://live.mrgamingstream.net/mdp3?id=https://ABGQJFUAAAAAAAAMCDPADDTSSLFBM.bcfe18adea144c378b20e6b5485e939e.emt.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/wzpciu2j5y/out/v1/c667ed163dd747a59c88a81d10b6a4db/cenc.mpd&key=ef94fda012a15d43bda732d2856d9487&keyid=ece9c98389916bb83f9c12544d90548e",  
+u19a: "https://live.mrgamingstream.net/mdp3?id=https://a163aivottepl-a.akamaihd.net/pdx-nitro/live/clients/dash/enc/iuh3zntdmm/out/v1/2b7a950a8a624ff0ad68c22adcf816dd/cenc.mpd&key=d55e79fdfcf3e98459938f674ed09159&keyid=f45a78625e41a525fb3ad51a2b91c1bd",  
+  
+  
+  //Nepal LIVE
+
+t10: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr1?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/125805_english_hls_56076ta-di_h264/index.m3u8",    // NEPAL
+nepal: "https://live.mrgamingstream.net/Player/jwads.html?src=https://www.youtube.com/embed/x2h75JpDiIs",    // NEPAL
+nepal2: "https://live.mrgamingstream.net/Player/jwads.html?src=https://www.youtube.com/embed/x2h75JpDiIs",    // NEPAL
+
+//Kasintv
+    
+fancode: "https://blogs231.github.io/apii/hls.html?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/125805_english_hls_56076ta-di_h264/index.m3u8",    // NEPAL
+rumble: "https://blogs231.github.io/apii/hls.html?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/125805_english_hls_56076ta-di_h264/index.m3u8",    // NEPAL  
+    
+    //ICC CWC 
+icc: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/foot?id=USAVSCA",    // ICC CWC
+icc2: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr1?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/124500_english_hls_14307ta-di_h264/index.m3u8",    // ICC CWC
+
+//WOMEN WC QF
+UAE: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr1?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/125493_english_hls_83824ta-di_h264/index.m3u8",    // WOMEN WC QF
+women: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr1?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/124524_english_hls_16942ta-di_h264/index.m3u8",    // WOMEN WC QF
+women2: "https://topembed.pw/channel/ex7973427 ",  
+
+   //PSL 2025 
+psl: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr1?url=https://stream2.aryzap.com/v1/018a8885b8951eb401a603639363/018a88860ada09831f17035d95dd/main.m3u8 ",     // NEPAL
+psl1: " https://live.mrgamingstream.net/mdp3?id=https://otte.live.fly.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/usbz98rrrb/out/v1/b07d1e28975644358f39450ae0feba6a/cenc.mpd&key=b723193f40639356893ae8c8dad27058&keyid=9eac6c35c35d9cb3487d9360ebb23c62",     // NEPAL
+
+
+  //WILLOW
+w: "https://topembed.pw/channel/WillowXtra2[USA] ",  
+w2: "https://topembed.pw/channel/WillowXtra[USA] ",  
+  
+
+};
+
+
+
+    
+const urlParams = new URLSearchParams(window.location.search);
+const channel = urlParams.get('id');
+function setChannel(channel) {
+const iframe = document.getElementById('player');
+iframe.src = channels[channel] || channels.tnt1;
+}
+setChannel(channel);
+</script>
+
 
 
     
