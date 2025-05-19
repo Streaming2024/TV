@@ -31,17 +31,17 @@
     function getQueryParams() {
       const params = new URLSearchParams(window.location.search);
       return {
-        file: params.get('file') || "https://ch11-hls-live.akamaized.net/out/u/433127.mpd",
+        file: params.get('id') || "https://ch11-hls-live.akamaized.net/out/u/433127.mpd",
         keyId: params.get('keyId') || "d12e4c9dc52f4cbab7ac9b2278317e47",
         key: params.get('key') || "a7987e5b6ec42db68a25486e108ca9f2"
       };
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-      const { file, key, key } = getQueryParams();
+      const { id, key,keyId } = getQueryParams();
 
       jwplayer("jwplayerDiv").setup({
-        file: file,
+        file: id,
         position: 'bottom',
         autostart: true,
         stretching: "",
