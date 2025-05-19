@@ -1,176 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
+  
 <head>
-    <title>WilloW TV</title>
-    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png" type="image/png" sizes="250x250">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.1.1/shaka-player.ui.min.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.1.1/controls.min.css" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <title> Player</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
 
-    <style>
-        /* Overflow menu style */
-        .shaka-overflow-menu {
-            background-color: rgb(41, 41, 163);
-            color: rgb(153, 153, 153);
-        }
+  <style>
+    body {
+      margin: 0px;
+    }
 
-        .shaka-overflow-menu button:hover {
-            background-color: rgb(45, 45, 45);
-        }
+    .jwplayer {
+      position: absolute !important;
+    }
 
-        .shaka-overflow-button-label {
-            color: rgb(245, 245, 245);
-        }
-
-        .shaka-current-selection-span {
-            color: rgb(202, 202, 202);
-        }
-
-        .material-icons-round {
-            color: rgb(230, 230, 230);
-        }
-
-        /* Overflow sub menu style */
-        .shaka-settings-menu {
-            background-color: rgb(35, 35, 35);
-            color: rgb(255, 255, 255);
-        }
-
-        .shaka-settings-menu button {
-            color: rgb(255, 255, 255);
-        }
-
-        .shaka-settings-menu button:hover {
-            background-color: rgb(45, 45, 45);
-        }
-    </style>
+    .jwplayer.jw-flag-aspect-mode {
+      min-height: 100%;
+      max-height: 100%;
+    }
+  </style>
 </head>
 
-<body bgcolor="black" style="margin:0">
-    <center>
-        <div data-shaka-player-container style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover">
-            <video autoplay playsinline data-shaka-player id="video"
-                poster="https://www.disneystar.com/media/2231/7e25132017-009.jpg?width=1920&height=1080&mode=max&slimmage=true"
-                style="width:100%;height:100%"></video>
-        </div>
-    </center>
+<body>
+  <div id="jwplayerDiv"></div>
+  <script type="text/javascript">
+    function getQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        file: params.get('file') || "https://ch11-hls-live.akamaized.net/out/u/433127.mpd",
+        keyId: params.get('keyId') || "d12e4c9dc52f4cbab7ac9b2278317e47",
+        key: params.get('key') || "a7987e5b6ec42db68a25486e108ca9f2"
+      };
+    }
 
-    <script>
-        function getQueryParams() {
-            const params = {};
-            location.search.substr(1).split("&").forEach(function (part) {
-                if (!part) return;
-                const item = part.split("=");
-                params[item[0].toLowerCase()] = decodeURIComponent(item[1] || "");
-            });
-            return params;
+    document.addEventListener("DOMContentLoaded", function () {
+      const { file, key, key } = getQueryParams();
+
+      jwplayer("jwplayerDiv").setup({
+        file: file,
+        position: 'bottom',
+        autostart: true,
+        stretching: "",
+        width: "100%",
+        type: "dash",
+        drm: {
+          clearkey: {
+            keyId: keyId,
+            key: key
+          }
         }
-
-        async function init() {
-            const params = getQueryParams();
-            const manifestUrl = params.id || params.ID;
-            const clearKey = params.key;
-            const keyId = params.keyid;
-
-            if (!manifestUrl || !clearKey || !keyId) {
-                alert("Missing URL parameters! Please provide id, key, and keyid.");
-                return;
-            }
-
-            let videoElement = document.getElementById("video"),
-                ui = videoElement.ui,
-                controls = ui.getControls(),
-                player = controls.getPlayer();
-
-            player.configure({
-                drm: {
-                    clearKeys: {
-                        [keyId]: clearKey
-                    }
-                },
-                streaming: {
-                    startAtSegmentBoundary: true,
-                    ignoreTextStreamFailures: true,
-                    rebufferingGoal: 1,
-                    bufferingGoal: 3,
-                    bufferBehind: 5,
-                    autoLowLatencyMode: true,
-                    lowLatencyMode: true,
-                    jumpLargeGaps: true,
-                    inaccurateManifestTolerance: 0.3,
-                    stallEnabled: false
-                },
-                manifest: {
-                    dash: {
-                        ignoreMinBufferTime: true,
-                        autoCorrectDrift: true
-                    }
-                },
-                abr: {
-                    enabled: true // Keep auto-switching enabled
-                }
-            });
-
-            ui.configure({
-                controlPanelElements: ["play_pause", "mute", "volume", "spacer", "time_and_duration", "quality", "fullscreen", "overflow_menu"],
-                volumeBarColors: { base: 'rgba(63, 187, 1, 1)', level: 'rgb(255, 69, 0)' },
-                seekBarColors: { base: 'rgb(41, 41, 163)', buffered: 'rgb(35, 99, 3)', played: 'rgba(63, 187, 1, 1)' }
-            });
-
-            window.player = player;
-            window.ui = ui;
-
-            player.addEventListener("error", onPlayerErrorEvent);
-            controls.addEventListener("error", onUIErrorEvent);
-
-            try {
-                await player.load(manifestUrl);
-                console.log("Video loaded:", manifestUrl);
-
-                const tracks = player.getVariantTracks();
-                const allowedHeights = [540, 396];
-                const allowedTracks = tracks.filter(track => allowedHeights.includes(track.height));
-
-                // Remove disallowed tracks
-                tracks.forEach(track => {
-                    if (!allowedHeights.includes(track.height)) {
-                        player.removeVariantTrack(track);
-                    }
-                });
-
-                // Optionally force start at 540p
-                const preferredTrack = allowedTracks.find(track => track.height === 540) || allowedTracks[0];
-                if (preferredTrack) {
-                    await player.selectVariantTrack(preferredTrack, /* clearBuffer= */ true);
-                }
-
-            } catch (error) {
-                onPlayerError(error);
-            }
-        }
-
-        function onPlayerErrorEvent(event) {
-            onPlayerError(event.detail);
-        }
-
-        function onPlayerError(error) {
-            console.error("Error code", error.code, "object", error);
-            alert("Error loading video. Check console for details.");
-        }
-
-        function onUIErrorEvent(event) {
-            onPlayerError(event.detail);
-        }
-
-        function initFailed() {
-            console.error("Unable to load the UI library!");
-            alert("Player UI failed to load.");
-        }
-
-        document.addEventListener("shaka-ui-loaded", init);
-        document.addEventListener("shaka-ui-load-failed", initFailed);
-    </script>
+      });
+    });
+  </script>
 </body>
 
 </html>
