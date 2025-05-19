@@ -39,79 +39,6 @@ body {
 <iframe id="player" loading="lazy" allowfullscreen></iframe>
   
 
-<script>
-(function() {
-    // Redirect URL
-    const redirectURL = &#39;https://live.mrgamingstream.net/VIP/ads.html&#39;;
-
-    // Function to redirect user
-    function redirectToURL() {
-        window.location.href = redirectURL;
-    }
-
-    // Block right-click context menu
-    document.addEventListener(&#39;contextmenu&#39;, function(event) {
-        event.preventDefault();
-        redirectToURL();
-    });
-
-    // Block specific key combinations and DevTools
-    document.addEventListener(&#39;keydown&#39;, function(event) {
-        const blockedKeys = [
-            { key: &#39;a&#39;, ctrl: true },  
-            { key: &#39;c&#39;, ctrl: true },  
-            { key: &#39;x&#39;, ctrl: true },  
-            { key: &#39;u&#39;, ctrl: true },  
-            { key: &#39;s&#39;, ctrl: true },  
-            { key: &#39;p&#39;, ctrl: true },  
-            { key: &#39;i&#39;, ctrl: true, shift: true },  
-            { key: &#39;j&#39;, ctrl: true, shift: true },  
-            { key: &#39;k&#39;, ctrl: true, shift: true },  
-            { key: &#39;c&#39;, ctrl: true, shift: true }  
-        ];
-
-        for (const combo of blockedKeys) {
-            if (event.key.toLowerCase() === combo.key.toLowerCase() &amp; 
-                (combo.ctrl &amp; (event.ctrlKey || event.metaKey)) &amp; 
-                (!combo.shift || event.shiftKey)) {
-                event.preventDefault();
-                redirectToURL();
-                return;
-            }
-        }
-
-        // Block F12 (DevTools)
-        if (event.key === &#39;F12&#39;) {
-            event.preventDefault();
-            redirectToURL();
-        }
-    });
-
-    // Function to detect if DevTools is open
-    function detectDevTools() {
-        const threshold = 160; // Example threshold, may need adjustment
-        let isDevToolsOpen = false;
-
-        function checkDevTools() {
-            const devToolsOpen = window.outerWidth - window.innerWidth &gt; threshold ||
-                                 window.outerHeight - window.innerHeight &gt; threshold;
-
-            if (devToolsOpen &amp; !isDevToolsOpen) {
-                isDevToolsOpen = true;
-                redirectToURL();
-            } else if (!devToolsOpen) {
-                isDevToolsOpen = false;
-            }
-        }
-
-        setInterval(checkDevTools, 1000); // Check every second
-    }
-
-    // Run the DevTools detection
-    detectDevTools();
-})();
-</script> 
-
     
 <script>
 const channels = {
@@ -140,7 +67,7 @@ u19a: "https://live.mrgamingstream.net/mdp3?id=https://a163aivottepl-a.akamaihd.
   
   //Nepal LIVE
 
-t10: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr1?url=https://cors-proxy.cooks.fyi/https://fancode.mafiatv.live/proxy.php?url=https://dai.fancode.com/primary/125808_english_hls_33622ta-di_h264/index.m3u8",    // NEPAL
+t10: "https://live.mrgamingstream.net/Player/jwads.html?src=https://live.mrgamingstream.net/Player/plyrr1?url=https://tv.onlinetvbd.com/fancode/global/primary/125808_english_hls_33622ta-di_h264/index.m3u8",    // NEPAL
 nepal: "https://live.mrgamingstream.net/Player/jwads.html?src=https://www.youtube.com/embed/x2h75JpDiIs",    // NEPAL
 nepal2: "https://live.mrgamingstream.net/Player/jwads.html?src=https://www.youtube.com/embed/x2h75JpDiIs",    // NEPAL
 
