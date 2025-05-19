@@ -1,51 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-
-  
 <head>
   <meta charset="UTF-8">
-  <title> Player</title>
+  <title>MPD Player</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
-
   <style>
     body {
-      margin: 0px;
+      margin: 0;
+      background: black;
+      overflow: hidden;
     }
 
-    .jwplayer {
-      position: absolute !important;
+    #jwplayerDiv {
+      width: 100%;
+      height: 100vh;
+      position: relative;
     }
 
-    .jwplayer.jw-flag-aspect-mode {
-      min-height: 100%;
-      max-height: 100%;
+    #loadingOverlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      text-align: center;
     }
   </style>
 </head>
-
 <body>
-  <div id="jwplayerDiv"></div>
+  <div id="jwplayerDiv">
+    <div id="loadingOverlay">Video is loading... please wait 30 seconds</div>
+  </div>
+
   <script type="text/javascript">
     function getQueryParams() {
       const params = new URLSearchParams(window.location.search);
       return {
         file: params.get('id') || "https://ch11-hls-live.akamaized.net/out/u/433127.mpd",
-        keyId: params.get('keyId') || "d12e4c9dc52f4cbab7ac9b2278317e47",
-        key: params.get('key') || "a7987e5b6ec42db68a25486e108ca9f2"
+        key: params.get('key') || "a7987e5b6ec42db68a25486e108ca9f2",
+        keyId: params.get('keyid') || "d12e4c9dc52f4cbab7ac9b2278317e47"
       };
     }
 
+    function hideOverlayAfterDelay(delay = 30000) {
+      setTimeout(() => {
+        const overlay = document.getElementById("loadingOverlay");
+        if (overlay) overlay.style.display = "none";
+      }, delay);
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
-      const { id, key,keyId } = getQueryParams();
+      const { file, key, keyId } = getQueryParams();
 
       jwplayer("jwplayerDiv").setup({
-        file: id,
+        file: file,
         position: 'bottom',
         autostart: true,
         stretching: "",
         width: "100%",
+        height: "100%",
         type: "dash",
         drm: {
           clearkey: {
@@ -54,8 +76,9 @@
           }
         }
       });
+
+      hideOverlayAfterDelay(30000); // Hide after 30 seconds
     });
   </script>
 </body>
-
 </html>
