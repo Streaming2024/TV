@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Stream Player</title>
+  <script src="https://content.jwplatform.com/libraries/KB5zFt7A.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@hola.org/jwplayer-hlsjs@latest/dist/jwplayer.hlsjs.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: black;
+      overflow: hidden;
+    }
+    #player {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="player"></div>
+
+  <script>
+    function getURLParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    const streamURL = getURLParam("src");
+    if (streamURL) {
+      jwplayer("player").setup({
+        file: streamURL,
+        width: "100%",
+        height: "100%",
+        autostart: true,
+        mute: false
+      });
+    } else {
+      document.body.innerHTML = "<p style='color:white;text-align:center;margin-top:20%;font-family:sans-serif;'>No stream URL provided.</p>";
+    }
+  </script>
+</body>
+</html>
