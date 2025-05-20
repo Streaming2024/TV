@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Secure Video Player</title>
+  <style>
+    /* Make sure everything fills the screen */
+    html, body, #player-container, iframe {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #player-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: #000;
+    }
+    iframe {
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+    .error {
+      color: white;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div id="player-container"></div>
+
+<script>
+  (function () {
+    const allowedHost = "live.mrgamingstream.net";
+    const currentHost = window.location.hostname;
+
+    // Redirect if embedded or not on your domain
+    if (window !== window.top || currentHost !== allowedHost) {
+      window.location.href = "https://www.yonotvsports.com/";
+    }
+  })();
+</script>
+
+<script>
+  (async function () {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    if (!id) {
+      document.getElementById('player-container').innerHTML = `<div class="error">Error: No channel ID specified.</div>`;
+      return;
+    }
+
+    try {
+      const res = await fetch("https://raw.githubusercontent.com/abusaeeidx/CricHd-playlists-Auto-Update-permanent/main/api.json");
+      const list = await res.json();
+      const channel = list.find(ch => ch.id === id);
+
+      if (!channel) {
+        document.getElementById('player-container').innerHTML = `<div class="error">Channel not found: ${id}</div>`;
+        return;
+      }
+
+      const src = encodeURIComponent(channel.link);
+      const url = `https://anym3u8player.com/tv/video-player.php?url=${src}`;
+      document.getElementById('player-container').innerHTML = `<iframe src="${url}" allowfullscreen></iframe>`;
+    } catch (e) {
+      document.getElementById('player-container').innerHTML = `<div class="error">Failed to load channel list.</div>`;
+    }
+  })();
+</script>
+
+<!-- Disable inspect / view-source -->
+<script>
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.onkeydown = e => (
+    e.keyCode === 123 ||                                            // F12
+    (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) ||  // Ctrl+Shift+I/J/C
+    (e.ctrlKey && e.key === 'U')                                    // Ctrl+U
+  ) ? false : undefined;
+</script>
+
+</body>
+</html>
