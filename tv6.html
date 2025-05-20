@@ -2,94 +2,118 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Secure Video Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Channels & Player</title>
   <style>
-    /* Make sure everything fills the screen */
-    html, body, #player-container, iframe {
+    body {
       margin: 0;
-      padding: 0;
-      border: 0;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-    }
-    #player-container {
-      position: fixed;
-      top: 0;
-      left: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
       background: #000;
+      color: #fff;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .channel {
+      background: #111;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      padding: 10px;
+      transition: transform 0.2s ease;
+      color: #ddd;
+      text-decoration: none;
+      display: block;
+    }
+    .channel:hover {
+      transform: scale(1.05);
+      background: #222;
+    }
+    .channel img {
+      max-width: 100%;
+      height: 90px;
+      object-fit: contain;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      background: #222;
+      padding: 5px;
     }
     iframe {
-      position: fixed;
-      top: 0;
-      left: 0;
+      border: none;
+      width: 100%;
+      height: 100vh;
+      display: block;
     }
     .error {
       color: white;
       text-align: center;
+      padding-top: 50px;
       font-family: Arial, sans-serif;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
     }
   </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
+  <div id="content"></div>
 
-<div id="player-container"></div>
-
-<script>
-  (function () {
-    const allowedHost = "live.mrgamingstream.net";
-    const currentHost = window.location.hostname;
-
-    // Redirect if embedded or not on your domain
-    if (window !== window.top || currentHost !== allowedHost) {
-      window.location.href = "https://www.yonotvsports.com/";
-    }
-  })();
-</script>
-
-<script>
-  (async function () {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-
-    if (!id) {
-      document.getElementById('player-container').innerHTML = `<div class="error">Error: No channel ID specified.</div>`;
-      return;
+  <script>
+    function getParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
     }
 
-    try {
-      const res = await fetch("https://raw.githubusercontent.com/abusaeeidx/CricHd-playlists-Auto-Update-permanent/main/api.json");
-      const list = await res.json();
-      const channel = list.find(ch => ch.id === id);
+    const id = getParam("id");
+    const content = document.getElementById('content');
+    const jsonURL = "https://raw.githubusercontent.com/abusaeeidx/CricHd-playlists-Auto-Update-permanent/main/api.json";
 
-      if (!channel) {
-        document.getElementById('player-container').innerHTML = `<div class="error">Channel not found: ${id}</div>`;
-        return;
-      }
-
-      const src = encodeURIComponent(channel.link);
-      const url = `https://anym3u8player.com/tv/video-player.php?url=${src}`;
-      document.getElementById('player-container').innerHTML = `<iframe src="${url}" allowfullscreen></iframe>`;
-    } catch (e) {
-      document.getElementById('player-container').innerHTML = `<div class="error">Failed to load channel list.</div>`;
+    if (id) {
+      // Show player iframe for the selected channel
+      fetch(jsonURL)
+        .then(res => res.json())
+        .then(data => {
+          const channel = data.find(item => item.id === id);
+          if (channel && channel.link) {
+            const encoded = encodeURIComponent(channel.link);
+            const playerURL = "https://anym3u8player.com/tv/p.php?url=" + encoded;
+            content.innerHTML = `<iframe src="${playerURL}" allowfullscreen></iframe>`;
+          } else {
+            content.innerHTML = `<div class="error"><h2>Channel not found</h2></div>`;
+          }
+        })
+        .catch(() => {
+          content.innerHTML = `<div class="error"><h2>Error loading stream</h2></div>`;
+        });
+    } else {
+      // Show grid of all channels
+      fetch(jsonURL)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.length) {
+            content.innerHTML = `<div class="error"><h2>No channels found</h2></div>`;
+            return;
+          }
+          const grid = document.createElement('div');
+          grid.className = 'grid';
+          data.forEach(channel => {
+            const a = document.createElement('a');
+            a.className = 'channel';
+            a.href = `?id=${encodeURIComponent(channel.id)}`;
+            a.innerHTML = `
+              <img src="${channel.logo}" alt="${channel.name}" />
+              <div>${channel.name}</div>
+            `;
+            grid.appendChild(a);
+          });
+          content.appendChild(grid);
+        })
+        .catch(() => {
+          content.innerHTML = `<div class="error"><h2>Failed to load channels</h2></div>`;
+        });
     }
-  })();
-</script>
-
-<!-- Disable inspect / view-source -->
-<script>
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  document.onkeydown = e => (
-    e.keyCode === 123 ||                                            // F12
-    (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) ||  // Ctrl+Shift+I/J/C
-    (e.ctrlKey && e.key === 'U')                                    // Ctrl+U
-  ) ? false : undefined;
-</script>
-
+  </script>
 </body>
 </html>
