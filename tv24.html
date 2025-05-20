@@ -1,140 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Stream Player</title>
-    <style>
-        body { margin: 0; background-color: #000; }
-        iframe { width: 100%; height: 100vh; border: none; }
-    </style>
-</head>
-<body>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Redirecting...</title>
+  <script>
+    // Get ?id=... from URL
+    function getParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
 
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetId = urlParams.get('id');
+    const id = getParam('id');
 
-    if (!targetId) {
-        document.body.innerHTML = "<h2 style='color:white;text-align:center;'>No video ID provided</h2>";
+    if (id) {
+      fetch("https://raw.githubusercontent.com/abusaeeidx/CricHd-playlists-Auto-Update-permanent/main/api.json")
+        .then(response => response.json())
+        .then(data => {
+          const match = data.find(item => item.id === id);
+          if (match && match.link) {
+            const encodedLink = encodeURIComponent(match.link);
+            const redirectURL = "https://anym3u8player.com/tv/video-player.php?url=" + encodedLink;
+            window.location.href = redirectURL;
+          } else {
+            document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:20%'>Channel not found</h2>";
+          }
+        })
+        .catch(error => {
+          console.error("Error loading JSON:", error);
+          document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:20%'>Error loading channel</h2>";
+        });
     } else {
-        fetch("https://raw.githubusercontent.com/abusaeeidx/CricHd-playlists-Auto-Update-permanent/main/api.json")
-            .then(response => {
-                if (!response.ok) throw new Error("Network response was not ok");
-                return response.json();
-            })
-            .then(data => {
-                const channel = data.find(item => item.id === targetId);
-                if (!channel) {
-                    document.body.innerHTML = "<h2 style='color:white;text-align:center;'>Stream not found for the provided ID</h2>";
-                    return;
-                }
-                const streamUrl = encodeURIComponent(channel.link);
-                const playerUrl = `https://anym3u8player.com/tv/video-player.php?url=${streamUrl}`;
-                document.body.innerHTML = `<iframe src="${playerUrl}" allowfullscreen></iframe>`;
-            })
-            .catch(error => {
-                document.body.innerHTML = `<h2 style='color:white;text-align:center;'>Error: ${error.message}</h2>`;
-            });
+      document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:20%'>No ID provided</h2>";
     }
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>My Protected Page</title>
+  </script>
   <style>
-    body.blocked {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #000;
-      color: red;
-      font-family: sans-serif;
-    }
+    body { background: #000; margin: 0; }
   </style>
 </head>
 <body>
-
-  <h1>Welcome to My Official Page</h1>
-
-  <script>
-    (function () {
-      const allowedDomain = "https://live.mrgamingstream.net/";
-
-      if (window !== window.top) {
-        try {
-          const referrer = new URL(document.referrer);
-          if (!referrer.hostname.endsWith(allowedDomain)) {
-            document.body.className = "blocked";
-            document.body.innerHTML = "<h1>Embedding not allowed from this domain.</h1>";
-          }
-        } catch (e) {
-          // If referrer is empty or invalid, block it
-          document.body.className = "blocked";
-          document.body.innerHTML = "<h1>Embedding not allowed.</h1>";
-        }
-      }
-    })();
-  </script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Player Access Control</title>
-    <script>
-        // Strict validation - only works in iframe on esportspk.site
-        (function() {
-            const allowedDomain = "esportspk.site";
-            const isEmbedded = window !== window.top;
-            const parentValid = isEmbedded && 
-                               window.parent.location.hostname === allowedDomain;
-            
-            if (!parentValid) {
-                // Completely break functionality if not properly embedded
-                document.write(`
-                    <style>
-                        body { 
-                            background: #000; 
-                            color: red; 
-                            font-family: Arial;
-                            text-align: center;
-                            padding-top: 50px;
-                        }
-                        a { color: white; }
-                    </style>
-                    <h1>ACCESS DENIED</h1>
-                    <p>This player can only be used when embedded on<br>
-                    <a href="https://${allowedDomain}">${allowedDomain}</a></p>
-                    <script>
-                        // Prevent any further execution
-                        window.stop();
-                        document.addEventListener('DOMContentLoaded', function() {
-                            document.body.innerHTML = '';
-                        });
-                        setTimeout(function() {
-                            window.location.href = "https://${allowedDomain}";
-                        }, 3000);
-                    <\/script>
-                `);
-                throw new Error("Invalid embedding domain");
-            }
-            
-            // Only load player scripts if validation passes
-            window.addEventListener('DOMContentLoaded', function() {
-                // Your actual player initialization code here
-                console.log("Player loaded successfully");
-            });
-        })();
-    </script>
-</head>
-<body>
-    <!-- Player content will only appear when properly embedded -->
-    <div id="player-container">
-        <!-- Your player HTML/JS will go here -->
-    </div>
 </body>
 </html>
