@@ -116,9 +116,9 @@
             buttonGroup.appendChild(play1);
           }
 
-          // Play 2 button (from dai_url)
-          if (match.dai_url && match.dai_url.includes("/primary/")) {
-            const relativePath = match.dai_url.split("/primary/")[1];
+          // Play 2 button (from adfree_url)
+          if (match.adfree_url && match.adfree_url.includes("/primary/")) {
+            const relativePath = match.adfree_url.split("/primary/")[1];
             const play2 = document.createElement("button");
             play2.className = "play-button";
             play2.textContent = "Play 2";
