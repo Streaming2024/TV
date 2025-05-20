@@ -1,92 +1,132 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Secure Video Player</title>
+  <title>Live Player</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       background: #000;
-      height: 100%;
       width: 100%;
-      overflow: hidden;
+      height: 100%;
     }
     iframe {
+      border: none;
       width: 100%;
       height: 100%;
-      border: none;
       display: block;
     }
     .error {
       color: white;
       text-align: center;
-      padding-top: 40px;
-      font-family: Arial;
+      padding-top: 50px;
     }
   </style>
-</head>
-<body oncontextmenu="return false;">
 
-<div id="player-container"></div>
-
-<script>
-  (function () {
-    const allowedHost = "live.mrgamingstream.net";
-    const currentHost = window.location.hostname;
-
-    // Redirect if embedded or not from your domain
-    if (window !== window.top || currentHost !== allowedHost) {
+  <script>
+    // Redirect helper
+    function redirectToSafeSite() {
       window.location.href = "https://www.yonotvsports.com/";
     }
-  })();
-</script>
 
-<script>
-  (async function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
+    // Embedding restriction: Only allow on live.mrgamingstream.net and not embedded anywhere else
+    (function () {
+      const allowedHost = "live.mrgamingstream.net";
+      const currentHost = window.location.hostname;
+      if (currentHost !== allowedHost) {
+        redirectToSafeSite();
+      }
+      if (window !== window.top) {
+        try {
+          const ref = new URL(document.referrer);
+          if (!ref.hostname.endsWith(allowedHost)) {
+            redirectToSafeSite();
+          }
+        } catch (e) {
+          redirectToSafeSite();
+        }
+      }
+    })();
 
-    if (!id) {
-      document.getElementById('player-container').innerHTML = `<div class="error">Error: No channel ID specified.</div>`;
-      return;
-    }
+    // Disable right-click and redirect
+    document.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+      redirectToSafeSite();
+    });
 
-    try {
-      const response = await fetch("https://raw.githubusercontent.com/abusaeeidx/CricHd-playlists-Auto-Update-permanent/main/api.json");
-      const data = await response.json();
-      const channel = data.find(ch => ch.id === id);
+    // Detect DevTools open and redirect
+    (function () {
+      let devtoolsOpen = false;
+      const threshold = 160;
 
-      if (!channel) {
-        document.getElementById('player-container').innerHTML = `<div class="error">Channel not found for ID: ${id}</div>`;
-        return;
+      function checkDevTools() {
+        const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+        const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+        if (widthThreshold || heightThreshold) {
+          if (!devtoolsOpen) {
+            devtoolsOpen = true;
+            redirectToSafeSite();
+          }
+        } else {
+          devtoolsOpen = false;
+        }
       }
 
-      const encodedLink = encodeURIComponent(channel.link);
-      const playerUrl = `https://anym3u8player.com/tv/video-player.php?url=${encodedLink}`;
+      // Check periodically
+      setInterval(checkDevTools, 500);
 
-      document.getElementById('player-container').innerHTML = `<iframe src="${playerUrl}" allowfullscreen></iframe>`;
-    } catch (err) {
-      document.getElementById('player-container').innerHTML = `<div class="error">Failed to load channel list.</div>`;
+      // Also listen for key shortcuts to open devtools or view source
+      window.addEventListener('keydown', function(e) {
+        // F12
+        if (e.key === 'F12') {
+          e.preventDefault();
+          redirectToSafeSite();
+        }
+        // Ctrl+Shift+I / J / C
+        if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) {
+          e.preventDefault();
+          redirectToSafeSite();
+        }
+        // Ctrl+U (View Source)
+        if (e.ctrlKey && e.key.toUpperCase() === 'U') {
+          e.preventDefault();
+          redirectToSafeSite();
+        }
+      });
+    })();
+  </script>
+</head>
+<body>
+  <script>
+    function getParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
     }
-  })();
-</script>
 
-<!-- Disable Inspect Elements -->
-<script>
-  document.addEventListener('contextmenu', event => event.preventDefault());
+    const id = getParam("id");
 
-  document.onkeydown = function(e) {
-    if (
-      e.keyCode === 123 || // F12
-      (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key)) || // Ctrl+Shift+I/J/C
-      (e.ctrlKey && e.key === 'U') // Ctrl+U
-    ) {
-      return false;
+    if (id) {
+      fetch("https://raw.githubusercontent.com/abusaeeidx/CricHd-playlists-Auto-Update-permanent/main/api.json")
+        .then(res => res.json())
+        .then(data => {
+          const match = data.find(item => item.id === id);
+          if (match && match.link) {
+            const encoded = encodeURIComponent(match.link);
+            const playerURL = "https://anym3u8player.com/tv/p.php?url=" + encoded;
+            document.body.innerHTML = `<iframe src="${playerURL}" allowfullscreen></iframe>`;
+          } else {
+            document.body.innerHTML = `<div class="error"><h2>Channel not found</h2></div>`;
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          document.body.innerHTML = `<div class="error"><h2>Error loading stream</h2></div>`;
+        });
+    } else {
+      document.body.innerHTML = `<div class="error"><h2>No ID provided</h2></div>`;
     }
-  };
-</script>
-
+  </script>
 </body>
 </html>
