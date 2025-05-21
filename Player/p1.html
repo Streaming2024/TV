@@ -3,7 +3,7 @@
 <head>
   <title>TV Live Streaming Online</title>
   <meta name="keywords" content="live streaming, online TV, watch shows online, cryptocurrency news, top cryptocurrencies">
-  <meta content="width=device-width,minimum-scale=1,initial-scale=1" name="viewport"/>
+  <meta content="width=device-width, minimum-scale=1, initial-scale=1" name="viewport"/>
   <meta name="description" content="YoNoTV provides live updates, highlights, predictions, previews, and schedules for cricket, football, and other sports.">
   <link href="https://live.mrgamingstream.net/logo/favicon.png" rel="icon" type="image/x-icon"/>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
@@ -12,10 +12,17 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <style>
-    body {
-      height: 100vh;
+    html, body {
       margin: 0;
       padding: 0;
+      height: 100%;
+      background-color: #0a0a0a;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 100%;
+      padding: 10px;
     }
 
     #container {
@@ -25,10 +32,10 @@
       color: #fff;
       overflow: hidden;
       position: relative;
-      margin-bottom: 10px; /* Add gap between iframe and legal disclaimer */
+      margin-bottom: 10px;
     }
 
-    #iframe {
+    iframe#iframe {
       width: 100%;
       height: 100%;
       border: none;
@@ -73,8 +80,17 @@
       background-color: #023cf7;
       padding: 5px;
       font-weight: bold;
-      margin-top: 1px; /* Add some margin between iframe and disclaimer */
+      margin-top: 1px;
     }
+
+    /* Fullscreen adjustments */
+    iframe:fullscreen,
+    iframe:-webkit-full-screen,
+    iframe:-moz-full-screen {
+      width: 100vw;
+      height: 100vh;
+    }
+
   </style>
 </head>
 
@@ -86,30 +102,34 @@
   <center>
     <input class="MyButton" onclick="window.location.reload()" type="button" value="Refresh LIVE" />
   </center>
-<!----------------TOP ADS...HERE------------------>
-<center>
-<script type="text/javascript">
-	atOptions = {
-		'key' : '30099acc1f859db497ee36d0e8a18597',
-		'format' : 'iframe',
-		'height' : 50,
-		'width' : 320,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
-</center>
 
-  
+  <!-- Top Ads -->
+  <center>
+    <script type="text/javascript">
+      atOptions = {
+        'key': '30099acc1f859db497ee36d0e8a18597',
+        'format': 'iframe',
+        'height': 50,
+        'width': 320,
+        'params': {}
+      };
+    </script>
+    <script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
+  </center>
+
   <div id="container">
-    <iframe id="iframe" allow="encrypted-media; autoplay" allowfullscreen scrolling="no"></iframe>
+    <iframe
+      id="iframe"
+      allowfullscreen
+      allow="autoplay; encrypted-media"
+      scrolling="no">
+    </iframe>
     <button id="fullscreenBtn" class="MyButton">⛶ Fullscreen</button>
   </div>
 
   <div id="jwPlayer" style="display:none;"></div>
 
   <script>
-    // Detect src or url from query
     const urlParams = new URLSearchParams(window.location.search);
     const srcParam = urlParams.get('src');
     const videoUrl = urlParams.get('url');
@@ -125,7 +145,7 @@
       document.getElementById('iframe').style.display = 'none';
     }
 
-    // Fullscreen Button Behavior
+    // Fullscreen button
     document.getElementById("fullscreenBtn").addEventListener("click", function () {
       const iframe = document.getElementById("iframe");
 
@@ -137,18 +157,15 @@
         iframe.msRequestFullscreen();
       }
 
-      // Lock to landscape on mobile
       if (screen.orientation && screen.orientation.lock) {
         screen.orientation.lock("landscape").catch(err => {
           console.log("Orientation lock not supported", err);
         });
       }
 
-      // Hide the fullscreen button
       this.style.display = "none";
     });
 
-    // Show button again when exiting fullscreen
     document.addEventListener("fullscreenchange", function () {
       if (!document.fullscreenElement) {
         document.getElementById("fullscreenBtn").style.display = "block";
@@ -156,31 +173,26 @@
     });
   </script>
 
-  <!----------------ADS HERE CENTER------------------>
+  <!-- Center Ads -->
   <center>
-<script type="text/javascript">
-	atOptions = {
-		'key' : '30099acc1f859db497ee36d0e8a18597',
-		'format' : 'iframe',
-		'height' : 50,
-		'width' : 320,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
-</center>
-  <!----------------CHAT BOX HERE------------------>
+    <script type="text/javascript">
+      atOptions = {
+        'key': '30099acc1f859db497ee36d0e8a18597',
+        'format': 'iframe',
+        'height': 50,
+        'width': 320,
+        'params': {}
+      };
+    </script>
+    <script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
+  </center>
+ <!----------------CHAT BOX HERE------------------>
 <iframe height="440px"  width="100%" src="https://live.mrgamingstream.net/chat3"></iframe>
-
-  
   <div class="disclaimer">Legal Disclaimer</div>
   <div><b>Content Hosting:</b> YoNo TV does not host or upload any video content. All streams are embedded from publicly available third-party sources.</div>
-  
   <div><b>Copyright Notice:</b> We do not claim ownership of any content displayed on this platform. All trademarks, logos, and media belong to their respective owners.</div>
-  
-  <div><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties.Users must ensure content access legality in their region.</div>
-  
-  <div><b>DMCA Compliance:</b>  If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</div>
+  <div><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties. Users must ensure content access legality in their region.</div>
+  <div><b>DMCA Compliance:</b> If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</div>
 
   <center>
     <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
