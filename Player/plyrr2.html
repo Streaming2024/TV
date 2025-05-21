@@ -1,25 +1,32 @@
-<!DOCTYPE html> 
-<html lang="en"> 
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0 , user-scalable=no">
-  <meta name="viewport" content="width=device-width" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
   <link href='https://live.mrgamingstream.net/logo/favicon.png' rel='icon' type='image/x-icon'/>
   <meta name="author" content="T20HD Embed" />
   <meta name="designer" content="T20" />
   <meta name="description" content="Watch Live Streaming T20. No signup required">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
-  <link rel="stylesheet" href="/dist/wmlogo.css" />
-  <script src="https://kit.fontawesome.com/bf2610f0a2.js" crossorigin="anonymous"></script>
-  <link href="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.4/css/halfmoon.min.css" rel="stylesheet" />
-  <title>Plyr Player</title>
+  <title>Plyr HLS Player</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+    }
+    video {
+      width: 100%;
+      height: 100vh;
+      background: #000;
+    }
+  </style>
 </head>
-<body class="dark-mode with-custom-scrollbars with-custom-css-scrollbars">
+<body>
 
   <!-- Plyr Video Player -->
-  <video id="player" controls preload="metadata" poster="https://live.mrgamingstream.net/logo/image.png" class="plyr">
-    <source id="videoSource" type="application/x-mpegURL"/>
+  <video id="player" controls poster="https://live.mrgamingstream.net/logo/image.png" class="plyr">
+    <source id="videoSource" type="application/x-mpegURL" />
   </video>
 
   <!-- Scripts -->
@@ -27,18 +34,16 @@
   <script src="https://cdn.plyr.io/3.6.2/plyr.polyfilled.js"></script>
 
   <script>
-    // Get URL parameter
     function getParameterByName(name, url) {
       if (!url) url = window.location.href;
       name = name.replace(/[\[\]]/g, "\\$&");
-      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-          results = regex.exec(url);
+      const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+      const results = regex.exec(url);
       if (!results) return null;
       if (!results[2]) return '';
       return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
-    // Load player
     document.addEventListener("DOMContentLoaded", () => {
       const video = document.getElementById("player");
       const source = document.getElementById("videoSource");
@@ -55,13 +60,9 @@
           window.hls = hls;
 
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            // Unique quality list with "Auto"
             const heights = hls.levels.map(level => level.height);
             const uniqueHeights = [...new Set(heights)].sort((a, b) => a - b);
             const availableQualities = ['Auto', ...uniqueHeights];
-
-            // Set to auto quality by default
-            hls.currentLevel = -1;
 
             const player = new Plyr(video, {
               quality: {
@@ -70,22 +71,30 @@
                 forced: true,
                 onChange: (newQuality) => {
                   if (newQuality === 'Auto') {
-                    hls.currentLevel = -1;
+                    hls.currentLevel = -1; // Auto mode
+                    console.log("Switched to Auto Quality");
                   } else {
-                    const level = hls.levels.findIndex(l => l.height === newQuality);
-                    hls.currentLevel = level;
+                    const levelIndex = hls.levels.findIndex(l => l.height === newQuality);
+                    if (levelIndex !== -1) {
+                      hls.currentLevel = levelIndex;
+                      console.log(`Switched to ${newQuality}p`);
+                    }
                   }
                 }
               }
             });
+
+            // Set auto mode initially
+            hls.currentLevel = -1;
           });
-        } else {
-          // Fallback for Safari
-          new Plyr(video);
+
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          new Plyr(video); // Fallback for Safari
         }
+      } else {
+        alert("No video URL found. Please use ?url=your-hls-link.m3u8");
       }
     });
   </script>
-
 </body>
 </html>
