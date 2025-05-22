@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Player</title>
+  <script src="https://cdn.jwplayer.com/libraries/SAHhwvZq.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #000;
+    }
+    #jwplayerDiv {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="jwplayerDiv"></div>
+
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    const streamUrl = getQueryParam("src") || "https://example.com/default.m3u8";
+
+    jwplayer("jwplayerDiv").setup({
+      file: streamUrl,
+      width: "100%",
+      height: "100%",
+      aspectratio: "16:9",
+      autostart: true,
+      type: "hls",
+      mute: false,
+      preload: "auto",
+      cast: {
+        appid: "CC1AD845"
+      }
+    });
+
+    jwplayer().on('error', function(error) {
+      console.error("Stream error:", error.message);
+    });
+  </script>
+
+</body>
+</html>
