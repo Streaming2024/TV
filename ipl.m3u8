@@ -1,1 +1,14 @@
-#EXTM3U #EXT-X-VERSION:3 #EXT-X-MEDIA-SEQUENCE:14002 #EXT-X-TARGETDURATION:11 #EXTINF:11.000, https://m5.merichunidya.com:999/hls/fox501-14002.ts #EXTINF:4.680, https://m5.merichunidya.com:999/hls/fox501-14003.ts #EXTINF:4.320, https://m5.merichunidya.com:999/hls/fox501-14004.ts #EXTINF:5.000, https://m5.merichunidya.com:999/hls/fox501-14005.ts #EXTINF:5.000, https://m5.merichunidya.com:999/hls/fox501-14006.ts #EXTINF:11.000, https://m5.merichunidya.com:999/hls/fox501-14007.ts #EXTINF:5.000, https://m5.merichunidya.com:999/hls/fox501-14008.ts #EXTINF:4.020, https://m5.merichunidya.com:999/hls/fox501-14009.ts #EXTINF:5.000, https://m5.merichunidya.com:999/hls/fox501-14010.ts #EXTINF:5.000, https://m5.merichunidya.com:999/hls/fox501-14011.ts #EXTINF:5.000, https://m5.merichunidya.com:999/hls/fox501-14012.ts #EXTINF:4.140, https://m5.merichunidya.com:999/hls/fox501-14013.ts #EXTINF:4.860, https://m5.merichunidya.com:999/hls/fox501-14014.ts #EXTINF:4.460, https://m5.merichunidya.com:999/hls/fox501-14015.ts #EXT-X-DISCONTINUITY #EXTINF:2.001, https://m5.merichunidya.com:999/hls/fox501-14016.ts
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-MEDIA-SEQUENCE:456390
+#EXT-X-TARGETDURATION:15
+#EXTINF:14.800, no desc
+mkv.php?ts=https://st64.24cwc.com/hls/token/2aymysimhwynbklhgd8fy79k8/stream-456390-1728162759127.ts
+#EXTINF:10.000, no desc
+mkv.php?ts=https://st64.24cwc.com/hls/token/2aymysimhwynbklhgd8fy79k8/stream-456391-1728162774047.ts
+#EXTINF:12.200, no desc
+mkv.php?ts=https://st64.24cwc.com/hls/token/2aymysimhwynbklhgd8fy79k8/stream-456392-1728162784170.ts
+#EXTINF:12.200, no desc
+mkv.php?ts=https://st64.24cwc.com/hls/token/2aymysimhwynbklhgd8fy79k8/stream-456393-1728162796452.ts
+#EXTINF:11.600, no desc
+mkv.php?ts=https://st64.24cwc.com/hls/token/2aymysimhwynbklhgd8fy79k8/stream-456394-1728162808456.ts
