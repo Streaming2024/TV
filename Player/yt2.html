@@ -26,31 +26,37 @@
       border: 0;
     }
 
-    #text {
-      position: fixed;
-      left: 0;
-      width: 100%;
-      color: #fff;
-      bottom: 50px;
-      text-align: center;
-      font-family: tahoma;
-      font-size: 20px;
-      z-index: 9999;
-    }
-
-    /* Custom Play Button at bottom center */
+    /* Big play button overlay centered perfectly */
     #custom-play {
       position: absolute;
-      bottom: 20px;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.8);
-      border: none;
-      padding: 10px 20px;
-      font-size: 18px;
-      border-radius: 5px;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      border: 2px solid white;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       z-index: 10;
+      transition: background 0.3s ease;
+    }
+
+    #custom-play:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Play icon style */
+    #custom-play::before {
+      content: '';
+      display: inline-block;
+      margin-left: 5px;
+      border-style: solid;
+      border-width: 15px 0 15px 25px;
+      border-color: transparent transparent transparent white;
     }
   </style>
 </head>
@@ -58,7 +64,7 @@
 
   <div class="plyr__video-embed" id="player">
     <iframe id="player-iframe" allowfullscreen allow="autoplay"></iframe>
-    <button id="custom-play">Play</button>
+    <button id="custom-play" aria-label="Play video"></button>
   </div>
 
   <script src="https://cdn.plyr.io/3.6.8/plyr.polyfilled.js"></script>
