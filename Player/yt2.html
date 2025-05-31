@@ -17,6 +17,7 @@
     #player {
       width: 100%;
       height: 100%;
+      position: relative;
     }
 
     #player iframe {
@@ -37,12 +38,19 @@
       z-index: 9999;
     }
 
-    /* Center the Plyr play button at the bottom */
-    .plyr__control--overlaid {
+    /* Custom Play Button at bottom center */
+    #custom-play {
       position: absolute;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.8);
+      border: none;
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 10;
     }
   </style>
 </head>
@@ -50,6 +58,7 @@
 
   <div class="plyr__video-embed" id="player">
     <iframe id="player-iframe" allowfullscreen allow="autoplay"></iframe>
+    <button id="custom-play">Play</button>
   </div>
 
   <script src="https://cdn.plyr.io/3.6.8/plyr.polyfilled.js"></script>
@@ -68,6 +77,13 @@
       const player = new Plyr('#player', {
         controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
         youtube: { noCookie: true },
+      });
+
+      const playBtn = document.getElementById('custom-play');
+
+      playBtn.addEventListener('click', () => {
+        player.play();
+        playBtn.style.display = 'none'; // Hide after playing
       });
     } else {
       alert('No video ID provided in the URL. Please use ?id=YOUR_VIDEO_ID');
