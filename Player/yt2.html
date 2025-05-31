@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YouTube Player</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #000;
+    }
+
+    #player {
+      width: 100%;
+      height: 100%;
+    }
+
+    #player iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    #text {
+      position: fixed;
+      left: 0;
+      width: 100%;
+      color: #fff;
+      bottom: 50px;
+      text-align: center;
+      font-family: tahoma;
+      font-size: 20px;
+      z-index: 9999;
+    }
+
+    /* Center the Plyr play button at the bottom */
+    .plyr__control--overlaid {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="plyr__video-embed" id="player">
+    <iframe id="player-iframe" allowfullscreen allow="autoplay"></iframe>
+  </div>
+
+  <script src="https://cdn.plyr.io/3.6.8/plyr.polyfilled.js"></script>
+  <script>
+    function getURLParameter(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    const videoId = getURLParameter('id');
+
+    if (videoId) {
+      const iframe = document.querySelector('#player iframe');
+      iframe.src = `https://www.youtube.com/embed/${videoId}?origin=*&enablejsapi=1`;
+
+      const player = new Plyr('#player', {
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+        youtube: { noCookie: true },
+      });
+    } else {
+      alert('No video ID provided in the URL. Please use ?id=YOUR_VIDEO_ID');
+    }
+  </script>
+
+</body>
+</html>
