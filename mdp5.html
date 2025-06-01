@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DRM Player</title>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png" type="image/png" sizes="250x250">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.1.1/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.1.1/controls.min.css" crossorigin="anonymous">
+    
+    <style>
+        /* Overflow menu style */
+        .shaka-overflow-menu {
+            background-color: rgb(41, 41, 163);
+            color: rgb(153, 153, 153);
+        }
+
+        .shaka-overflow-menu button:hover {
+            background-color: rgb(45, 45, 45);
+        }
+
+        .shaka-overflow-button-label {
+            color: rgb(245, 245, 245);
+        }
+
+        .shaka-current-selection-span {
+            color: rgb(202, 202, 202);
+        }
+
+        .material-icons-round {
+            color: rgb(230, 230, 230);
+        }
+
+        /* Overflow sub menu style */
+        .shaka-settings-menu {
+            background-color: rgb(35, 35, 35);
+            color: rgb(255, 255, 255);
+        }
+
+        .shaka-settings-menu button {
+            color: rgb(255, 255, 255);
+        }
+
+        .shaka-settings-menu button:hover {
+            background-color: rgb(45, 45, 45);
+        }
+        
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+        }
+        
+        .error {
+            color: #ff4444;
+        }
+    </style>
+</head>
+
+<body bgcolor="black" style="margin:0">
+    <center>
+        <div id="loading">Loading player...</div>
+        <div data-shaka-player-container style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:none">
+            <video autoplay muted playsinline data-shaka-player id="video"
+                   poster="https://i.ibb.co/CK6cBRVw/live-cricket-tournament-poster-1302-15524.jpg"
+                   style="width:100%;height:100%"></video>
+        </div>
+    </center>
+
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            const url = params.get('url');
+            const keyParam = params.get('key');
+            
+            if (!url || !keyParam) {
+                return { error: "Missing required parameters. Use ?url=MPD_URL&key=KEY_ID:KEY_VALUE" };
+            }
+            
+            const [keyId, keyValue] = keyParam.split(':');
+            
+            if (!keyId || !keyValue) {
+                return { error: "Invalid key format. Use key=KEY_ID:KEY_VALUE" };
+            }
+            
+            return { 
+                url, 
+                keys: { [keyId]: keyValue } 
+            };
+        }
+
+        async function init() {
+            const params = getQueryParams();
+            
+            if (params.error) {
+                document.getElementById('loading').className = 'error';
+                document.getElementById('loading').textContent = params.error;
+                return;
+            }
+            
+            const { url, keys } = params;
+            
+            try {
+                const video = document.getElementById("video");
+                const ui = video.ui;
+                const controls = ui.getControls();
+                const player = controls.getPlayer();
+                
+                // Configure player with the provided key
+                player.configure({
+                    drm: {
+                        clearKeys: keys
+                    },
+                    streaming: { 
+                        startAtSegmentBoundary: true,
+                        ignoreTextStreamFailures: true, 
+                        rebufferingGoal: 1,
+                        bufferingGoal: 3,
+                        bufferBehind: 5, 
+                        autoLowLatencyMode: true, 
+                        lowLatencyMode: true, 
+                        jumpLargeGaps: true, 
+                        inaccurateManifestTolerance: 0.3, 
+                        stallEnabled: false
+                    },
+                    manifest: { 
+                        dash: { 
+                            ignoreMinBufferTime: true, 
+                            autoCorrectDrift: true 
+                        }
+                    }
+                });
+                
+                ui.configure({
+                    controlPanelElements: ["play_pause", "mute", "volume", "spacer", "time_and_duration", "quality", "picture_in_picture", "fullscreen", "overflow_menu"],
+                    volumeBarColors: { base: 'rgba(235, 235, 235, 1)', level: 'rgb(255, 255, 255)' },
+                    seekBarColors: { base: 'rgb(199, 199, 199)', buffered: 'rgb(255, 255, 255)', played: 'rgba(255, 255, 255, 1)' }
+                });
+
+                window.player = player;
+                window.ui = ui;
+
+                player.addEventListener("error", onPlayerErrorEvent);
+                controls.addEventListener("error", onUIErrorEvent);
+
+                // Load the video
+                await player.load(url);
+                console.log("The video has now been loaded!");
+                
+                // Hide loading message and show player
+                document.getElementById('loading').style.display = 'none';
+                document.querySelector('[data-shaka-player-container]').style.display = 'block';
+            } catch (error) {
+                onPlayerError(error);
+            }
+        }
+
+        function onPlayerErrorEvent(e) {
+            onPlayerError(e.detail);
+        }
+
+        function onPlayerError(e) {
+            console.error("Error code", e.code, "object", e);
+            document.getElementById('loading').className = 'error';
+            document.getElementById('loading').textContent = `Error loading stream: ${e.code}`;
+        }
+
+        function onUIErrorEvent(e) {
+            onPlayerError(e.detail);
+        }
+
+        function initFailed(e) {
+            console.error("Unable to load the UI library!");
+            document.getElementById('loading').className = 'error';
+            document.getElementById('loading').textContent = 'Error: Unable to load player library';
+        }
+
+        document.addEventListener("shaka-ui-loaded", init);
+        document.addEventListener("shaka-ui-load-failed", initFailed);
+    </script>
+
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
+</body>
+</html>
