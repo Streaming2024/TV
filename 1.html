@@ -16,7 +16,6 @@
       height: 100vh;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
     }
 
     #container {
@@ -76,102 +75,43 @@
       font-weight: bold;
       margin-top: 1px;
     }
-    
-    /* Anti Ad-block styles */
-    #adblock-detector {
+
+    /* AD BLOCK DETECTOR */
+    #adblocker-warning {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      color: #000;
+      border: 2px solid red;
+      padding: 20px;
+      font-size: 16px;
+      font-family: sans-serif;
+      text-align: center;
+      z-index: 9999;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      border-radius: 10px;
+      max-width: 90%;
+      width: 320px;
+    }
+
+    #blur-overlay {
       display: none;
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0,0,0,0.97);
-      z-index: 99999;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-    
-    .adblock-content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      max-width: 600px;
-      width: 90%;
-    }
-    
-    #adblock-detector h2 {
-      color: #fc0019;
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-    
-    #adblock-detector p {
-      font-size: 18px;
-      margin: 15px 0;
-      line-height: 1.6;
-    }
-    
-    #adblock-detector .steps {
-      text-align: left;
-      margin: 20px auto;
-      max-width: 400px;
-    }
-    
-    #adblock-detector .steps li {
-      margin-bottom: 10px;
-    }
-    
-    .adblock-button {
-      padding: 12px 25px;
-      background: linear-gradient(to bottom, #fc0019, #d40015);
-      color: white;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: bold;
-      margin-top: 20px;
-      transition: all 0.3s ease;
-    }
-    
-    .adblock-button:hover {
-      background: linear-gradient(to bottom, #d40015, #b30012);
-      transform: translateY(-2px);
-    }
-    
-    .adblock-logo {
-      font-size: 50px;
-      color: #fc0019;
-      margin-bottom: 20px;
+      backdrop-filter: blur(5px);
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 9998;
     }
   </style>
 </head>
 
 <body onload="init()">
-
-<!-- Anti Ad-block Detection Element -->
-<div id="adblock-detector">
-  <div class="adblock-content">
-    <div class="adblock-logo">⚠️</div>
-    <h2>AD BLOCKER DETECTED</h2>
-    <p>Our website relies on advertising to provide free live streaming content. Please disable your ad blocker to continue watching.</p>
-    
-    <div class="steps">
-      <p><strong>How to disable:</strong></p>
-      <ol>
-        <li>Look for the ad blocker icon in your browser toolbar (like uBlock, AdBlock, etc.)</li>
-        <li>Click the icon and select "Disable on this site" or "Pause on this page"</li>
-        <li>Refresh the page after disabling</li>
-      </ol>
-    </div>
-    
-    <button class="adblock-button" onclick="window.location.reload()">I've disabled ad blocker - RELOAD PAGE</button>
-    <p style="margin-top: 20px; font-size: 14px; color: #aaa;">If you believe this is a mistake, please contact support.</p>
-  </div>
-</div>
 
 <div class="container">
   <div class="disclaimer">Wait for Loading & Skip 1–2 ads (press back)</div>
@@ -179,21 +119,20 @@
   <center>
     <input class="MyButton" onclick="window.location.reload()" type="button" value="Refresh LIVE" />
   </center>
-<!----------------TOP ADS...HERE------------------>
-<center>
-<script type="text/javascript">
-	atOptions = {
-		'key' : '30099acc1f859db497ee36d0e8a18597',
-		'format' : 'iframe',
-		'height' : 50,
-		'width' : 320,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
-</center>
 
-  
+  <center>
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '30099acc1f859db497ee36d0e8a18597',
+        'format' : 'iframe',
+        'height' : 50,
+        'width' : 320,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
+  </center>
+
   <div id="container">
     <iframe id="iframe" allow="encrypted-media; autoplay" allowfullscreen scrolling="no"></iframe>
     <button id="fullscreenBtn" class="MyButton">⛶ Fullscreen</button>
@@ -202,155 +141,6 @@
   <div id="jwPlayer" style="display:none;"></div>
 
   <script>
-    // =============================================
-    // ADVANCED AD BLOCK DETECTION SYSTEM
-    // =============================================
-    
-    // Detection methods
-    const adBlockDetected = {
-      elementTest: false,
-      scriptTest: false,
-      requestTest: false,
-      domainTest: false
-    };
-    
-    // Method 1: Create test ad element
-    function testAdElement() {
-      return new Promise((resolve) => {
-        const ad = document.createElement('div');
-        ad.innerHTML = '&nbsp;';
-        ad.className = 'ad ads ad-box ad-placement ad-unit adsbox pub_300x250 pub_300x250m pub_728x90 text-ad textAd text_ad text_ads text-ads text-ad-links';
-        ad.style.width = '1px';
-        ad.style.height = '1px';
-        ad.style.position = 'absolute';
-        ad.style.left = '-100px';
-        ad.style.top = '-100px';
-        ad.style.zIndex = '-1000';
-        document.body.appendChild(ad);
-        
-        setTimeout(() => {
-          const isBlocked = ad.offsetHeight === 0 || 
-                          ad.offsetWidth === 0 || 
-                          ad.style.display === 'none' || 
-                          ad.style.visibility === 'hidden';
-          document.body.removeChild(ad);
-          adBlockDetected.elementTest = isBlocked;
-          resolve(isBlocked);
-        }, 200);
-      });
-    }
-    
-    // Method 2: Test loading ad script
-    function testAdScript() {
-      return new Promise((resolve) => {
-        const script = document.createElement('script');
-        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-        script.onload = () => {
-          adBlockDetected.scriptTest = false;
-          document.head.removeChild(script);
-          resolve(false);
-        };
-        script.onerror = () => {
-          adBlockDetected.scriptTest = true;
-          document.head.removeChild(script);
-          resolve(true);
-        };
-        document.head.appendChild(script);
-      });
-    }
-    
-    // Method 3: Test ad request
-    function testAdRequest() {
-      return new Promise((resolve) => {
-        fetch('https://www.google-analytics.com/analytics.js', {
-          method: 'HEAD',
-          mode: 'no-cors',
-          cache: 'no-store'
-        })
-        .then(() => {
-          adBlockDetected.requestTest = false;
-          resolve(false);
-        })
-        .catch(() => {
-          adBlockDetected.requestTest = true;
-          resolve(true);
-        });
-      });
-    }
-    
-    // Method 4: Test blocked domains
-    function testBlockedDomains() {
-      const blockedDomains = [
-        'doubleclick.net',
-        'googlesyndication.com',
-        'google-analytics.com',
-        'adservice.google.com'
-      ];
-      
-      return Promise.all(blockedDomains.map(domain => {
-        return new Promise(resolve => {
-          const img = new Image();
-          img.onload = () => resolve(false);
-          img.onerror = () => resolve(true);
-          img.src = `https://${domain}/favicon.ico?${Date.now()}`;
-          setTimeout(() => resolve(true), 500);
-        });
-      }).then(results => {
-        adBlockDetected.domainTest = results.some(r => r);
-        return adBlockDetected.domainTest;
-      });
-    }
-    
-    // Show ad block warning
-    function showAdBlockWarning() {
-      document.getElementById('adblock-detector').style.display = 'block';
-      document.body.style.overflow = 'hidden';
-      
-      // Check periodically if ad blocker is disabled
-      const checkInterval = setInterval(() => {
-        Promise.all([
-          testAdElement(),
-          testAdScript(),
-          testAdRequest(),
-          testBlockedDomains()
-        ]).then(results => {
-          const anyBlocked = results.some(r => r);
-          if (!anyBlocked) {
-            clearInterval(checkInterval);
-            window.location.reload();
-          }
-        });
-      }, 5000);
-    }
-    
-    // Run all detection methods
-    function detectAdBlock() {
-      Promise.all([
-        testAdElement(),
-        testAdScript(),
-        testAdRequest(),
-        testBlockedDomains()
-      ]).then(results => {
-        const anyBlocked = results.some(r => r);
-        if (anyBlocked) {
-          showAdBlockWarning();
-        }
-      });
-    }
-    
-    // Run detection on page load
-    window.addEventListener('load', () => {
-      setTimeout(detectAdBlock, 1000); // Wait a second for ad blockers to initialize
-    });
-    
-    // Run detection periodically (every 30 seconds)
-    setInterval(detectAdBlock, 30000);
-    
-    // =============================================
-    // ORIGINAL PLAYER CODE BELOW
-    // =============================================
-    
-    // Detect src or url from query
     const urlParams = new URLSearchParams(window.location.search);
     const srcParam = urlParams.get('src');
     const videoUrl = urlParams.get('url');
@@ -366,7 +156,6 @@
       document.getElementById('iframe').style.display = 'none';
     }
 
-    // Fullscreen Button Behavior
     document.getElementById("fullscreenBtn").addEventListener("click", function () {
       const iframe = document.getElementById("iframe");
 
@@ -378,18 +167,15 @@
         iframe.msRequestFullscreen();
       }
 
-      // Lock to landscape on mobile
       if (screen.orientation && screen.orientation.lock) {
         screen.orientation.lock("landscape").catch(err => {
           console.log("Orientation lock not supported", err);
         });
       }
 
-      // Hide the fullscreen button
       this.style.display = "none";
     });
 
-    // Show button again when exiting fullscreen
     document.addEventListener("fullscreenchange", function () {
       if (!document.fullscreenElement) {
         document.getElementById("fullscreenBtn").style.display = "block";
@@ -397,31 +183,26 @@
     });
   </script>
 
-  <!----------------ADS HERE CENTER------------------>
   <center>
-<script type="text/javascript">
-	atOptions = {
-		'key' : '30099acc1f859db497ee36d0e8a18597',
-		'format' : 'iframe',
-		'height' : 50,
-		'width' : 320,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
-</center>
-  <!----------------CHAT BOX HERE------------------>
-<center><iframe height="440px"  width="100%" src="https://live.mrgamingstream.net/VIP/chat2"></iframe></center>
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '30099acc1f859db497ee36d0e8a18597',
+        'format' : 'iframe',
+        'height' : 50,
+        'width' : 320,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
+  </center>
 
-  
+  <center><iframe height="440px" width="100%" src="https://live.mrgamingstream.net/VIP/chat2"></iframe></center>
+
   <div class="disclaimer">Legal Disclaimer</div>
-  <div><b>Content Hosting:</b> YoNo TV does not host or upload any video content. All streams are embedded from publicly available third-party sources.</div>
-  
-  <div><b>Copyright Notice:</b> We do not claim ownership of any content displayed on this platform. All trademarks, logos, and media belong to their respective owners.</div>
-  
-  <div><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties.Users must ensure content access legality in their region.</div>
-  
-  <div><b>DMCA Compliance:</b>  If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</div>
+  <div><b>Content Hosting:</b> YoNo TV does not host or upload any video content...</div>
+  <div><b>Copyright Notice:</b> ...</div>
+  <div><b>Legal Responsibility:</b> ...</div>
+  <div><b>DMCA Compliance:</b> ...</div>
 
   <center>
     <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
@@ -429,6 +210,31 @@
     <br><noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
   </center>
 </div>
+
+<!-- AD BLOCK DETECTOR -->
+<div id="blur-overlay"></div>
+<div id="adblocker-warning">
+  <strong>Ad Blocker Detected!</strong><br>
+  Please disable your ad blocker to support us and view the content.
+</div>
+
+<script>
+  const adTest = document.createElement('div');
+  adTest.className = 'adsbox';
+  adTest.style.height = '1px';
+  adTest.style.width = '1px';
+  adTest.style.position = 'absolute';
+  adTest.style.left = '-9999px';
+  document.body.appendChild(adTest);
+
+  setTimeout(() => {
+    if (adTest.offsetHeight === 0 || adTest.clientHeight === 0) {
+      document.getElementById('blur-overlay').style.display = 'block';
+      document.getElementById('adblocker-warning').style.display = 'block';
+    }
+    document.body.removeChild(adTest);
+  }, 100);
+</script>
 
 </body>
 </html>
