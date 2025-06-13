@@ -32,28 +32,46 @@
       height: 60px;
       width: 100px;
     }
-    #loading-screen {
-      position: absolute;
+
+    /* Countdown overlay */
+    #countdown-overlay {
+      position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.85);
-      color: white;
-      font-size: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
+      pointer-events: none;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+      font-size: 60px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      backdrop-filter: blur(2px);
     }
   </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return false" onmousedown="return false">
 
-  <div id="loading-screen">Loading... Please wait 20 seconds</div>
-
-  <div class="container video-fill" data-shaka-player-container style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;object-fit:fill cover;">
-    <video autoplay data-shaka-player id="video" style="width:100%;height:100%;"></video>
+  <!-- Countdown overlay -->
+  <div id="countdown-overlay">
+    <span id="countdown">15</span>
   </div>
 
+  <!-- Video container -->
+  <div class="container video-fill" data-shaka-player-container style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;object-fit:fill cover;">
+    <video autoplay muted data-shaka-player id="video" style="width:100%;height:100%;"></video>
+  </div>
+
+  <!-- Telegram link -->
+  <a href="https://t.me/yonotvlive" target="_blank">
+    <span style="position:absolute;z-index:100;top:6px;left:5px;height:30px;width:100px;color:#ccc;border:2px solid #ccc;padding:1px 0;border-radius:2px;text-align:center;">
+      Join us
+    </span>
+  </a>
+
+  <!-- Player script -->
   <script>
     (async function () {
       function getParam(name) {
@@ -92,35 +110,38 @@
           }
         });
 
-        // Delay loading for 20 seconds
-        setTimeout(async () => {
-          try {
-            await player.load(manifestUri);
-            video.muted = false;
-            await video.play();
-            document.getElementById('loading-screen').style.display = 'none';
-          } catch (error) {
-            console.error("Error loading or playing stream:", error);
-            document.getElementById('loading-screen').innerText = "Failed to load video.";
-          }
+        try {
+          await player.load(manifestUri);
+          await video.play();
+        } catch (error) {
+          console.error("Error loading or playing stream:", error);
+        }
 
-          document.querySelectorAll('.shaka-overflow-menu-button').forEach(btn => {
-            btn.textContent = 'settings';
-          });
+        document.querySelectorAll('.shaka-overflow-menu-button').forEach(btn => {
+          btn.textContent = 'settings';
+        });
 
-          document.querySelectorAll('.shaka-back-to-overflow-button .material-icons-round').forEach(icon => {
-            icon.textContent = 'arrow_back_ios_new';
-          });
-        }, 20000); // 20,000 milliseconds = 20 seconds
+        document.querySelectorAll('.shaka-back-to-overflow-button .material-icons-round').forEach(icon => {
+          icon.textContent = 'arrow_back_ios_new';
+        });
       });
     })();
-  </script>
 
-  <a href="https://t.me/yonotvlive" target="_blank">
-    <span style="position:absolute;z-index:100;top:6px;left:5px;height:30px;width:100px;color:#ccc;border:2px solid #ccc;padding:1px 0;border-radius:2px;text-align:center;">
-      Join us
-    </span>
-  </a>
+    // Countdown logic
+    let countdown = 20;
+    const countdownElement = document.getElementById("countdown");
+    const overlay = document.getElementById("countdown-overlay");
+
+    const countdownInterval = setInterval(() => {
+      countdown--;
+      if (countdown <= 0) {
+        clearInterval(countdownInterval);
+        overlay.style.display = "none";
+      } else {
+        countdownElement.textContent = countdown;
+      }
+    }, 1000);
+  </script>
 
 </body>
 </html>
