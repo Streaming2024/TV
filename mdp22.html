@@ -9,6 +9,7 @@
     body { margin: 0; background-color: black; }
     .shaka-spinner-container { display: none; }
     .video-fill video { object-fit: fill cover; }
+
     .shaka-overflow-menu, .shaka-settings-menu {
       background-color: rgb(35, 35, 35); color: rgb(255, 255, 255);
     }
@@ -25,43 +26,53 @@
     .shaka-bottom-controls {
       display: flex; flex-direction: column-reverse;
     }
-    #tglogo {
-      position: absolute;
-      right: 80px;
-      top: 30px;
-      height: 60px;
-      width: 100px;
-    }
 
-    /* Countdown overlay */
+    /* Countdown Loader */
     #countdown-overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .circle-loader {
+      border: 8px solid #444;
+      border-top: 8px solid red;
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 1s linear infinite;
       display: flex;
       align-items: center;
       justify-content: center;
-      pointer-events: none;
-      z-index: 9999;
-      background: rgba(0, 0, 0, 0.3);
+      font-size: 36px;
       color: white;
-      font-size: 60px;
-      font-weight: bold;
       font-family: Arial, sans-serif;
-      backdrop-filter: blur(2px);
+      font-weight: bold;
     }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
   </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return false" onmousedown="return false">
 
   <!-- Countdown overlay -->
   <div id="countdown-overlay">
-    <span id="countdown">15</span>
+    <div class="circle-loader" id="countdown">20</div>
   </div>
 
-  <!-- Video container -->
+  <!-- Video container (NO autoplay) -->
   <div class="container video-fill" data-shaka-player-container style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;object-fit:fill cover;">
-    <video autoplay muted data-shaka-player id="video" style="width:100%;height:100%;"></video>
+    <video data-shaka-player id="video" style="width:100%;height:100%;"></video>
   </div>
 
   <!-- Telegram link -->
@@ -71,7 +82,7 @@
     </span>
   </a>
 
-  <!-- Player script -->
+  <!-- JavaScript -->
   <script>
     (async function () {
       function getParam(name) {
@@ -112,15 +123,14 @@
 
         try {
           await player.load(manifestUri);
-          await video.play();
+          console.log("Video is loaded and ready.");
         } catch (error) {
-          console.error("Error loading or playing stream:", error);
+          console.error("Error loading stream:", error);
         }
 
         document.querySelectorAll('.shaka-overflow-menu-button').forEach(btn => {
           btn.textContent = 'settings';
         });
-
         document.querySelectorAll('.shaka-back-to-overflow-button .material-icons-round').forEach(icon => {
           icon.textContent = 'arrow_back_ios_new';
         });
