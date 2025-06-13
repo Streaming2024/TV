@@ -1,101 +1,202 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>MPD Player with 30s Countdown</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
+  <title>YoNoTV</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/controls.min.css" crossorigin="anonymous">
+  <meta name="google-adsense-platform-domain" content="blogspot.com"/>
   <style>
-    body {
-      margin: 0;
-      background-color: black;
+    body { margin: 0; background-color: black; }
+    .shaka-spinner-container { display: none; }
+    .video-fill video { object-fit: fill cover; }
+    .shaka-overflow-menu, .shaka-settings-menu {
+      background-color: rgb(35, 35, 35); color: rgb(255, 255, 255);
     }
-    #jwplayerDiv {
-      width: 100%;
-      height: 100%;
+    .shaka-overflow-menu button:hover,
+    .shaka-settings-menu button:hover {
+      background-color: rgb(45, 45, 45);
     }
-    #loadingOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.40);
-      color: red;
-      font-size: 24px;
-      font-weight: bold;
+    .shaka-overflow-button-label,
+    .shaka-current-selection-span,
+    .material-icons-round,
+    .shaka-settings-menu button {
+      color: rgb(245, 245, 245);
+    }
+    .shaka-bottom-controls {
+      display: flex; flex-direction: column-reverse;
+    }
+    #tglogo {
+      position: absolute;
+      right: 80px;
+      top: 30px;
+      height: 60px;
+      width: 100px;
+    }
+    /* Loading overlay styles */
+    #loading-overlay {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
     }
-    #countdown {
-      font-size: 40px;
-      margin-top: 15px;
+    #progress-text {
+      font-size: 48px;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+    #progress-bar-container {
+      width: 80%;
+      height: 20px;
+      background: #444;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    #progress-bar {
+      width: 0%;
+      height: 100%;
+      background: red;
+      transition: width 0.1s linear;
+    }
+    #play-button {
+      display: none;
+      margin-top: 40px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: red;
+      border: none;
+      color: white;
+      font-size: 48px;
+      cursor: pointer;
+      font-weight: bold;
+      user-select: none;
+
+      /* Center the symbol inside the button */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      line-height: 1;
     }
   </style>
 </head>
-<body>
-  <div id="jwplayerDiv"></div>
+<body oncontextmenu="return false" onkeydown="return false" onmousedown="return false">
 
-  <div id="loadingOverlay">
-    Please wait... loading video<br>
-    <div id="countdown">35</div>
+  <!-- Loading progress and play button overlay -->
+  <div id="loading-overlay">
+    <div id="progress-text">0%</div>
+    <div id="progress-bar-container">
+      <div id="progress-bar"></div>
+    </div>
+    <button id="play-button" title="Play">▶</button>
   </div>
 
+  <!-- Video container (NO autoplay) -->
+  <div class="container video-fill" data-shaka-player-container style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;object-fit:fill cover;">
+    <video data-shaka-player id="video" style="width:100%;height:100%;"></video>
+  </div>
+
+  <!-- Telegram link -->
+  <a href="https://t.me/yonotvlive" target="_blank">
+    <span style="position:absolute;z-index:100;top:6px;left:5px;height:30px;width:100px;color:#ccc;border:2px solid #ccc;padding:1px 0;border-radius:2px;text-align:center;">
+      Join us
+    </span>
+  </a>
+
+  <!-- Script section -->
   <script>
-    // Get URL params
-    function getQueryParams() {
-      const params = new URLSearchParams(window.location.search);
-      return {
-        file: params.get('id') || "https://ch11-hls-live.akamaized.net/out/u/433127.mpd",
-        keyId: params.get('keyid') || "d12e4c9dc52f4cbab7ac9b2278317e47",
-        key: params.get('key') || "a7987e5b6ec42db68a25486e108ca9f2"
-      };
-    }
+    (async function () {
+      function getParam(name) {
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name);
+      }
 
-    // Start 30-second countdown overlay
-    function showCountdown(seconds) {
-      const countdownEl = document.getElementById("countdown");
-      const overlay = document.getElementById("loadingOverlay");
-      let timeLeft = seconds;
+      const manifestUri = getParam("id");
+      const keyId = getParam("keyid");
+      const key = getParam("key");
 
-      countdownEl.textContent = timeLeft;
+      if (!manifestUri || !keyId || !key) {
+        alert("Missing required URL parameters: id, keyid, or key.");
+        return;
+      }
 
-      const timer = setInterval(() => {
-        timeLeft--;
-        if (timeLeft <= 0) {
-          clearInterval(timer);
-          overlay.style.display = "none";
-        } else {
-          countdownEl.textContent = timeLeft;
-        }
-      }, 1000);
-    }
-
-    // When page is ready
-    document.addEventListener("DOMContentLoaded", () => {
-      const { file, keyId, key } = getQueryParams();
-
-      // Setup JWPlayer
-      jwplayer("jwplayerDiv").setup({
-        file: file,
-        autostart: true,
-        width: "100%",
-        height: "100%",
-        type: "dash",
-        drm: {
-          clearkey: {
-            keyId: keyId,
-            key: key
+      document.addEventListener("shaka-ui-loaded", async () => {
+        const video = document.getElementById("video");
+        const ui = video["ui"];
+        ui.configure({
+          seekBarColors: {
+            base: "rgba(255,255,255,.2)",
+            buffered: "rgba(255,255,255,.4)",
+            played: "rgb(255,0,0)"
           }
-        }
-      });
+        });
 
-      // Always show 35s countdown
-      showCountdown(35);
+        const controls = ui.getControls();
+        const player = controls.getPlayer();
+
+        player.configure({
+          drm: {
+            clearKeys: {
+              [keyId]: key
+            }
+          }
+        });
+
+        try {
+          // Load video but do NOT play it
+          await player.load(manifestUri);
+          console.log("Video is loaded and ready. User must press Play.");
+        } catch (error) {
+          console.error("Error loading stream:", error);
+        }
+
+        // Customize control labels
+        document.querySelectorAll('.shaka-overflow-menu-button').forEach(btn => {
+          btn.textContent = 'settings';
+        });
+        document.querySelectorAll('.shaka-back-to-overflow-button .material-icons-round').forEach(icon => {
+          icon.textContent = 'arrow_back_ios_new';
+        });
+      });
+    })();
+
+    // Loading progress bar logic
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const progressText = document.getElementById('progress-text');
+    const progressBar = document.getElementById('progress-bar');
+    const playButton = document.getElementById('play-button');
+
+    let duration = 15; // seconds
+    let elapsed = 0;
+    const intervalTime = 100; // update every 100ms
+
+    const interval = setInterval(() => {
+      elapsed += intervalTime / 1000;
+      let percent = Math.min(100, (elapsed / duration) * 100);
+      progressBar.style.width = percent + '%';
+      progressText.textContent = Math.floor(percent) + '%';
+
+      if (percent >= 100) {
+        clearInterval(interval);
+        // Hide progress bar and text, show play button
+        progressText.style.display = 'none';
+        document.getElementById('progress-bar-container').style.display = 'none';
+        playButton.style.display = 'flex';
+      }
+    }, intervalTime);
+
+    // Play button click: hide overlay and start video play
+    playButton.addEventListener('click', () => {
+      loadingOverlay.style.display = 'none';
+      const video = document.getElementById('video');
+      video.play();
     });
   </script>
+
 </body>
 </html>
