@@ -27,7 +27,7 @@
       display: flex; flex-direction: column-reverse;
     }
 
-    /* Loading Progress Bar */
+    /* Loading Bar */
     #loading-bar-container {
       position: fixed;
       top: 50%;
@@ -46,7 +46,7 @@
 
     #loading-bar {
       height: 100%;
-      width: 0%;
+      width: 1%;
       background-color: red;
       border-radius: 20px;
       text-align: center;
@@ -56,21 +56,36 @@
       font-family: Arial, sans-serif;
       transition: width 1s linear;
     }
+
+    #play-button {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 80px;
+      color: white;
+      z-index: 10000;
+      pointer-events: none;
+      opacity: 0.8;
+    }
   </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return false" onmousedown="return false">
 
-  <!-- Progress Loader -->
+  <!-- Loading Bar -->
   <div id="loading-bar-container">
-    <div id="loading-bar">15</div>
+    <div id="loading-bar">Loading...</div>
   </div>
 
-  <!-- Video container -->
-  <div class="container video-fill" data-shaka-player-container style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;object-fit:fill cover;">
+  <!-- Play Icon -->
+  <div id="play-button">&#9658;</div>
+
+  <!-- Video -->
+  <div class="container video-fill" data-shaka-player-container style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;">
     <video data-shaka-player id="video" style="width:100%;height:100%;"></video>
   </div>
 
-  <!-- Telegram link -->
+  <!-- Telegram -->
   <a href="https://t.me/yonotvlive" target="_blank">
     <span style="position:absolute;z-index:100;top:6px;left:5px;height:30px;width:100px;color:#ccc;border:2px solid #ccc;padding:1px 0;border-radius:2px;text-align:center;">
       Join us
@@ -118,7 +133,7 @@
 
         try {
           await player.load(manifestUri);
-          console.log("Stream loaded successfully.");
+          console.log("Video is ready.");
         } catch (error) {
           console.error("Error loading stream:", error);
         }
@@ -133,22 +148,21 @@
       });
     })();
 
-    // Progress countdown logic
-    let countdown = 15;
+    // Simulated Loading Bar (1% to 100% over 20 seconds)
+    let progress = 1;
     const bar = document.getElementById("loading-bar");
     const barContainer = document.getElementById("loading-bar-container");
+    const playBtn = document.getElementById("play-button");
 
     const interval = setInterval(() => {
-      countdown--;
-      const percent = ((15 - countdown) / 15) * 100;
-      bar.style.width = percent + "%";
-      bar.textContent = countdown;
-
-      if (countdown <= 0) {
+      progress++;
+      bar.style.width = progress + "%";
+      if (progress >= 100) {
         clearInterval(interval);
         barContainer.style.display = "none";
+        playBtn.style.display = "block"; // Show play icon (optional)
       }
-    }, 1000);
+    }, 200); // 100% / 20s = 1% every 200ms
   </script>
 
 </body>
