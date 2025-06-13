@@ -32,6 +32,7 @@
       height: 60px;
       width: 100px;
     }
+
     /* Loading overlay styles */
     #loading-overlay {
       position: fixed; top:0; left:0; width:100%; height:100%;
@@ -43,11 +44,11 @@
       justify-content: center;
       align-items: center;
       z-index: 9999;
+      user-select: none;
     }
     #progress-text {
-      font-size: 48px;
-      margin-bottom: 20px;
-      user-select: none;
+      font-size: 36px;
+      margin-bottom: 10px;
     }
     #progress-bar-container {
       width: 80%;
@@ -55,6 +56,7 @@
       background: #444;
       border-radius: 10px;
       overflow: hidden;
+      margin-bottom: 10px;
     }
     #progress-bar {
       width: 0%;
@@ -62,21 +64,23 @@
       background: red;
       transition: width 0.1s linear;
     }
+    #loading-message {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 15px;
+    }
     #play-button {
       display: none;
-      margin-top: 40px;
-      width: 100px;
-      height: 100px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       background: red;
       border: none;
       color: white;
-      font-size: 48px;
+      font-size: 36px;
       cursor: pointer;
       font-weight: bold;
-      user-select: none;
 
-      /* Center the symbol inside the button */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -93,6 +97,7 @@
     <div id="progress-bar-container">
       <div id="progress-bar"></div>
     </div>
+    <div id="loading-message">Video is loading...</div>
     <button id="play-button" title="Play">▶</button>
   </div>
 
@@ -148,11 +153,15 @@
         });
 
         try {
-          // Load video but do NOT play it
+          // Start loading video but do NOT play it
           await player.load(manifestUri);
-          console.log("Video is loaded and ready. User must press Play.");
+          console.log("Video loaded and ready.");
+
+          // When video is loaded and ready, we can start the progress bar for 15 seconds
+          startLoadingProgress();
         } catch (error) {
           console.error("Error loading stream:", error);
+          alert("Error loading video.");
         }
 
         // Customize control labels
@@ -163,39 +172,42 @@
           icon.textContent = 'arrow_back_ios_new';
         });
       });
-    })();
 
-    // Loading progress bar logic
-    const loadingOverlay = document.getElementById('loading-overlay');
-    const progressText = document.getElementById('progress-text');
-    const progressBar = document.getElementById('progress-bar');
-    const playButton = document.getElementById('play-button');
+      // Show play button only after loading progress finishes
+      const loadingOverlay = document.getElementById('loading-overlay');
+      const progressText = document.getElementById('progress-text');
+      const progressBar = document.getElementById('progress-bar');
+      const playButton = document.getElementById('play-button');
+      const loadingMessage = document.getElementById('loading-message');
 
-    let duration = 15; // seconds
-    let elapsed = 0;
-    const intervalTime = 100; // update every 100ms
+      function startLoadingProgress() {
+        let duration = 15; // seconds for fake loading bar
+        let elapsed = 0;
+        const intervalTime = 100;
 
-    const interval = setInterval(() => {
-      elapsed += intervalTime / 1000;
-      let percent = Math.min(100, (elapsed / duration) * 100);
-      progressBar.style.width = percent + '%';
-      progressText.textContent = Math.floor(percent) + '%';
+        const interval = setInterval(() => {
+          elapsed += intervalTime / 1000;
+          let percent = Math.min(100, (elapsed / duration) * 100);
+          progressBar.style.width = percent + '%';
+          progressText.textContent = Math.floor(percent) + '%';
 
-      if (percent >= 100) {
-        clearInterval(interval);
-        // Hide progress bar and text, show play button
-        progressText.style.display = 'none';
-        document.getElementById('progress-bar-container').style.display = 'none';
-        playButton.style.display = 'flex';
+          if (percent >= 100) {
+            clearInterval(interval);
+            progressText.style.display = 'none';
+            progressBar.parentElement.style.display = 'none';
+            loadingMessage.style.display = 'none';
+            playButton.style.display = 'flex';
+          }
+        }, intervalTime);
       }
-    }, intervalTime);
 
-    // Play button click: hide overlay and start video play
-    playButton.addEventListener('click', () => {
-      loadingOverlay.style.display = 'none';
-      const video = document.getElementById('video');
-      video.play();
-    });
+      playButton.addEventListener('click', () => {
+        loadingOverlay.style.display = 'none';
+        const video = document.getElementById('video');
+        video.play();
+      });
+
+    })();
   </script>
 
 </body>
