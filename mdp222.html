@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YoNoTV</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/controls.min.css" crossorigin="anonymous">
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .video-container {
+      position: relative;
+      width: 80vw;
+      max-width: 800px;
+      aspect-ratio: 16 / 9;
+      background: black;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      background: black;
+      object-fit: cover;
+      display: block;
+    }
+    /* Circle play button */
+    #custom-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.8);
+      border: 2px solid white;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+    }
+    #custom-play:hover {
+      background: rgba(255, 255, 255, 1);
+    }
+    /* Play icon (triangle) */
+    #custom-play:before {
+      content: '';
+      display: inline-block;
+      margin-left: 5px;
+      border-style: solid;
+      border-width: 15px 0 15px 25px;
+      border-color: transparent transparent transparent black;
+    }
+
+    /* Loading progress bar container */
+    #loading-container {
+      width: 300px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 15px;
+      user-select: none;
+      position: relative;
+      font-weight: bold;
+      font-size: 14px;
+      color: white;
+    }
+    /* Progress bar fill */
+    #loading-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff0000, #ff5555);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      border-radius: 10px 0 0 10px;
+      transition: width 0.2s ease;
+      white-space: nowrap;
+      font-weight: bold;
+      user-select: none;
+    }
+    /* Loading text below progress */
+    #loading-text {
+      margin-top: 8px;
+      font-size: 14px;
+      text-align: center;
+      color: #ccc;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="video-container">
+    <video id="video" preload="auto" controls></video>
+    <div id="custom-play" title="Play Video"></div>
+  </div>
+
+  <div id="loading-container">
+    <div id="loading-bar">0%</div>
+  </div>
+  <div id="loading-text">Video is loading...</div>
+
+<script>
+  (function() {
+    const video = document.getElementById('video');
+    const playButton = document.getElementById('custom-play');
+    const loadingBar = document.getElementById('loading-bar');
+    const loadingText = document.getElementById('loading-text');
+
+    // Set your manifest URI and DRM keys here or get from URL params
+    // For example purpose, I’m just putting a sample URL (replace with your real URL)
+    const manifestUri = new URLSearchParams(window.location.search).get('id') || 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
+    const keyId = new URLSearchParams(window.location.search).get('keyid');
+    const key = new URLSearchParams(window.location.search).get('key');
+
+    // Initialize Shaka Player when user clicks play
+    playButton.addEventListener('click', async () => {
+      playButton.style.opacity = '0';
+      setTimeout(() => playButton.style.display = 'none', 300);
+
+      // Show loading bar and text
+      loadingBar.style.width = '0%';
+      loadingBar.textContent = '0%';
+      loadingText.style.display = 'block';
+
+      // Initialize player
+      const ui = video['ui'] || new shaka.ui.Overlay(new shaka.Player(video), document.querySelector('.video-container'), video);
+      if (!video['ui']) video['ui'] = ui;
+
+      const controls = ui.getControls();
+      const player = controls.getPlayer();
+
+      player.configure({
+        drm: {
+          clearKeys: keyId && key ? { [keyId]: key } : {}
+        }
+      });
+
+      try {
+        await player.load(manifestUri);
+
+        // Update loading bar based on buffered amount until fully buffered or 20 seconds max
+        let startTime = performance.now();
+
+        function updateProgress() {
+          const buffered = video.buffered;
+          if (buffered.length) {
+            const bufferedEnd = buffered.end(buffered.length - 1);
+            const duration = video.duration || 1;
+            let percent = Math.min(100, Math.floor((bufferedEnd / duration) * 100));
+            loadingBar.style.width = percent + '%';
+            loadingBar.textContent = percent + '%';
+            if (percent >= 100) {
+              loadingText.textContent = 'Video loaded, ready to play';
+            }
+            if (percent < 100 && (performance.now() - startTime) < 20000) {
+              requestAnimationFrame(updateProgress);
+            } else {
+              loadingText.style.display = 'none';
+            }
+          } else {
+            // If no buffered info, fallback to fake progress animation for 20s max
+            let elapsed = performance.now() - startTime;
+            let percent = Math.min(100, Math.floor((elapsed / 20000) * 100));
+            loadingBar.style.width = percent + '%';
+            loadingBar.textContent = percent + '%';
+            if (percent < 100) {
+              requestAnimationFrame(updateProgress);
+            } else {
+              loadingText.style.display = 'none';
+            }
+          }
+        }
+
+        updateProgress();
+
+        // Play video on load
+        video.play();
+      } catch (e) {
+        alert('Error loading video: ' + e.message);
+        // Show play button again on error
+        playButton.style.display = 'flex';
+        playButton.style.opacity = '1';
+      }
+    });
+
+    // When video plays, hide play button and loading bar
+    video.addEventListener('play', () => {
+      playButton.style.display = 'none';
+      loadingBar.style.width = '100%';
+      loadingBar.textContent = '100%';
+      loadingText.style.display = 'none';
+      document.getElementById('loading-container').style.display = 'none';
+    });
+
+  })();
+</script>
+
+</body>
+</html>
