@@ -27,50 +27,45 @@
       display: flex; flex-direction: column-reverse;
     }
 
-    /* Countdown Loader */
-    #countdown-overlay {
+    /* Loading Progress Bar */
+    #loading-bar-container {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(2px);
+      top: 50%;
+      left: 10%;
+      width: 80%;
+      height: 30px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 2px solid red;
+      border-radius: 20px;
       z-index: 9999;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
     }
 
-    .circle-loader {
-      border: 8px solid #444;
-      border-top: 8px solid red;
-      border-radius: 50%;
-      width: 120px;
-      height: 120px;
-      animation: spin 1s linear infinite;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 36px;
+    #loading-bar {
+      height: 100%;
+      width: 0%;
+      background-color: red;
+      border-radius: 20px;
+      text-align: center;
+      line-height: 30px;
       color: white;
-      font-family: Arial, sans-serif;
       font-weight: bold;
+      font-family: Arial, sans-serif;
+      transition: width 1s linear;
     }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
   </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return false" onmousedown="return false">
 
-  <!-- Countdown overlay -->
-  <div id="countdown-overlay">
-    <div class="circle-loader" id="countdown">20</div>
+  <!-- Progress Loader -->
+  <div id="loading-bar-container">
+    <div id="loading-bar">15</div>
   </div>
 
-  <!-- Video container (NO autoplay) -->
+  <!-- Video container -->
   <div class="container video-fill" data-shaka-player-container style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;object-fit:fill cover;">
     <video data-shaka-player id="video" style="width:100%;height:100%;"></video>
   </div>
@@ -123,7 +118,7 @@
 
         try {
           await player.load(manifestUri);
-          console.log("Video is loaded and ready.");
+          console.log("Stream loaded successfully.");
         } catch (error) {
           console.error("Error loading stream:", error);
         }
@@ -131,24 +126,27 @@
         document.querySelectorAll('.shaka-overflow-menu-button').forEach(btn => {
           btn.textContent = 'settings';
         });
+
         document.querySelectorAll('.shaka-back-to-overflow-button .material-icons-round').forEach(icon => {
           icon.textContent = 'arrow_back_ios_new';
         });
       });
     })();
 
-    // Countdown logic
-    let countdown = 20;
-    const countdownElement = document.getElementById("countdown");
-    const overlay = document.getElementById("countdown-overlay");
+    // Progress countdown logic
+    let countdown = 15;
+    const bar = document.getElementById("loading-bar");
+    const barContainer = document.getElementById("loading-bar-container");
 
-    const countdownInterval = setInterval(() => {
+    const interval = setInterval(() => {
       countdown--;
+      const percent = ((15 - countdown) / 15) * 100;
+      bar.style.width = percent + "%";
+      bar.textContent = countdown;
+
       if (countdown <= 0) {
-        clearInterval(countdownInterval);
-        overlay.style.display = "none";
-      } else {
-        countdownElement.textContent = countdown;
+        clearInterval(interval);
+        barContainer.style.display = "none";
       }
     }, 1000);
   </script>
