@@ -524,7 +524,7 @@
        
   {
     "name": "Nepal",
-    "logo": "https://live.mrgamingstream.net/logo/can.png"
+    "logo": "https://nirutv.online/logo/can.png"
   },  
      
 {
@@ -1367,7 +1367,7 @@
 
            {
     "name": "Nepal.",
-    "logo": "https://live.mrgamingstream.net/logo/flag.png"
+    "logo": "https://nirutv.online/logo/flag.png"
   },  
 
        
@@ -1538,48 +1538,48 @@
      
   {
     "name": "Biratnagar King",
-    "logo": "https://live.mrgamingstream.net/logo/biratnagar.png"
+    "logo": "https://nirutv.online/logo/biratnagar.png"
   },
        {
     "name": "Sudurpaschim Royal",
-    "logo": "https://live.mrgamingstream.net/logo/sudurpaschim.png"
+    "logo": "https://nirutv.online/logo/sudurpaschim.png"
   },  
      
      
   {
     "name": "Pokhara Avenger",
-    "logo": "https://live.mrgamingstream.net/logo/pokhara.png"
+    "logo": "https://nirutv.online/logo/pokhara.png"
   },  
      
      
  
   {
     "name": "Lumbini Lions",
-    "logo": "https://live.mrgamingstream.net/logo/lumbini.png"
+    "logo": "https://nirutv.online/logo/lumbini.png"
   },  
      
      
   {
     "name": "Kathmandu Gurkhas",
-    "logo": "https://live.mrgamingstream.net/logo/ktm.png"
+    "logo": "https://nirutv.online/logo/ktm.png"
   },    
   
        {
     "name": "Karnali Yaks",
-    "logo": "https://live.mrgamingstream.net/logo/karnali.png"
+    "logo": "https://nirutv.online/logo/karnali.png"
   },  
      
      
   {
     "name": "Chitwan Rhinos",
-    "logo": "https://live.mrgamingstream.net/logo/chitwan.png"
+    "logo": "https://nirutv.online/logo/chitwan.png"
   },  
      
      
  
   {
     "name": "Janakpur Bolts",
-    "logo": "https://live.mrgamingstream.net/logo/janakpur.png"
+    "logo": "https://nirutv.online/logo/janakpur.png"
   },  
      
    {
@@ -12505,7 +12505,7 @@
    ];
       
       
-      var leagueNames = [" T20I", " ODI", " Test Series", " Nepal Premier League"," T20 world cup", " ODI world cup", " Women's Asia Cup", " women's World Cup ", " Asia cup", " Champions Trophy", " IPL", " Ligue 1", " Premier League"," ICC CWC League 2","NPL " , " Bundesliga", " Serie A", " La Liga", " UEFA Champions League", " UEFA Europa League", " African Nations Championship", " AFC Champions League", " Botola Pro", " Serie A Women", " Pro League", " CAF Confederation Cup", " Botola 2"];
+      var leagueNames = [" T20I Series", " ODI Series", " Test Series", " Nepal Premier League"," T20 world cup", " ODI world cup", " Women's Asia Cup", " women's World Cup ", " Asia cup", " Champions Trophy", " FIFA Club World Cup", " Ligue 1", " Premier League"," ICC CWC League 2","Nepal Premier League " , " Bundesliga", " Serie A", " La Liga", " UEFA Champions League", " UEFA Europa League", " African Nations Championship", " AFC Champions League", " Botola Pro", " Serie A Women", " Pro League", " CAF Confederation Cup", " Botola 2"];
         var commentatorNames = [" Andrew Leonard"];
         var channelNames = [" YoNoTV"];
 
