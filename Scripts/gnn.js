@@ -865,7 +865,7 @@
      
   {
     "name": "Scotland",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8498.png"
+    "logo": "https://aimages.willow.tv/teamLogos/scotland.png"
   },
        {
     "name": "Switzerland",
