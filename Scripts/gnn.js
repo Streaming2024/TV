@@ -528,46 +528,46 @@
   },  
      
 {
-    "name": "India_",
+    "name": "India.",
     "logo": "https://aimages.willow.tv/teamLogos/india.png"
   },  
 
 {
-    "name": "Australia_",
+    "name": "Australia.",
     "logo": "https://aimages.willow.tv/teamLogos/australia.png"
   },  
 
        {
-    "name": "Bangladesh_",
+    "name": "Bangladesh",
     "logo": "https://aimages.willow.tv/teamLogos/bangladesh.png"
   },  
 
        {
-    "name": "New Zealand_",
+    "name": "New Zealand",
     "logo": "https://aimages.willow.tv/teamLogos/newzealand.png"
   },  
 
 
        {
-    "name": "Afghanistan_",
+    "name": "Afghanistan",
     "logo": "https://aimages.willow.tv/teamLogos/afghanistan.png"
   },  
 
 
        {
-    "name": "Pakistan_",
+    "name": "Pakistan",
     "logo": "https://aimages.willow.tv/teamLogos/pakistan.png"
   },  
 
 
        {
-    "name": "Sri Lanka_",
+    "name": "Sri Lanka",
     "logo": "https://aimages.willow.tv/teamLogos/srilanka.png"
   },  
 
 
        {
-    "name": "England_",
+    "name": "England",
     "logo": "https://aimages.willow.tv/teamLogos/england.png"
   }, 
 
@@ -585,19 +585,19 @@
 
 
        {
-    "name": "S.Africa",
+    "name": "South Africa",
     "logo": "https://aimages.willow.tv/teamLogos/southafrica.png"
   },  
 
 
        {
-    "name": "USA_",
+    "name": "USA",
     "logo": "https://aimages.willow.tv/teamLogos/usa.png"
   }, 
 
        
          {
-    "name": "UAE_",
+    "name": "UAE",
     "logo": "https://aimages.willow.tv/teamLogos/uae.png"
   }, 
 
@@ -1081,7 +1081,7 @@
   },    
   
        {
-    "name": "S. Africaa",
+    "name": "South Africaa",
     "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6316.png"
   },  
      
@@ -1626,109 +1626,109 @@
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Al Ahly",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/101745.png"
   },  
      
      
  
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Palmeiras",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10283.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Botafogo",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8517.png"
   },    
   
        {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Seattle Sounders",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/130394.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Auckland City",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8523.png"
   },  
      
      
  
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Espérance",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8153.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Flamengo",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9770.png"
   },
        {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Los Angeles",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/867280.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Monterrey",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/7849.png"
   },  
      
      
  
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "River Plate",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10076.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Urawa Red Diamonds",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6244.png"
   },    
   
        {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Fluminense",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9863.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Mamelodi Sundowns FC",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/4530.png"
   },  
      
      
  
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Ulsan HD ",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/133896.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Al-Ain",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/102117.png"
   },
        {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Casablanca",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/102050.png"
   },  
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Pachuca",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/7848.png"
   },  
      
      
  
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Salzburg",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10013.png"
   },  
      
      
