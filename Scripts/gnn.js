@@ -583,6 +583,10 @@
     "logo": "https://aimages.willow.tv/teamLogos/westindies.png"
   },  
 
+              {
+    "name": "Ireland",
+    "logo": "https://aimages.willow.tv/teamLogos/ireland.png"
+  },  
 
        {
     "name": "South Africa",
