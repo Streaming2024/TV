@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TV Live Streaming Online</title>
+  <meta name="keywords" content="live streaming, online TV, watch shows online, cryptocurrency news, top cryptocurrencies">
+  <meta content="width=device-width,minimum-scale=1,initial-scale=1" name="viewport"/>
+  <meta name="description" content="YoNoTV provides live updates, highlights, predictions, previews, and schedules for cricket, football, and other sports.">
+  <link href="https://nirutv.online/logo/favicon.png" rel="icon" type="image/x-icon"/>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://nirutv.online/Scripts/clicks.js"></script>
+  <script src="https://nirutv.online/Scripts/jwplayer.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    #container {
+      width: 100%;
+      height: 500px;
+      background: #0a0a0a;
+      color: #fff;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    #iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .MyButton {
+      padding: 5px 10px;
+      background: linear-gradient(to bottom, #fc0019, #fc0019);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      margin: 3px 0px;
+    }
+
+    .MyButton:hover {
+      background: linear-gradient(to bottom, #023cf7, #22ff05);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .MyButton:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+    }
+
+    #fullscreenBtn {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      z-index: 9999;
+    }
+
+    .disclaimer {
+      text-align: center;
+      color: #fff;
+      background-color: #023cf7;
+      padding: 5px;
+      font-weight: bold;
+      margin-top: 1px;
+    }
+    
+    /* Anti-Adblock Styles */
+    #adblock-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.95);
+      z-index: 999999;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    
+    #adblock-overlay h2 {
+      color: #ff0000;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    
+    #adblock-overlay p {
+      font-size: 18px;
+      margin-bottom: 15px;
+      max-width: 800px;
+    }
+    
+    #adblock-overlay .adblock-btn {
+      background: #fc0019;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    
+    .adblock-test {
+      position: absolute;
+      left: -999px;
+      width: 1px;
+      height: 1px;
+      background-color: transparent;
+    }
+    
+    .ad-content {
+      height: 1px;
+      width: 1px;
+      position: absolute;
+      left: -999px;
+    }
+    
+    .ad-placeholder {
+      min-height: 60px;
+      background-color: rgba(0,0,0,0.1);
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+    }
+  </style>
+</head>
+
+<body onload="init()">
+
+<!-- Anti-Adblock Overlay -->
+<div id="adblock-overlay">
+  <h2>AD BLOCKER DETECTED</h2>
+  <p>We've noticed you're using an ad blocker. Our service is funded by ads.</p>
+  <p>Please disable your ad blocker to continue watching.</p>
+  
+  <button class="adblock-btn" onclick="verifyAdBlockDisabled()">I've disabled my ad blocker</button>
+  
+  <p style="margin-top: 30px; font-size: 14px; color: #aaa;">
+    If you've already disabled your ad blocker, please refresh the page.
+  </p>
+</div>
+
+<!-- Hidden elements for detection -->
+<div class="adblock-test" id="adTest"></div>
+<div class="ad-content" id="adContent"></div>
+
+<div class="container">
+  <div class="disclaimer">Wait for Loading & Skip 1–2 ads (press back)</div>
+
+  <center>
+    <input class="MyButton" onclick="window.location.reload()" type="button" value="Refresh LIVE" />
+  </center>
+  
+  <!-- Top Ad Container -->
+  <div class="ad-placeholder" id="top-ad-container">
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '7652e38f1c9a9d8499668ce0ce63d568',
+        'format' : 'iframe',
+        'height' : 60,
+        'width' : 468,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//orientsweptautopsy.com/7652e38f1c9a9d8499668ce0ce63d568/invoke.js"></script>
+  </div>
+
+  <div id="container">
+    <iframe id="iframe" allow="encrypted-media; autoplay" allowfullscreen scrolling="no"></iframe>
+    <button id="fullscreenBtn" class="MyButton">⛶ Fullscreen</button>
+  </div>
+
+  <div id="jwPlayer" style="display:none;"></div>
+
+  <!-- Center Ad Container -->
+  <div class="ad-placeholder" id="center-ad-container">
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '7652e38f1c9a9d8499668ce0ce63d568',
+        'format' : 'iframe',
+        'height' : 60,
+        'width' : 468,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//orientsweptautopsy.com/7652e38f1c9a9d8499668ce0ce63d568/invoke.js"></script>
+  </div>
+
+  <!----------------CHAT BOX HERE------------------>
+  <center><iframe height="440px" width="100%" src="https://nirutv.online/VIP/chat2"></iframe></center>
+
+  <div class="disclaimer">Legal Disclaimer</div>
+  <div><b>Content Hosting:</b> YoNo TV does not host or upload any video content. All streams are embedded from publicly available third-party sources.</div>
+  
+  <div><b>Copyright Notice:</b> We do not claim ownership of any content displayed on this platform. All trademarks, logos, and media belong to their respective owners.</div>
+  
+  <div><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties.Users must ensure content access legality in their region.</div>
+  
+  <div><b>DMCA Compliance:</b> If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</div>
+
+  <center>
+    <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
+    <script type="text/javascript">sc_online_i(1704055,"ffffff","e61c1c");</script>
+    <br><noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
+  </center>
+</div>
+
+<script>
+// Enhanced Ad Blocker Detection
+async function isAdBlockEnabled() {
+  // Method 1: Check if test element is blocked
+  const testElement = document.getElementById('adTest');
+  if(testElement && 
+     (testElement.style.display === 'none' || 
+      testElement.offsetHeight === 0 || 
+      testElement.style.visibility === 'hidden')) {
+    return true;
+  }
+  
+  // Method 2: Check if ad content is blocked
+  const adContent = document.getElementById('adContent');
+  if(adContent.style.height === '0px' || 
+     adContent.style.width === '0px' || 
+     window.getComputedStyle(adContent).display === 'none') {
+    return true;
+  }
+  
+  // Method 3: Check if ad script variables exist
+  try {
+    if(typeof atOptions === 'undefined') {
+      return true;
+    }
+  } catch(e) {
+    return true;
+  }
+  
+  // Method 4: Check if ad containers are empty
+  const topAdContainer = document.getElementById('top-ad-container');
+  const centerAdContainer = document.getElementById('center-ad-container');
+  if(topAdContainer && centerAdContainer) {
+    if(topAdContainer.offsetHeight < 50 || centerAdContainer.offsetHeight < 50) {
+      return true;
+    }
+  }
+  
+  // Method 5: Try to load an ad script
+  return new Promise((resolve) => {
+    const testAd = document.createElement('script');
+    testAd.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+    testAd.onerror = () => resolve(true);
+    testAd.onload = () => {
+      document.head.removeChild(testAd);
+      resolve(false);
+    };
+    document.head.appendChild(testAd);
+    
+    // Timeout fallback
+    setTimeout(() => {
+      if(testAd.parentNode) {
+        document.head.removeChild(testAd);
+        resolve(true);
+      }
+    }, 500);
+  });
+}
+
+// Show/hide warning based on ad blocker status
+async function checkAdBlockStatus() {
+  const adBlockEnabled = await isAdBlockEnabled();
+  const overlay = document.getElementById('adblock-overlay');
+  
+  if(adBlockEnabled) {
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  } else {
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+// Verify if ad blocker was really disabled
+function verifyAdBlockDisabled() {
+  checkAdBlockStatus().then(isBlocked => {
+    if(isBlocked) {
+      alert('Ad blocker is still active. Please completely disable it and refresh the page.');
+    } else {
+      window.location.reload();
+    }
+  });
+}
+
+// Initial check
+document.addEventListener('DOMContentLoaded', () => {
+  // First check after short delay to allow ads to load
+  setTimeout(checkAdBlockStatus, 1500);
+  
+  // Periodic checks (every 3 seconds)
+  setInterval(checkAdBlockStatus, 3000);
+});
+
+// Existing player code
+const urlParams = new URLSearchParams(window.location.search);
+const srcParam = urlParams.get('src');
+const videoUrl = urlParams.get('url');
+
+if (srcParam) {
+  document.getElementById('iframe').src = srcParam;
+} else if (videoUrl) {
+  jwplayer("jwPlayer").setup({
+    file: videoUrl,
+    width: "100%",
+    height: 480
+  });
+  document.getElementById('iframe').style.display = 'none';
+}
+
+// Fullscreen Button Behavior
+document.getElementById("fullscreenBtn").addEventListener("click", function () {
+  const iframe = document.getElementById("iframe");
+
+  if (iframe.requestFullscreen) {
+    iframe.requestFullscreen();
+  } else if (iframe.webkitRequestFullscreen) {
+    iframe.webkitRequestFullscreen();
+  } else if (iframe.msRequestFullscreen) {
+    iframe.msRequestFullscreen();
+  }
+
+  // Lock to landscape on mobile
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock("landscape").catch(err => {
+      console.log("Orientation lock not supported", err);
+    });
+  }
+
+  // Hide the fullscreen button
+  this.style.display = "none";
+});
+
+// Show button again when exiting fullscreen
+document.addEventListener("fullscreenchange", function () {
+  if (!document.fullscreenElement) {
+    document.getElementById("fullscreenBtn").style.display = "block";
+  }
+});
+</script>
+</body>
+</html>
