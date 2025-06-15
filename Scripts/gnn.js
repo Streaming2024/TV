@@ -571,7 +571,10 @@
     "logo": "https://aimages.willow.tv/teamLogos/england.png"
   }, 
 
-
+ {
+    "name": "Bermuda",
+    "logo": "https://aimages.willow.tv/teamLogos/bermuda.png"
+  }, 
          {
     "name": "Willow",
     "logo": "https://aimages.willow.tv/teamLogos/_____.png"
