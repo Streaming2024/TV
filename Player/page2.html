@@ -5,10 +5,10 @@
   <meta name="keywords" content="live streaming, online TV, watch shows online, cryptocurrency news, top cryptocurrencies">
   <meta content="width=device-width,minimum-scale=1,initial-scale=1" name="viewport"/>
   <meta name="description" content="YoNoTV provides live updates, highlights, predictions, previews, and schedules for cricket, football, and other sports.">
-  <link href="https://live.mrgamingstream.net/logo/favicon.png" rel="icon" type="image/x-icon"/>
+  <link href="https://nirutv.online/logo/favicon.png" rel="icon" type="image/x-icon"/>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
-  <script src="https://live.mrgamingstream.net/Scripts/clicks.js"></script>
-  <script src="https://live.mrgamingstream.net/Scripts/jwplayer.js"></script>
+  <script src="https://nirutv.online/Scripts/clicks.js"></script>
+  <script src="https://nirutv.online/Scripts/jwplayer.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <style>
@@ -25,7 +25,7 @@
       color: #fff;
       overflow: hidden;
       position: relative;
-      margin-bottom: 10px;
+      margin-bottom: 10px; /* Add gap between iframe and legal disclaimer */
     }
 
     #iframe {
@@ -73,18 +73,11 @@
       background-color: #023cf7;
       padding: 5px;
       font-weight: bold;
-      margin-top: 1px;
-    }
-
-    /* Ensure fullscreen fills entire screen */
-    #container:fullscreen,
-    #container:-webkit-full-screen,
-    #container:-moz-full-screen,
-    #container:-ms-fullscreen {
-      width: 100vw;
-      height: 100vh;
+      margin-top: 1px; /* Add some margin between iframe and disclaimer */
     }
   </style>
+<!----------------POPUNDER ADS HERE------------------>
+<script type='text/javascript' src='//orientsweptautopsy.com/7a/67/68/7a676823323dfeab2e2da829151707c0.js'></script>
 </head>
 
 <body onload="init()">
@@ -95,29 +88,30 @@
   <center>
     <input class="MyButton" onclick="window.location.reload()" type="button" value="Refresh LIVE" />
   </center>
+<!----------------TOP ADS...HERE------------------>
+<center>
+<script type="text/javascript">
+	atOptions = {
+		'key' : '7652e38f1c9a9d8499668ce0ce63d568',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//orientsweptautopsy.com/7652e38f1c9a9d8499668ce0ce63d568/invoke.js"></script>
+</center>
 
-  <!----------------TOP ADS...HERE------------------>
-  <center>
-    <script type="text/javascript">
-      atOptions = {
-        'key': '30099acc1f859db497ee36d0e8a18597',
-        'format': 'iframe',
-        'height': 50,
-        'width': 320,
-        'params': {}
-      };
-    </script>
-    <script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
-  </center>
-
+  
   <div id="container">
-    <iframe id="iframe" allow="encrypted-media; autoplay" sandbox="allow-scripts allow-forms allow-same-origin" allowfullscreen webkitallowfullscreen mozallowfullscreen scrolling="no"></iframe>
+    <iframe id="iframe" sandbox="allow-scripts allow-forms allow-same-origin" allow="encrypted-media; autoplay" allowfullscreen scrolling="no"></iframe>
     <button id="fullscreenBtn" class="MyButton">⛶ Fullscreen</button>
   </div>
 
   <div id="jwPlayer" style="display:none;"></div>
 
   <script>
+    // Detect src or url from query
     const urlParams = new URLSearchParams(window.location.search);
     const srcParam = urlParams.get('src');
     const videoUrl = urlParams.get('url');
@@ -133,62 +127,62 @@
       document.getElementById('iframe').style.display = 'none';
     }
 
-    // Fullscreen for container to support iOS, Android, Desktop
+    // Fullscreen Button Behavior
     document.getElementById("fullscreenBtn").addEventListener("click", function () {
-      const container = document.getElementById("container");
+      const iframe = document.getElementById("iframe");
 
-      if (container.requestFullscreen) {
-        container.requestFullscreen();
-      } else if (container.webkitRequestFullscreen) {
-        container.webkitRequestFullscreen();
-      } else if (container.mozRequestFullScreen) {
-        container.mozRequestFullScreen();
-      } else if (container.msRequestFullscreen) {
-        container.msRequestFullscreen();
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.msRequestFullscreen) {
+        iframe.msRequestFullscreen();
       }
 
-      // Lock orientation to landscape (only works on mobile)
+      // Lock to landscape on mobile
       if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock("landscape").catch((err) => {
-          console.log("Orientation lock not supported:", err.message);
+        screen.orientation.lock("landscape").catch(err => {
+          console.log("Orientation lock not supported", err);
         });
       }
 
+      // Hide the fullscreen button
       this.style.display = "none";
     });
 
-    // Show button again on exit fullscreen
-    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(function (eventType) {
-      document.addEventListener(eventType, function () {
-        const isFull = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
-        if (!isFull) {
-          document.getElementById("fullscreenBtn").style.display = "block";
-        }
-      });
+    // Show button again when exiting fullscreen
+    document.addEventListener("fullscreenchange", function () {
+      if (!document.fullscreenElement) {
+        document.getElementById("fullscreenBtn").style.display = "block";
+      }
     });
   </script>
 
-  <!----------------ADS CENTER------------------>
+  <!----------------ADS HERE CENTER------------------>
   <center>
-    <script type="text/javascript">
-      atOptions = {
-        'key': '30099acc1f859db497ee36d0e8a18597',
-        'format': 'iframe',
-        'height': 50,
-        'width': 320,
-        'params': {}
-      };
-    </script>
-    <script type="text/javascript" src="//courthousezoological.com/30099acc1f859db497ee36d0e8a18597/invoke.js"></script>
-  </center>
- <!----------------CHAT BOX HERE------------------>
-<iframe height="440px"  width="100%" src="https://live.mrgamingstream.net/VIP/chat.html"></iframe>
+<script type="text/javascript">
+	atOptions = {
+		'key' : '7652e38f1c9a9d8499668ce0ce63d568',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//orientsweptautopsy.com/7652e38f1c9a9d8499668ce0ce63d568/invoke.js"></script>
+</center>
+  <!----------------CHAT BOX HERE------------------>
+<center><iframe height="440px"  width="100%" src="https://nirutv.online/VIP/chat2"></iframe></center>
 
+  
   <div class="disclaimer">Legal Disclaimer</div>
   <div><b>Content Hosting:</b> YoNo TV does not host or upload any video content. All streams are embedded from publicly available third-party sources.</div>
+  
   <div><b>Copyright Notice:</b> We do not claim ownership of any content displayed on this platform. All trademarks, logos, and media belong to their respective owners.</div>
-  <div><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties. Users must ensure content access legality in their region.</div>
-  <div><b>DMCA Compliance:</b> If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</div>
+  
+  <div><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties.Users must ensure content access legality in their region.</div>
+  
+  <div><b>DMCA Compliance:</b>  If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</div>
 
   <center>
     <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
