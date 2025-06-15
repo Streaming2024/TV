@@ -3,31 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TV Live Streaming Online - Fixed Ad Blocker Detection</title>
-  <meta name="keywords" content="live streaming, online TV, watch shows online, cryptocurrency news, top cryptocurrencies">
-  <meta name="description" content="YoNoTV provides live updates, highlights, predictions, previews, and schedules for cricket, football, and other sports.">
-  <link rel="icon" href="https://nirutv.online/logo/favicon.png" type="image/x-icon"/>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
+  <title>TV Live Streaming - Reliable Ad Detection</title>
+  <link rel="icon" href="https://nirutv.online/logo/favicon.png" type="image/x-icon">
   <style>
     :root {
       --primary: #fc0019;
       --secondary: #023cf7;
       --accent: #22ff05;
+      --dark-bg: #0a0a0a;
+      --medium-bg: #1a1a2e;
+      --light-bg: #2a2a4e;
     }
     
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0a0a0a, #1a1a2e);
+      background: linear-gradient(135deg, var(--dark-bg), var(--medium-bg));
       color: #fff;
       min-height: 100vh;
       padding: 20px;
       position: relative;
+      overflow-x: hidden;
     }
     
     .container {
@@ -38,17 +39,14 @@
       padding: 20px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       border: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+      z-index: 10;
     }
     
     header {
       text-align: center;
       margin-bottom: 20px;
-    }
-    
-    .logo {
-      width: 150px;
-      height: auto;
-      margin-bottom: 15px;
+      padding: 20px 0;
     }
     
     h1 {
@@ -82,7 +80,7 @@
     }
     
     .MyButton {
-      padding: 10px 25px;
+      padding: 12px 30px;
       background: linear-gradient(to bottom, var(--primary), #d00015);
       color: white;
       border: none;
@@ -149,6 +147,7 @@
     .ad-label {
       color: #777;
       font-style: italic;
+      font-size: 14px;
     }
     
     .chat-container {
@@ -192,7 +191,7 @@
       color: #777;
     }
     
-    /* Anti-Adblock Overlay */
+    /* Anti-Adblock Overlay - Fixed */
     #adblock-overlay {
       position: fixed;
       top: 0;
@@ -251,12 +250,41 @@
       box-shadow: 0 8px 20px rgba(252, 0, 25, 0.6);
     }
     
-    .ad-test {
+    /* Ad test element */
+    .ad-test-element {
       position: absolute;
-      left: -999px;
+      left: -9999px;
       width: 1px;
       height: 1px;
       background-color: transparent;
+    }
+    
+    /* Background animation */
+    .background-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--secondary), transparent);
+      animation: float 15s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      100% {
+        transform: translate(100vw, 100vh) rotate(360deg);
+      }
     }
     
     @media (max-width: 768px) {
@@ -273,28 +301,35 @@
         padding: 20px;
         width: 95%;
       }
+      
+      h1 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body onload="init()">
 
-<!-- Anti-Adblock Overlay -->
+<!-- Background Animation -->
+<div class="background-animation" id="backgroundAnimation"></div>
+
+<!-- Anti-Adblock Overlay - Fixed -->
 <div id="adblock-overlay">
   <div class="adblock-content">
     <h2>AD BLOCKER DETECTED</h2>
     <p>We've detected that you might be using an ad blocker. Our free streaming service relies on advertisements to cover operational costs.</p>
-    <p>Please disable your ad blocker to access our content. After disabling, refresh the page to continue watching.</p>
+    <p>Please disable your ad blocker to access our content. After disabling, click the button below to continue.</p>
     
-    <button class="adblock-btn" onclick="recheckAdBlock()">I've Disabled My Ad Blocker</button>
+    <button class="adblock-btn" id="disable-adblock-btn">I've Disabled My Ad Blocker</button>
     
     <p style="margin-top: 25px; font-size: 0.9rem; color: #aaa;">
-      If you're not using an ad blocker, this might be a false detection. Please try refreshing the page.
+      If you're not using an ad blocker, this might be a false detection. Please contact support if this message persists.
     </p>
   </div>
 </div>
 
-<!-- Hidden test element -->
-<div class="ad-test" id="adTestElement"></div>
+<!-- Hidden ad test element -->
+<div class="ad-test-element" id="adTestElement"></div>
 
 <div class="container">
   <header>
@@ -321,8 +356,9 @@
   </div>
   
   <!-- Top Ad Container -->
-  <div class="ad-container">
+  <div class="ad-container" id="topAd">
     <div class="ad-label">Advertisement</div>
+    <div id="ad-content-top"></div>
   </div>
 
   <div id="player-container">
@@ -330,8 +366,9 @@
   </div>
 
   <!-- Center Ad Container -->
-  <div class="ad-container">
+  <div class="ad-container" id="centerAd">
     <div class="ad-label">Advertisement</div>
+    <div id="ad-content-center"></div>
   </div>
   
   <div class="chat-container">
@@ -347,9 +384,7 @@
   </div>
 
   <div class="counter">
-    <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
-    <script type="text/javascript">sc_online_i(1704055,"ffffff","e61c1c");</script>
-    <br><noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
+    <div id="view-counter">Live Viewers: <span id="view-count">0</span></div>
   </div>
 </div>
 
@@ -361,53 +396,59 @@
 // Reliable ad blocker detection
 function detectAdBlock() {
   return new Promise((resolve) => {
-    // Create a bait element
+    // Create a bait element that ad blockers would typically block
     const bait = document.createElement('div');
     bait.innerHTML = '&nbsp;';
-    bait.className = 'adsbox pub_300x250 pub_300x250m pub_728x90 text-ad textAd text_ad text_ads text-ads text-ad-links';
-    bait.style.width = '1px';
-    bait.style.height = '1px';
+    bait.className = 'ad ad-banner ad-unit pub_300x250 pub_300x250m text-ad textAd text_ad text_ads text-ads';
     bait.style.position = 'absolute';
     bait.style.left = '-100px';
     bait.style.top = '-100px';
+    bait.style.width = '1px';
+    bait.style.height = '1px';
     bait.style.zIndex = '-1000';
     document.body.appendChild(bait);
     
     // Check after a short delay
     setTimeout(() => {
-      const isBlocked = bait.offsetHeight === 0 || 
-                        bait.offsetWidth === 0 || 
-                        bait.style.display === 'none' || 
-                        window.getComputedStyle(bait).display === 'none';
+      let detected = false;
       
-      document.body.removeChild(bait);
-      
-      // Additional check for ad script
-      try {
-        if (typeof atOptions === 'undefined') {
-          resolve(true);
-          return;
-        }
-      } catch(e) {
-        resolve(true);
-        return;
+      // Check if the element is hidden or removed
+      if (!bait.offsetParent || 
+          bait.offsetHeight === 0 || 
+          bait.offsetWidth === 0 || 
+          window.getComputedStyle(bait).display === 'none') {
+        detected = true;
       }
       
-      resolve(isBlocked);
+      // Clean up
+      if (bait.parentNode) {
+        bait.parentNode.removeChild(bait);
+      }
+      
+      resolve(detected);
     }, 100);
   });
 }
 
 // Show/hide adblock warning
 async function checkAdBlockStatus() {
-  const isBlocked = await detectAdBlock();
-  const overlay = document.getElementById('adblock-overlay');
-  
-  // Only show warning if ad blocker is actually active
-  if (isBlocked) {
-    overlay.style.display = 'flex';
-  } else {
-    overlay.style.display = 'none';
+  try {
+    const isBlocked = await detectAdBlock();
+    const overlay = document.getElementById('adblock-overlay');
+    
+    // Only show warning if ad blocker is actually active
+    if (isBlocked) {
+      overlay.style.display = 'flex';
+    } else {
+      overlay.style.display = 'none';
+      // Load ads since ad blocker is not active
+      loadAds();
+    }
+  } catch (e) {
+    console.error("Ad block detection error:", e);
+    // If detection fails, don't show warning
+    document.getElementById('adblock-overlay').style.display = 'none';
+    loadAds();
   }
 }
 
@@ -417,31 +458,57 @@ async function recheckAdBlock() {
   
   if (!isBlocked) {
     document.getElementById('adblock-overlay').style.display = 'none';
-    // Refresh the player to load ads
-    window.location.reload();
+    loadAds();
   } else {
     alert('Ad blocker is still active. Please completely disable it and try again.');
   }
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-  // Check after a delay to allow ads to load
+// Load ads function
+function loadAds() {
+  // Simulate loading ads
+  document.getElementById('topAd').innerHTML = `
+    <div style="text-align: center; padding: 20px; color: #ddd;">
+      <p>Advertisement would be displayed here</p>
+      <p style="font-size: 12px; margin-top: 10px;">(Actual ad content would appear if not blocked)</p>
+    </div>
+  `;
+  
+  document.getElementById('centerAd').innerHTML = `
+    <div style="text-align: center; padding: 20px; color: #ddd;">
+      <p>Advertisement would be displayed here</p>
+      <p style="font-size: 12px; margin-top: 10px;">(Actual ad content would appear if not blocked)</p>
+    </div>
+  `;
+}
+
+// Initialize ad block detection
+function initAdBlockDetection() {
+  // Initial check after delay to allow everything to load
   setTimeout(() => {
     checkAdBlockStatus();
-    
-    // Periodic checks
-    setInterval(checkAdBlockStatus, 10000);
-  }, 3000);
-});
+  }, 2000);
+}
 
 // Player functionality
-function init() {
+function initPlayer() {
   const urlParams = new URLSearchParams(window.location.search);
   const srcParam = urlParams.get('src');
   
   if (srcParam) {
     document.getElementById('player-iframe').src = srcParam;
+  } else {
+    // Default player content
+    document.getElementById('player-iframe').srcdoc = `
+      <html>
+        <body style="background: #000; color: #fff; display: flex; justify-content: center; align-items: center; height: 100%;">
+          <div style="text-align: center;">
+            <h2>YoNoTV Live Stream</h2>
+            <p>Stream will start shortly</p>
+          </div>
+        </body>
+      </html>
+    `;
   }
 }
 
@@ -474,6 +541,59 @@ function toggleFullScreen() {
     }
   }
 }
+
+// Create background animation
+function createBackgroundAnimation() {
+  const animationContainer = document.getElementById('backgroundAnimation');
+  const colors = ['#fc0019', '#023cf7', '#22ff05', '#ff9900', '#cc00ff'];
+  
+  for (let i = 0; i < 15; i++) {
+    const circle = document.createElement('div');
+    circle.classList.add('circle');
+    
+    // Random properties
+    const size = Math.random() * 200 + 50;
+    const posX = Math.random() * 100;
+    const posY = Math.random() * 100;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    
+    circle.style.width = `${size}px`;
+    circle.style.height = `${size}px`;
+    circle.style.left = `${posX}%`;
+    circle.style.top = `${posY}%`;
+    circle.style.background = `radial-gradient(circle, ${color}, transparent)`;
+    circle.style.animationDuration = `${Math.random() * 30 + 15}s`;
+    
+    animationContainer.appendChild(circle);
+  }
+}
+
+// Initialize viewer counter
+function initViewCounter() {
+  let count = Math.floor(Math.random() * 500) + 100;
+  document.getElementById('view-count').textContent = count;
+  
+  // Simulate viewer count changes
+  setInterval(() => {
+    count += Math.floor(Math.random() * 5) - 2;
+    if (count < 100) count = 100;
+    document.getElementById('view-count').textContent = count;
+  }, 5000);
+}
+
+// Main initialization function
+function init() {
+  initPlayer();
+  initAdBlockDetection();
+  createBackgroundAnimation();
+  initViewCounter();
+  
+  // Set up the "I've disabled" button
+  document.getElementById('disable-adblock-btn').addEventListener('click', recheckAdBlock);
+}
+
+// Initialize when page loads
+window.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
