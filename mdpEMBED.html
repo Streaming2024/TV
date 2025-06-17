@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YoNoTV</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/controls.min.css" crossorigin="anonymous">
+  <style>
+    body { margin: 0; background-color: black; }
+    .shaka-spinner-container { display: none; }
+    .video-fill video { object-fit: fill cover; }
+    .shaka-overflow-menu, .shaka-settings-menu {
+      background-color: rgb(35, 35, 35); color: rgb(255, 255, 255);
+    }
+    .shaka-overflow-menu button:hover,
+    .shaka-settings-menu button:hover {
+      background-color: rgb(45, 45, 45);
+    }
+    .shaka-overflow-button-label,
+    .shaka-current-selection-span,
+    .material-icons-round,
+    .shaka-settings-menu button {
+      color: rgb(245, 245, 245);
+    }
+    .shaka-bottom-controls {
+      display: flex; flex-direction: column-reverse;
+    }
+
+    #loading-overlay {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: rgba(0,0,0,0.7); color: white;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      z-index: 9999; user-select: none;
+      font-family: Arial, sans-serif;
+    }
+
+    #progress-text {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    #progress-bar-container {
+      width: 50%;
+      height: 20px;
+      background: #444;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    #progress-bar {
+      width: 0%;
+      height: 100%;
+      background: red;
+      transition: width 0.1s linear;
+    }
+
+    #loading-message {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 15px;
+    }
+
+    #play-button {
+      display: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: red;
+      border: none;
+      color: white;
+      font-size: 36px;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false" onkeydown="return false" onmousedown="return false">
+
+  <!-- Loading Screen -->
+  <div id="loading-overlay">
+    <div id="progress-text">0%</div>
+    <div id="progress-bar-container"><div id="progress-bar"></div></div>
+    <div id="loading-message">Please Wait Video is loading...</div>
+    <button id="play-button" title="Play">▶</button>
+  </div>
+
+  <!-- Video Player Container -->
+  <div class="container video-fill" data-shaka-player-container style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;object-fit:fill cover;">
+    <video data-shaka-player id="video" style="width:100%;height:100%;"></video>
+  </div>
+
+  <!-- Telegram Link -->
+  <a href="https://t.me/yonotvlive" target="_blank">
+    <span style="position:absolute;z-index:100;top:6px;left:5px;height:30px;width:100px;color:#ccc;border:2px solid #ccc;padding:1px 0;border-radius:2px;text-align:center;">
+      Join us
+    </span>
+  </a>
+ <!-- MDP LINKD , KEY ID & KEY HERE -->
+  <script>
+    (async function () {
+      const manifestUri = "";
+      const keyId = "";
+      const key = "";
+
+      document.addEventListener("shaka-ui-loaded", async () => {
+        const video = document.getElementById("video");
+        const ui = video["ui"];
+        ui.configure({
+          seekBarColors: {
+            base: "rgba(255,255,255,.2)",
+            buffered: "rgba(255,255,255,.4)",
+            played: "rgb(255,0,0)"
+          }
+        });
+
+        const controls = ui.getControls();
+        const player = controls.getPlayer();
+
+        player.configure({
+          drm: {
+            clearKeys: {
+              [keyId]: key
+            }
+          }
+        });
+
+        try {
+          await player.load(manifestUri);
+          console.log("Video loaded successfully.");
+          startLoadingProgress();
+        } catch (error) {
+          console.error("Error loading stream:", error);
+          alert("Error loading video.");
+        }
+
+        document.querySelectorAll('.shaka-overflow-menu-button').forEach(btn => {
+          btn.textContent = 'settings';
+        });
+        document.querySelectorAll('.shaka-back-to-overflow-button .material-icons-round').forEach(icon => {
+          icon.textContent = 'arrow_back_ios_new';
+        });
+      });
+
+      const loadingOverlay = document.getElementById('loading-overlay');
+      const progressText = document.getElementById('progress-text');
+      const progressBar = document.getElementById('progress-bar');
+      const playButton = document.getElementById('play-button');
+      const loadingMessage = document.getElementById('loading-message');
+
+      function startLoadingProgress() {
+        let duration = 15;
+        let elapsed = 0;
+        const intervalTime = 100;
+
+        const interval = setInterval(() => {
+          elapsed += intervalTime / 1000;
+          let percent = Math.min(100, (elapsed / duration) * 100);
+          progressBar.style.width = percent + '%';
+          progressText.textContent = Math.floor(percent) + '%';
+
+          if (percent >= 100) {
+            clearInterval(interval);
+            progressText.style.display = 'none';
+            progressBar.parentElement.style.display = 'none';
+            loadingMessage.style.display = 'none';
+            playButton.style.display = 'flex';
+          }
+        }, intervalTime);
+      }
+
+      playButton.addEventListener('click', () => {
+        loadingOverlay.style.display = 'none';
+        const video = document.getElementById('video');
+        video.play();
+      });
+
+    })();
+  </script>
+</body>
+</html>
