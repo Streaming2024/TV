@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0 , user-scalable=no">
+<link href='https://www.hls-player.net/fav.png' rel='icon' type='image/x-icon'/>
+
+
+    <!-- SEO-->
+    <meta name="author" content="T20HD Embed" />
+    <meta name="designer" content="T20 " />
+    <meta name="description" content="Watch Live Streaming T20. No signup required">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
+     <link rel="stylesheet" href="/dist/wmlogo.css" />
+    <script src="https://kit.fontawesome.com/bf2610f0a2.js" crossorigin="anonymous"></script>
+    <script src="/player.js" crossorigin="anonymous"></script>
+    <!-- Halfmoon CSS -->
+    <link href="https://cdn.jsdelivr.net/gh/halfmoonui/halfmoon@1.0.4/css/halfmoon.min.css" rel="stylesheet" />
+    <title> Plyr.io - Video Player</title>
+
+
+     <script>
+      var encodeContent = true; // Set to true or false based on your requirement
+    </script>
+    
+
+  <script>
+    // Example function using the encode variable
+    function encodeLinks() {
+      if (encodeContent) {
+        // Logic to encode links
+        console.log('Links encoded.');
+      } else {
+        console.log('Links not encoded.');
+      }
+    }
+
+    // Call the function
+    encodeLinks();
+  </script>
+
+
+    
+    <b:if cond='data:content == "false"'>
+      </b:if>
+      <script>
+        var encode = <data:content/>;
+      </script>
+
+
+    
+<script>
+document.addEventListener("DOMContentLoaded",()=> {
+  const e = document.querySelector("video"),
+    n = e.getElementsByTagName("source")[0].src,
+    o = {};
+  if(Hls.isSupported()) {
+    var config = {
+      maxMaxBufferLength: 100,
+    };
+    const t = new Hls(config);
+    t.loadSource(n), t.on(Hls.Events.MANIFEST_PARSED, function(n, l) {
+      const s = t.levels.map(e => e.height);
+      o.quality = {
+        default: s[0],
+        options: s,
+        forced: !0,
+        onChange: e => (function(e) {
+          window.hls.levels.forEach((n, o) => {
+            n.height === e && (window.hls.currentLevel = o)
+          })
+        })(e)
+      };
+      new Plyr(e, o)
+    }), t.attachMedia(e), window.hls = t
+  } else {
+    new Plyr(e, o)
+  }
+});
+</script>
+
+             
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.plyr.io/3.6.2/plyr.polyfilled.js"></script>
+</head>
+<body class="dark-mode with-custom-scrollbars with-custom-css-scrollbars">
+
+    
+<video id="player" controls preload="metadata" poster="https://nirutv.online/logo/image.png" class="plyr">
+        <source id="videoSource" type="application/x-mpegURL"/>
+    </video>
+
+    <script>
+        // Function to get URL parameters
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        // Get video URL parameter and set it as the video source
+        var videoUrl = getParameterByName('url');
+        if (videoUrl) {
+            document.getElementById('videoSource').setAttribute('src', videoUrl);
+            document.getElementById('player').load();
+        }
+    </script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => 
+{
+const player = Plyr.setup('.js-player');
+});  
+</script>
+
+
+   <!-- Histats.com  START  (aync)-->
+<script type="text/javascript">var _Hasync= _Hasync|| [];
+_Hasync.push(['Histats.start', '1,4923601,4,0,0,0,00010000']);
+_Hasync.push(['Histats.fasi', '1']);
+_Hasync.push(['Histats.track_hits', '']);
+(function() {
+var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+hs.src = ('//s10.histats.com/js15_as.js');
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+})();</script>
+<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4923601&101" alt="free counter" border="0"></a></noscript>
+<!-- Histats.com  END  -->
+
+<!--
+<div style="position:fixed;top:0;left:0;width:100%;height:1px;overflow:hidden;visibility:hidden;z-index:9999;"><script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script><script type="text/javascript">sc_online_i(1707252,"ffffff","ffffff");</script><noscript><a href="https://www.supercounters.com/" style="visibility:hidden;">free online counter</a></noscript></div>
+-->
+    
+</body>
+</html>
