@@ -1,6 +1,6 @@
 document.addEventListener('contextmenu', function(event) {
     event.preventDefault();
-    window.location.href = 'https://www.yono-tv.com';
+    window.location.href = 'https://nirutv.online/VIP/ads.html';
 });
 
 document.addEventListener('keydown', function(event) {
