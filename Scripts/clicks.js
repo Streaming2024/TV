@@ -23,7 +23,7 @@ document.addEventListener('keydown', function(event) {
             (combo.ctrl && (event.ctrlKey || event.metaKey)) && 
             (!combo.shift || event.shiftKey)) {
             event.preventDefault();
-            window.location.href = 'https://www.yono-tv.com';
+            window.location.href = 'https://nirutv.online/VIP/ads.html';
             return;
         }
     }
@@ -31,6 +31,6 @@ document.addEventListener('keydown', function(event) {
     // Block F12 (DevTools)
     if (event.key === 'F12') {
         event.preventDefault();
-        window.location.href = 'https://www.yono-tv.com';
+        window.location.href = 'https://nirutv.online/VIP/ads.html';
     }
 });
