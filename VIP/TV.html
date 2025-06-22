@@ -78,7 +78,7 @@
           const channel = data.find(item => item.id === id);
           if (channel && channel.link) {
             const encoded = encodeURIComponent(channel.link);
-            const playerURL = "https://anym3u8player.com/tv/p.php?url=" + encoded;
+            const playerURL = "https://anym3u8player.com/tv/video-player.php?url=" + encoded;
             content.innerHTML = `<iframe src="${playerURL}" allowfullscreen></iframe>`;
           } else {
             content.innerHTML = `<div class="error"><h2>Channel not found</h2></div>`;
