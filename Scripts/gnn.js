@@ -1717,7 +1717,7 @@
      
      
   {
-    "name": "Al-Ain",
+    "name": "Al Ain",
     "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/102117.png"
   },
        {
