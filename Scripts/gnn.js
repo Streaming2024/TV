@@ -1721,7 +1721,7 @@
     "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/102117.png"
   },
        {
-    "name": "Casablanca",
+    "name": "Wydad AC",
     "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/102050.png"
   },  
      
