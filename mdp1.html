@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Dynamic Shaka Player</title>
+  <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; background: #000; height: 100%; }
+    #video-container { width: 100%; height: 100%; position: relative; }
+    video { width: 100%; height: 100%; background: #000; }
+    #overlay-image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      z-index: 5;
+    }
+    .shaka-controls-container { z-index: 10 !important; }
+    .shaka-play-button { z-index: 15 !important; }
+
+    /* Custom menu styling */
+    .shaka-settings-menu {
+      background: rgba(30, 30, 30, 0.6) !important;
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,0.15);
+      max-width: 220px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .shaka-settings-menu button {
+      display: block;
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      border-radius: 8px;
+      padding: 6px 12px;
+      margin: 4px 0;
+      border: 2px solid rgba(255,255,255,0.35);
+      font-size: 13px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shaka-settings-menu button::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(0,198,255,0.12), rgba(0,114,255,0.12));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 8px;
+      z-index: 0;
+    }
+
+    .shaka-settings-menu button:hover::before,
+    .shaka-settings-menu button:focus::before {
+      opacity: 1;
+    }
+
+    .shaka-settings-menu button:hover,
+    .shaka-settings-menu button:focus {
+      border-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 198, 255, 0.5);
+      color: #fff;
+    }
+
+    .shaka-settings-menu button[aria-checked="true"] {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: #fff;
+      border-color: #fff;
+      box-shadow: 0 0 12px rgba(0, 198, 255, 0.7);
+    }
+
+    .shaka-settings-menu button:focus {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div id="video-container">
+    <video id="video" class="shaka-video" autoplay></video>
+    <img id="overlay-image" src="https://nirutv.online/logo/image.png" alt="willowsports-hrb">
+    <div class="shaka-controls-container" shaka-controls></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const manifestUri = params.get('url');
+      const keyPair = params.get('key');
+
+      if (!manifestUri || !keyPair || !keyPair.includes(':')) {
+        alert("Missing or malformed 'url' or 'key' parameters in query string.");
+        return;
+      }
+
+      const [keyId, keyValue] = keyPair.split(':');
+
+      const video = document.getElementById('video');
+      const overlayImage = document.getElementById('overlay-image');
+      const container = document.getElementById('video-container');
+
+      const player = new shaka.Player(video);
+      const ui = new shaka.ui.Overlay(player, container, video);
+      const controls = ui.getControls();
+
+      player.configure({
+        drm: {
+          clearKeys: {
+            [keyId]: keyValue
+          }
+        }
+      });
+
+      ui.configure({
+        controlPanelElements: [
+          'play_pause', 'rewind', 'fast_forward', 'time_and_duration',
+          'spacer', 'mute', 'volume', 'captions', 'quality',
+          'playback_rate', 'cast', 'loop', 'fullscreen'
+        ],
+        enableQualitySelection: true
+      });
+
+      player.addEventListener('error', (e) => console.error('Error code', e.detail.code, e.detail));
+
+      try {
+        await player.load(manifestUri);
+        console.log('The video has now been loaded!');
+      } catch (e) {
+        console.error('Error loading video', e);
+      }
+
+      video.addEventListener('playing', () => {
+        overlayImage.remove();
+      });
+    });
+  </script>
+</body>
+</html>
