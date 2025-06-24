@@ -1740,8 +1740,8 @@
      
      
   {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Boca Juniors",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10077.png"
   },    
   
        {
