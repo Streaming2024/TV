@@ -1,1 +1,92 @@
-<script type='text/javascript'> width=1280, height=720, channel='yonotvv', g='4';</script><script type='text/javascript' src='https://new.allover.top/static/scripts/hucaster.js'></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>Willow FHD</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/controls.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://livecrichdofficial.pages.dev/livecrichd2.css">  
+    <script src="https://livecrichdtv.pages.dev/sknzx.js"></script> 
+</head>
+<body>
+<div id="player-container">
+    <div data-shaka-player-container class="shaka-video-container">
+        <video autoplay data-shaka-player id="video" poster="#"></video>
+    </div>
+</div>
+<script>
+const manifestUri ="https://ABGQJFUAAAAAAAAMDDTLEHDAXLN3S.c901becad35b4fb8b74c1b67321d8b1f.emt.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/je79yopexa/out/v1/ed67eeda21c243c3939139c7e21957b7/cenc.mpd"
+    
+async function init() {
+  const video = document.getElementById('video');
+  const ui = video['ui'];
+  const controls = ui.getControls();
+  const player = controls.getPlayer();
+
+    window.player = player;
+  window.ui = ui;
+
+  player.configure({
+    drm: {
+      "clearKeys": {
+    "e54dd6014b944f1250d852ae5a8e5b77":"6386f9faed98d0c347041005420b2cd4"
+      }
+    }
+  });
+
+  player.addEventListener('error', onPlayerErrorEvent);
+  controls.addEventListener('error', onUIErrorEvent);
+
+  try {
+    await player.load(manifestUri);
+    console.log('The video has now been loaded!');
+  } catch (error) {
+    onPlayerError(error);
+  }
+}
+
+function onPlayerErrorEvent(errorEvent) {
+  onPlayerError(errorEvent.detail);
+}
+
+function onPlayerError(error) {
+  console.error('Error code', error.code, 'object', error);
+}
+
+function onUIErrorEvent(errorEvent) {
+  onPlayerError(errorEvent.detail);
+}
+
+function initFailed(errorEvent) {
+  console.error('Unable to load the UI library!');
+}
+
+document.addEventListener('shaka-ui-loaded', init);
+document.addEventListener('shaka-ui-load-failed', initFailed);
+
+
+</script>
+
+        <style>
+    #message {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        z-index: 1001;
+    }
+  </style>
+
+
+    </body>
+
+</html>
