@@ -1,94 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href='https://nirutv.online/favicon.png' rel='icon' type='image/x-icon'/>
-    <title>Rumble Player</title>
-    <style>
-            
-        /* Add your custom styles for the iframe container */
-        #player-container {
-            position: relative;
-            overflow: hidden;
-            padding-top: 56.25%; /* 16:9 aspect ratio (change based on your player's aspect ratio) */
-        }
-
-        #player-iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            border: 0;
-        }
-    </style>
-  
-  
-    <style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://nirutv.online/favicon.png" rel="icon" type="image/x-icon" />
+  <title>SOCO Player</title>
+  <style>
     #player-container {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      color: #fff;
+      position: relative;
       overflow: hidden;
+      padding-top: 56.25%; /* 16:9 aspect ratio */
+      background: #000;
     }
-    #iframe-iframe, #jwPlayer {
-      height: 100vh !important;
-      padding: 0;
-      margin: 0;
-    }
-    body {
-      height: 100vh;
-      margin: 0;
-      padding: 0;
-    }
-    #container {
+
+    #player-iframe {
       position: absolute;
-      text-align: center;
-    }
-    video {
-      outline: 0;
-    }
-    #text {
-      position: fixed;
-      border: 0;
+      top: 0;
       left: 0;
       width: 100%;
-      color: #fff;
-      bottom: 50px;
-      text-align: center;
-      font-family: tahoma;
-      font-size: 20px;
-      z-index: 9999;
+      height: 100%;
+      border: 0;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #000;
     }
   </style>
-  
 </head>
 <body>
-
-<div id="player-container">
+  <div id="player-container">
     <iframe id="player-iframe" allowfullscreen></iframe>
-           
-</div>
+  </div>
 
-	
-<script>
-    // Get the custom ID from the URL parameter
+  <script>
     const urlParams = new URLSearchParams(window.location.search);
     const customID = urlParams.get('id');
 
-    // Replace (custome_ID) in the original URL with the custom ID
-    const originalURL = `https://nirutv.online/Player/plyrr?url=https://pull.niues.live/live/stream-${customID}_lhd.m3u8`;
-
-    // Set the iframe source to the modified URL
-    document.getElementById('player-iframe').id = originalURL;
-</script>
-
-	
+    if (customID) {
+      const originalURL = `https://nirutv.online/Player/plyrr?url=https://pull.niues.live/live/stream-${customID}_lhd.m3u8`;
+      document.getElementById('player-iframe').src = originalURL;
+    } else {
+      document.getElementById('player-iframe').src = "about:blank";
+    }
+  </script>
 </body>
 </html>
