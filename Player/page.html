@@ -189,6 +189,69 @@
     <br><noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
   </center>
 </div>
+<!-- Anti-Adblock Popup -->
+  <div class="adb" id="adb" style="display: none;">
+      <div class="adbs">
+          <h3>Adblock Detected</h3>
+          <p>To Continue YoNoTV, Please Turnoff/Disable Adblocker. We really appreciate your support.</p>
+      </div>
+  </div>
 
+  <style>
+      .adb {
+          display: none;
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          left: 0;
+          top: 0;
+          background: rgba(51, 51, 51, 0.9);
+          z-index: 10000;
+          text-align: center;
+          color: #111;
+      }
+
+      .adbs {
+          margin: 0 auto;
+          width: auto;
+          min-width: 400px;
+          position: fixed;
+          z-index: 99999;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          padding: 20px 30px 30px;
+          background: rgba(255, 255, 255, 0.9);
+          border-radius: 12px;
+      }
+  </style>
+
+  <script type="text/javascript">
+      async function detectAdBlock() {
+          let adBlockEnabled = false;
+          const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+
+          try {
+              const controller = new AbortController();
+              const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
+
+              await fetch(new Request(googleAdUrl), { signal: controller.signal })
+                  .then(() => clearTimeout(timeoutId))
+                  .catch(error => {
+                      if (error.name === 'AbortError') return; // Ignore timeout errors
+                      adBlockEnabled = true;
+                  });
+
+          } catch (e) {
+              adBlockEnabled = true;
+          }
+
+          if (adBlockEnabled) {
+              document.getElementById("adb").style.display = "block";
+          }
+      }
+
+      detectAdBlock();
+  </script>
 </body>
 </html>
