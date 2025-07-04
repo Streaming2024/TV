@@ -2,22 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Live Sports Channels</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Channels & Player</title>
-
-  <!-- Shaka Player CSS & JS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.13.3/dist/controls.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.13.3/dist/shaka-player.ui.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css">
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: #000;
-      color: #fff;
-    }
-
+    html, body { margin: 0; padding: 0; background: #000; height: 100%; font-family: Arial, sans-serif; color: #fff; }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -26,7 +16,6 @@
       margin: 20px auto;
       padding: 0 20px;
     }
-
     .channel {
       background: #111;
       border-radius: 8px;
@@ -38,12 +27,10 @@
       text-decoration: none;
       display: block;
     }
-
     .channel:hover {
       transform: scale(1.05);
       background: #222;
     }
-
     .channel img {
       max-width: 100%;
       height: 90px;
@@ -53,32 +40,19 @@
       background: #222;
       padding: 5px;
     }
-
-    .shaka-video-container {
+    #video-container {
       width: 100%;
       height: 100vh;
       position: relative;
-      background: #000;
+      display: none;
     }
-
-    .shaka-video {
+    video {
       width: 100%;
       height: 100%;
+      background: #000;
     }
-
-    .watermark {
-      position: absolute;
-      bottom: 140px;
-      right: 10px;
-      color: #ffffff;
-      font-size: 16px;
-      opacity: 0.5;
-      font-weight: bold;
-      pointer-events: none;
-      user-select: none;
-      z-index: 1000;
-    }
-
+    .shaka-controls-container { z-index: 10 !important; }
+    .shaka-play-button { z-index: 15 !important; }
     .error {
       color: white;
       text-align: center;
@@ -89,61 +63,67 @@
 <body>
   <div id="content"></div>
 
-  <div id="playerWrapper" style="display:none;">
-    <div data-shaka-player-container class="shaka-video-container" shaka-controls="true">
-      <video autoplay muted data-shaka-player id="video" class="shaka-video"></video>
-    </div>
-    <div class="watermark">@xfireflix</div>
+  <!-- Player -->
+  <div id="video-container">
+    <video id="video" class="shaka-video" autoplay muted></video>
+    <div class="shaka-controls-container" shaka-controls></div>
   </div>
 
   <script>
-    function getParam(name) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(name);
-    }
-
-    const id = getParam("id");
+    const getParam = name => new URLSearchParams(location.search).get(name);
     const content = document.getElementById('content');
-    const playerWrapper = document.getElementById('playerWrapper');
+    const videoContainer = document.getElementById('video-container');
     const video = document.getElementById('video');
+
+    const id = getParam('id');
     const jsonURL = "https://raw.githubusercontent.com/abusaeeidx/CricHd-playlists-Auto-Update-permanent/main/api.json";
 
     if (id) {
-      // Load Shaka Player
       fetch(jsonURL)
         .then(res => res.json())
         .then(data => {
           const channel = data.find(item => item.id === id);
-          if (channel && channel.link) {
-            content.innerHTML = ''; // Clear channel list
-            playerWrapper.style.display = 'block';
+          if (!channel || !channel.link) {
+            content.innerHTML = `<div class="error"><h2>Channel not found</h2></div>`;
+            return;
+          }
 
-            async function initPlayer() {
-              const player = new shaka.Player(video);
-              try {
-                await player.load(channel.link);
-              } catch (error) {
-                content.innerHTML = `<div class="error"><h2>Error loading stream</h2><p>${error}</p></div>`;
-                playerWrapper.style.display = 'none';
+          content.innerHTML = '';
+          videoContainer.style.display = 'block';
+
+          const player = new shaka.Player(video);
+          const ui = new shaka.ui.Overlay(player, videoContainer, video);
+          ui.getControls();
+
+          // Add headers using request filter
+          player.getNetworkingEngine().registerRequestFilter((type, request) => {
+            if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST ||
+                type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
+              if (channel.referer) {
+                request.headers['Referer'] = channel.referer;
+              }
+              if (channel.origin) {
+                request.headers['Origin'] = channel.origin;
               }
             }
+          });
 
-            shaka.polyfill.installAll();
-            if (shaka.Player.isBrowserSupported()) {
-              initPlayer();
-            } else {
-              content.innerHTML = `<div class="error"><h2>Your browser doesn't support Shaka Player</h2></div>`;
-            }
+          player.addEventListener('error', (e) => {
+            console.error("Shaka Player Error", e.detail);
+            content.innerHTML = `<div class="error"><h2>Error loading stream</h2></div>`;
+            videoContainer.style.display = 'none';
+          });
 
-          } else {
-            content.innerHTML = `<div class="error"><h2>Channel not found</h2></div>`;
-          }
+          player.load(channel.link).then(() => {
+            console.log("Stream loaded.");
+          });
+
         })
         .catch(() => {
-          content.innerHTML = `<div class="error"><h2>Error loading stream</h2></div>`;
+          content.innerHTML = `<div class="error"><h2>Failed to load data</h2></div>`;
         });
+
     } else {
-      // Show grid of channels
       fetch(jsonURL)
         .then(res => res.json())
         .then(data => {
@@ -166,7 +146,7 @@
           content.appendChild(grid);
         })
         .catch(() => {
-          content.innerHTML = `<div class="error"><h2>Failed to load channels</h2></div>`;
+          content.innerHTML = `<div class="error"><h2>Error loading channels</h2></div>`;
         });
     }
   </script>
