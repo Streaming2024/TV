@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fancode Live Matches</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #121212;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 1rem;
+    }
+    .matches-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+    .match {
+      background: #1e1e1e;
+      border-radius: 8px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .thumbnail {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .title {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+    .play-button {
+      background: #00bfff;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    h3.section-header {
+      margin-top: 2rem;
+      border-bottom: 2px solid #00bfff;
+      padding-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Fancode Live Matches</h2>
+
+    <h3 class="section-header">Live Now</h3>
+    <div id="live-matches" class="matches-grid"></div>
+
+    <h3 class="section-header">Upcoming Matches</h3>
+    <div id="upcoming-matches" class="matches-grid"></div>
+  </div>
+
+  <script>
+    async function loadMatches() {
+      const res = await fetch("https://raw.githubusercontent.com/AniketSainiOp/AniXFancode/main/aniX_fancode_data.json");
+      const data = await res.json();
+
+      const liveMatchesDiv = document.getElementById("live-matches");
+      const upcomingMatchesDiv = document.getElementById("upcoming-matches");
+
+      data.matches.forEach((match) => {
+        const div = document.createElement("div");
+        div.className = "match";
+
+        const title = document.createElement("div");
+        title.className = "title";
+        title.textContent = match.title;
+
+        const img = document.createElement("img");
+        img.src = match.image;
+        img.className = "thumbnail";
+
+        div.appendChild(title);
+        div.appendChild(img);
+
+        if (match.status === "STARTED") {
+          const playButton = document.createElement("button");
+          playButton.className = "play-button";
+          playButton.textContent = "Play";
+
+          if (match.adfree_stream) {
+            const pathParts = match.adfree_stream.split("/");
+            const lastPart = pathParts.slice(-2).join("/");
+
+            const finalUrl = `https://nirutv.online/Player/plyrr1?url=https://abcd-foxcon-72bi.vercel.app/${lastPart}`;
+
+            playButton.onclick = () => {
+              window.open(finalUrl, "_blank");
+            };
+          }
+
+          div.appendChild(playButton);
+          liveMatchesDiv.appendChild(div);
+        } else {
+          const startTime = document.createElement("div");
+          startTime.textContent = `Starts at: ${match.startTime}`;
+          div.appendChild(startTime);
+          upcomingMatchesDiv.appendChild(div);
+        }
+      });
+    }
+
+    loadMatches();
+  </script>
+</body>
+</html>
