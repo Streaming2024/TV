@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Stream Page</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #fcfcfc;
+        color: #0a0101;
+        text-align: center;
+    }
+    .container {
+        max-width: 900px;
+        margin: auto;
+        padding: 10px;
+    }
+    .logo img {
+        max-height: 60px;
+    }
+    .refresh-btn {
+        background: #007BFF;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    .notice {
+        margin: 10px 0;
+        font-size: 18px;
+        color: black;
+        background: #c4c0af;
+        padding: 5px;
+        border-radius: 4px;
+    }
+    .video-container {
+        position: relative;
+        background: #000;
+        margin: 0 auto;
+        border-radius: 6px;
+        overflow: hidden;
+        aspect-ratio: 16 / 9; /* ✅ Responsive height */
+    }
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+    .fullscreen-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: red;
+        color: white;
+        border: none;
+        padding: 2px 6px;
+        font-size: 15px;
+        cursor: pointer;
+        border-radius: 40px;
+    }
+    .chat-btn {
+        margin: 15px 0;
+        background: #007BFF;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+    #chat-frame {
+        display: none;
+        width: 100%;
+        border: none;
+        margin-top: 10px;
+        height: 400px; /* default desktop height */
+    }
+    /* ✅ Make chat responsive for mobile */
+    @media (max-width: 768px) {
+        #chat-frame {
+            height: 250px;
+        }
+    }
+    .disclaimer {
+        margin: 20px 0;
+        font-size: 14px;
+        line-height: 1.5;
+        color: black;
+        background: #d4d2cb;
+        padding: 15px;
+        border-radius: 6px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Logo -->
+    <div class="logo">
+        <a href="#">
+            <img src="https://nirutv.online/logo/logo.png" alt="Logo">
+        </a>
+    </div>
+
+    <!-- Refresh Button -->
+    <button class="refresh-btn" onclick="location.reload()">Refresh</button>
+
+    <!-- Notice -->
+    <div class="notice">Wait 15–20 seconds and watch live</div>
+
+    <!-- Video Container -->
+    <div class="video-container">
+        <iframe id="video-frame" allowfullscreen></iframe>
+      <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶Fullscreen</button>
+    </div>
+
+    <!-- Chat Toggle Button -->
+    <button class="chat-btn" onclick="toggleChat()">Show Chat</button>
+
+    <!-- Chat Frame -->
+    <iframe id="chat-frame"></iframe>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+        <strong>Legal Disclaimer</strong><br>
+        <b>Content Hosting:</b> YoNo TV does not host or upload any video content. All streams are embedded from publicly available third-party sources.<br><br>
+        <b>Copyright Notice:</b> We do not claim ownership of any content displayed on this platform. All trademarks, logos, and media belong to their respective owners.<br><br>
+        <b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties. Users must ensure content access legality in their region.<br><br>
+        <b>DMCA Compliance:</b> If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.
+    </div>
+
+</div>
+
+<script>
+    // Load video from URL param
+    const urlParams = new URLSearchParams(window.location.search);
+    const src = urlParams.get('src');
+    document.getElementById('video-frame').src = src ? src : "about:blank";
+
+    // Fullscreen with rotation for mobile
+    function toggleFullscreen() {
+        const iframe = document.getElementById('video-frame');
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+        // Try fullscreen
+        if (iframe.requestFullscreen) {
+            iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+            iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+            iframe.msRequestFullscreen();
+        }
+
+        // Mobile: try landscape mode
+        if (isMobile && screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('landscape').catch(() => {
+                console.warn("Orientation lock not supported.");
+            });
+        }
+    }
+
+    // Chat toggle
+    let chatVisible = false;
+    function toggleChat() {
+        const chatFrame = document.getElementById('chat-frame');
+        const btn = document.querySelector('.chat-btn');
+        if (!chatVisible) {
+            chatFrame.src = "https://www.youtube.com/live_chat?v=VIDEO_ID&embed_domain=" + location.hostname;
+            chatFrame.style.display = "block";
+            btn.textContent = "Hide Chat";
+            chatVisible = true;
+        } else {
+            chatFrame.style.display = "none";
+            chatFrame.src = "";
+            btn.textContent = "Show Chat";
+            chatVisible = false;
+        }
+    }
+</script>
+
+</body>
+</html>
