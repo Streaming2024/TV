@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>YoNoTV - Live Sports Stream</title>
+<title>LIVE Page</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -22,7 +22,7 @@
     }
     
     .header {
-        margin-bottom: 15px;
+        margin-bottom: 1px;
         text-align: center;
     }
     
@@ -38,34 +38,29 @@
         background: #ff0011;
         color: white;
         border: none;
-        padding: 10px 25px;
-        font-size: 18px;
+        padding: 8px 15px;
+        font-size: 15px;
         border-radius: 25px;
         cursor: pointer;
-        margin: 10px 0;
+        margin: 1px 0;
         display: inline-block;
     }
     
     .notice {
         background: #e0e0e0;
-        padding: 10px;
+        padding: 5px;
         border-radius: 5px;
-        margin: 15px 0;
-        font-size: 16px;
+        margin: 1px 0;
+        font-size: 14px;
     }
     
     /* AD CONTAINER FIXES */
     .ad-section {
-        margin: 15px 0;
+        margin: 1px 0;
         position: relative;
     }
     
-    .ad-label {
-        font-size: 12px;
-        color: #888;
-        margin-bottom: 5px;
-        text-transform: uppercase;
-    }
+ 
     
     .ad-container {
         background: white;
@@ -85,24 +80,7 @@
         border: none;
     }
     
-    .promo-banner {
-        background: #f8f8f8;
-        border: 1px solid #ddd;
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 5px;
-    }
     
-    .promo-banner h3 {
-        margin: 0 0 5px 0;
-        color: #ff0011;
-        font-size: 16px;
-    }
-    
-    .promo-banner p {
-        margin: 5px 0;
-        font-size: 14px;
-    }
     
     .video-container {
         position: relative;
@@ -123,13 +101,13 @@
         position: absolute;
         top: 10px;
         right: 10px;
-        background: rgba(255, 0, 17, 0.8);
+        background: #ff0011;
         color: white;
         border: none;
         padding: 5px 10px;
         font-size: 14px;
         cursor: pointer;
-        border-radius: 4px;
+        border-radius: 25px;
         z-index: 10;
         transition: opacity 0.3s ease;
     }
@@ -149,9 +127,9 @@
         border: none;
         padding: 10px 20px;
         font-size: 16px;
-        border-radius: 5px;
+        border-radius: 15px;
         cursor: pointer;
-        margin: 15px 0;
+        margin: 1px 0;
         display: inline-block;
     }
     
@@ -166,24 +144,24 @@
     
     /* Disclaimer Section */
     .disclaimer {
-        margin: 25px 0 15px;
+        margin: 10px 0 1px;
         padding: 20px;
         background: #d4d2cb;
         border-radius: 8px;
         text-align: left;
         font-size: 14px;
-        line-height: 1.6;
+        line-height: 1.5;
     }
     
     .disclaimer strong {
         display: block;
         font-size: 16px;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         text-align: center;
     }
     
     .disclaimer p {
-        margin: 8px 0;
+        margin: 2px 0;
     }
     
     .disclaimer b {
@@ -278,18 +256,17 @@
 <div class="container">
     <!-- Header Image with Link -->
     <div class="header">
-        <a href="https://yonotv.net" target="_blank">
+        <a href="https://yonotvsports.com" target="_blank">
             <img src="https://nirutv.online/logo/logo.png" alt="YoNoTV Live Sports" class="header-image">
         </a>
     </div>
     
-    <button class="refresh-btn">Refresh Stream</button>
+    <button class="refresh-btn">Refresh LIVE</button>
     
-    <div class="notice">Please wait 15–20 seconds for the stream to load</div>
+   
     
     <!-- First Ad Section -->
     <div class="ad-section">
-        <div class="ad-label">Advertisement</div>
         <div class="ad-container">
             <script type="text/javascript">
                 atOptions = {
@@ -304,27 +281,18 @@
         </div>
     </div>
     
-    <!-- First Promo Banner -->
-    <div class="promo-banner">
-        <h3>DON'T MISS THE LAUNCH OF VIZIT'S COIN!</h3>
-        <p>BUY NOW!</p>
-    </div>
+    <div class="notice">Wait for Loading & Skip 1–2 ads (press back)</div>
     
     <!-- Video Container -->
     <div class="video-container">
         <iframe id="video-frame" allowfullscreen></iframe>
-        <button class="fullscreen-btn" id="fullscreen-button">Fullscreen</button>
+        <button class="fullscreen-btn" id="fullscreen-button">⛶ Fullscreen</button>
     </div>
     
-    <!-- Second Promo Banner -->
-    <div class="promo-banner">
-        <h3>SVIZIT'S</h3>
-        <p>JOIN THE COMMUNITY OF SUCCESS!<br>BUY VIZIT'S COIN!</p>
-    </div>
+   
     
     <!-- Second Ad Section -->
     <div class="ad-section">
-        <div class="ad-label">Advertisement</div>
         <div class="ad-container">
             <script type="text/javascript">
                 atOptions = {
@@ -339,7 +307,7 @@
         </div>
     </div>
     
-    <button class="chat-btn">Show Chat</button>
+    <button class="chat-btn">Show LIVE Chat</button>
     
     <iframe id="chat-frame"></iframe>
     
@@ -350,7 +318,9 @@
         <p><b>Copyright Notice:</b> We do not claim ownership of any content displayed on this platform. All trademarks, logos, and media belong to their respective owners.</p>
         <p><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties. Users must ensure content access legality in their region.</p>
         <p><b>DMCA Compliance:</b> If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</p>
-    </div>
+  <p><b>Contact Information:</b> For any inquiries, please email us at yonotvlive@gmail.com.</p>
+  
+  </div>
 </div>
 
 <script>
@@ -449,7 +419,7 @@
         } else {
             chatFrame.style.display = "none";
             chatFrame.src = "";
-            btn.textContent = "Show Chat";
+            btn.textContent = "Show LIVE Chat";
             chatVisible = false;
         }
     });
@@ -503,6 +473,10 @@
         setTimeout(detectAdBlock, 2000); // Delay detection slightly
     });
 </script>
-
+ <center>
+    <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
+    <script type="text/javascript">sc_online_i(1704055,"ffffff","e61c1c");</script>
+    <br><noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
+  </center>
 </body>
 </html>
