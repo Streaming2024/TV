@@ -3,54 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live Stream Page</title>
+<title>Live Stream Page - Fixed Ads</title>
 <style>
+    :root {
+        --primary-color: #ff0011;
+        --secondary-color: #007BFF;
+        --background-light: #fcfcfc;
+        --notice-bg: #c4c0af;
+        --disclaimer-bg: #d4d2cb;
+        --text-dark: #0a0101;
+        --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
     body {
         font-family: Arial, sans-serif;
         margin: 0;
-        background: #fcfcfc;
-        color: #0a0101;
+        background: var(--background-light);
+        color: var(--text-dark);
         text-align: center;
+        line-height: 1.5;
     }
+    
     .container {
         max-width: 900px;
         margin: auto;
-        padding: 10px;
+        padding: 15px;
     }
-    .logo img { max-height: 60px; }
+    
+    .logo {
+        margin-bottom: 15px;
+    }
+    
+    .logo img {
+        max-height: 60px;
+        display: block;
+        margin: 0 auto;
+    }
+    
     .refresh-btn {
-        background: #ff0011;
+        background: var(--primary-color);
         color: #fff;
-        padding: 5px 10px;
+        padding: 8px 20px;
         border: none;
         cursor: pointer;
         font-size: 18px;
         border-radius: 20px;
-        margin-top: 2px;
+        margin-top: 5px;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
     }
+    
+    .refresh-btn:hover {
+        background: #e0000f;
+        transform: translateY(-2px);
+    }
+    
     .notice {
         margin: 10px 0;
         font-size: 18px;
         color: black;
-        background: #c4c0af;
-        padding: 5px;
-        border-radius: 4px;
+        background: var(--notice-bg);
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: bold;
     }
-
-    /* ✅ Ads Center Fix */
+    
     .ad-container {
+        margin: 10px auto;
+        padding: 5px;
+        text-align: center;
+        background: white;
+        border-radius: 6px;
+        box-shadow: var(--shadow);
+        min-height: 50px;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 8px 0;  /* small consistent gap */
     }
-    .ad-container iframe {
-        display: block !important;
-        margin: 0 auto !important;
-        max-width: 100% !important;
-        height: auto !important;
-    }
-
+    
     .video-container {
         position: relative;
         background: #000;
@@ -58,47 +88,133 @@
         border-radius: 6px;
         overflow: hidden;
         aspect-ratio: 16 / 9;
+        box-shadow: var(--shadow);
     }
-    iframe { width: 100%; height: 100%; border: none; }
-
+    
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+    
     .fullscreen-btn {
         position: absolute;
         top: 10px;
         right: 10px;
-        background: red;
+        background: var(--primary-color);
         color: white;
         border: none;
-        padding: 2px 6px;
-        font-size: 15px;
+        padding: 5px 12px;
+        font-size: 14px;
         cursor: pointer;
         border-radius: 40px;
+        transition: all 0.3s ease;
     }
+    
+    .fullscreen-btn:hover {
+        background: #e0000f;
+    }
+    
     .chat-btn {
-        margin: 8px 0;
-        background: #007BFF;
+        margin: 15px 0;
+        background: var(--secondary-color);
         color: #fff;
-        padding: 10px 20px;
+        padding: 10px 25px;
         border: none;
         cursor: pointer;
         font-size: 16px;
         border-radius: 5px;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
     }
+    
+    .chat-btn:hover {
+        background: #0069d9;
+        transform: translateY(-2px);
+    }
+    
     #chat-frame {
         display: none;
         width: 100%;
         border: none;
+        margin-top: 10px;
         height: 400px;
-        margin: 0;
-    }
-    .disclaimer {
-        margin: 12px 0;
-        font-size: 14px;
-        line-height: 1.5;
-        color: black;
-        background: #d4d2cb;
-        padding: 15px;
         border-radius: 6px;
+        box-shadow: var(--shadow);
+    }
+    
+    .disclaimer {
+        margin: 25px 0 15px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: black;
+        background: var(--disclaimer-bg);
+        padding: 20px;
+        border-radius: 8px;
         text-align: center;
+    }
+    
+    .disclaimer strong {
+        font-size: 16px;
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    .section-label {
+        display: block;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #666;
+        margin: 5px 0;
+        font-weight: bold;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+        
+        .logo img {
+            max-height: 50px;
+        }
+        
+        .refresh-btn {
+            padding: 7px 15px;
+            font-size: 16px;
+        }
+        
+        .notice {
+            font-size: 16px;
+            padding: 8px;
+        }
+        
+        .chat-btn {
+            margin: 10px 0;
+            padding: 8px 20px;
+        }
+        
+        .disclaimer {
+            padding: 15px;
+            font-size: 13px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .refresh-btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .disclaimer {
+            padding: 12px;
+            font-size: 12px;
+        }
+        
+        .section-label {
+            font-size: 11px;
+        }
     }
 </style>
 </head>
@@ -114,12 +230,13 @@
     </div>
 
     <!-- Refresh Button -->
-    <button class="refresh-btn" onclick="location.reload()">Refresh</button>
+    <button class="refresh-btn" onclick="location.reload()">Refresh Stream</button>
 
     <!-- Notice -->
-    <div class="notice">Wait 15–20 seconds and watch live</div>
+    <div class="notice">Please wait 15–20 seconds for the stream to load</div>
 
-    <!-- ✅ Ad Above Video -->
+    <!-- Ad Above Video -->
+    <span class="section-label">Advertisement</span>
     <div class="ad-container">
         <script type="text/javascript">
             atOptions = {
@@ -136,10 +253,11 @@
     <!-- Video Container -->
     <div class="video-container">
         <iframe id="video-frame" allowfullscreen></iframe>
-        <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶Fullscreen</button>
+        <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
     </div>
 
-    <!-- ✅ Ad Below Video -->
+    <!-- Ad Below Video -->
+    <span class="section-label">Advertisement</span>
     <div class="ad-container">
         <script type="text/javascript">
             atOptions = {
@@ -161,11 +279,11 @@
 
     <!-- Disclaimer -->
     <div class="disclaimer">
-        <strong>Legal Disclaimer</strong><br>
-        <b>Content Hosting:</b> YoNo TV does not host or upload any video content. All streams are embedded from publicly available third-party sources.<br><br>
-        <b>Copyright Notice:</b> We do not claim ownership of any content displayed on this platform. All trademarks, logos, and media belong to their respective owners.<br><br>
-        <b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties. Users must ensure content access legality in their region.<br><br>
-        <b>DMCA Compliance:</b> If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.
+        <strong>Legal Disclaimer</strong>
+        <p><b>Content Hosting:</b> YoNo TV does not host or upload any video content. All streams are embedded from publicly available third-party sources.</p>
+        <p><b>Copyright Notice:</b> We do not claim ownership of any content displayed on this platform. All trademarks, logos, and media belong to their respective owners.</p>
+        <p><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties. Users must ensure content access legality in their region.</p>
+        <p><b>DMCA Compliance:</b> If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</p>
     </div>
 
 </div>
@@ -213,6 +331,21 @@
             chatVisible = false;
         }
     }
+    
+    // Set initial chat state
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add a small delay to ensure ad scripts have time to load
+        setTimeout(() => {
+            const adContainers = document.querySelectorAll('.ad-container');
+            adContainers.forEach(container => {
+                const iframe = container.querySelector('iframe');
+                if (iframe) {
+                    iframe.style.display = 'block';
+                    iframe.style.margin = '0 auto';
+                }
+            });
+        }, 1000);
+    });
 </script>
 
 </body>
