@@ -3,95 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live Stream Page - Fixed Ads</title>
+<title>YoNoTV - Live Sports Stream</title>
 <style>
-    :root {
-        --primary-color: #ff0011;
-        --secondary-color: #007BFF;
-        --background-light: #fcfcfc;
-        --notice-bg: #c4c0af;
-        --disclaimer-bg: #d4d2cb;
-        --text-dark: #0a0101;
-        --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    
     body {
         font-family: Arial, sans-serif;
         margin: 0;
-        background: var(--background-light);
-        color: var(--text-dark);
+        padding: 0;
+        background: #f5f5f5;
+        color: #333;
         text-align: center;
-        line-height: 1.5;
     }
     
     .container {
         max-width: 900px;
-        margin: auto;
+        margin: 0 auto;
         padding: 15px;
     }
     
-    .logo {
-        margin-bottom: 15px;
+    .header {
+        margin-bottom: 1px;
+        text-align: center;
     }
     
-    .logo img {
-        max-height: 60px;
+    .header-image {
+        max-width: 45%;
+        height: auto;
         display: block;
         margin: 0 auto;
     }
     
     .refresh-btn {
-        background: var(--primary-color);
-        color: #fff;
-        padding: 8px 20px;
+        background: #ff0011;
+        color: white;
         border: none;
+        padding: 10px 25px;
+        font-size: 14px;
+        border-radius: 25px;
         cursor: pointer;
-        font-size: 18px;
-        border-radius: 20px;
-        margin-top: 5px;
-        transition: all 0.3s ease;
-        box-shadow: var(--shadow);
-    }
-    
-    .refresh-btn:hover {
-        background: #e0000f;
-        transform: translateY(-2px);
+        margin: 3px 0;
+        display: inline-block;
     }
     
     .notice {
-        margin: 10px 0;
-        font-size: 18px;
-        color: black;
-        background: var(--notice-bg);
+        background: #e0e0e0;
         padding: 10px;
-        border-radius: 6px;
-        font-weight: bold;
+        border-radius: 5px;
+        margin: 1px 0;
+        font-size: 16px;
+    }
+    
+    /* AD CONTAINER FIXES */
+    .ad-section {
+        margin: 1px 0;
+        position: relative;
     }
     
     .ad-container {
-        margin: 10px auto;
-        padding: 5px;
-        text-align: center;
         background: white;
-        border-radius: 6px;
-        box-shadow: var(--shadow);
-        min-height: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        padding: 5px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin: 0 auto;
+        width: fit-content;
+        max-width: 100%;
+        overflow: hidden;
     }
+    
+    /* Specific fixes for Adsterra ads */
+    .ad-container iframe {
+        display: block;
+        margin: 0 auto;
+        border: none;
+    }
+    
+    
     
     .video-container {
         position: relative;
         background: #000;
-        margin: 0 auto;
-        border-radius: 6px;
+        margin: 15px auto;
+        border-radius: 8px;
         overflow: hidden;
         aspect-ratio: 16 / 9;
-        box-shadow: var(--shadow);
     }
     
-    iframe {
+    .video-container iframe {
         width: 100%;
         height: 100%;
         border: none;
@@ -101,183 +97,125 @@
         position: absolute;
         top: 10px;
         right: 10px;
-        background: var(--primary-color);
+        background:#ff0011;
         color: white;
         border: none;
-        padding: 5px 12px;
+        padding: 1px 5px;
         font-size: 14px;
         cursor: pointer;
-        border-radius: 40px;
-        transition: all 0.3s ease;
-    }
-    
-    .fullscreen-btn:hover {
-        background: #e0000f;
+        border-radius: 10px;
     }
     
     .chat-btn {
-        margin: 15px 0;
-        background: var(--secondary-color);
-        color: #fff;
-        padding: 10px 25px;
+        background: #007BFF;
+        color: white;
         border: none;
-        cursor: pointer;
+        padding: 10px 20px;
         font-size: 16px;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-        box-shadow: var(--shadow);
-    }
-    
-    .chat-btn:hover {
-        background: #0069d9;
-        transform: translateY(-2px);
+        border-radius: 50px;
+        cursor: pointer;
+        margin: 5px 0;
+        display: inline-block;
     }
     
     #chat-frame {
         display: none;
         width: 100%;
-        border: none;
-        margin-top: 10px;
         height: 400px;
-        border-radius: 6px;
-        box-shadow: var(--shadow);
+        border: none;
+        margin: 10px 0;
+        border-radius: 5px;
     }
     
+    /* Disclaimer Section */
     .disclaimer {
         margin: 25px 0 15px;
+        padding: 20px;
+        background: #d4d2cb;
+        border-radius: 8px;
+        text-align: left;
         font-size: 14px;
         line-height: 1.6;
-        color: black;
-        background: var(--disclaimer-bg);
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
     }
     
     .disclaimer strong {
+        display: block;
         font-size: 16px;
-        display: block;
         margin-bottom: 10px;
+        text-align: center;
     }
     
-    .section-label {
-        display: block;
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #666;
-        margin: 5px 0;
-        font-weight: bold;
+    .disclaimer p {
+        margin: 8px 0;
     }
     
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .container {
-            padding: 10px;
-        }
-        
-        .logo img {
-            max-height: 50px;
-        }
-        
-        .refresh-btn {
-            padding: 7px 15px;
-            font-size: 16px;
-        }
-        
-        .notice {
-            font-size: 16px;
-            padding: 8px;
-        }
-        
-        .chat-btn {
-            margin: 10px 0;
-            padding: 8px 20px;
-        }
-        
-        .disclaimer {
-            padding: 15px;
-            font-size: 13px;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .refresh-btn {
-            width: 100%;
-            margin-top: 10px;
-        }
-        
-        .disclaimer {
-            padding: 12px;
-            font-size: 12px;
-        }
-        
-        .section-label {
-            font-size: 11px;
-        }
+    .disclaimer b {
+        color: #333;
     }
 </style>
 </head>
 <body>
 
 <div class="container">
-
-    <!-- Logo -->
-    <div class="logo">
-        <a href="#">
-            <img src="https://nirutv.online/logo/logo.png" alt="Logo">
+    <!-- Header Image with Link -->
+    <div class="header">
+        <a href="https://yonotv.net" target="_blank">
+            <img src="https://nirutv.online/logo/logo.png" alt="YoNoTV Live Sports" class="header-image">
         </a>
     </div>
-
-    <!-- Refresh Button -->
-    <button class="refresh-btn" onclick="location.reload()">Refresh Stream</button>
-
-    <!-- Notice -->
+    
+  <button class="refresh-btn">Refresh LIVE</button>
+    
     <div class="notice">Please wait 15–20 seconds for the stream to load</div>
-
-    <!-- Ad Above Video -->
-    <span class="section-label">Advertisement</span>
-    <div class="ad-container">
-        <script type="text/javascript">
-            atOptions = {
-                'key' : '34bf866b3cbc040ca8aca436c1f9fc9e',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//orientsweptautopsy.com/34bf866b3cbc040ca8aca436c1f9fc9e/invoke.js"></script>
+    
+    <!-- First Ad Section -->
+    <div class="ad-section">
+       
+        <div class="ad-container">
+            <script type="text/javascript">
+	atOptions = {
+		'key' : '34bf866b3cbc040ca8aca436c1f9fc9e',
+		'format' : 'iframe',
+		'height' : 50,
+		'width' : 320,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//orientsweptautopsy.com/34bf866b3cbc040ca8aca436c1f9fc9e/invoke.js"></script>
+        </div>
     </div>
-
+    
+    
+    
     <!-- Video Container -->
     <div class="video-container">
         <iframe id="video-frame" allowfullscreen></iframe>
-        <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+        <button class="fullscreen-btn">⛶ Fullscreen</button>
     </div>
-
-    <!-- Ad Below Video -->
-    <span class="section-label">Advertisement</span>
-    <div class="ad-container">
-        <script type="text/javascript">
-            atOptions = {
-                'key' : '34bf866b3cbc040ca8aca436c1f9fc9e',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//orientsweptautopsy.com/34bf866b3cbc040ca8aca436c1f9fc9e/invoke.js"></script>
+    
+    
+    
+    <!-- Second Ad Section -->
+    <div class="ad-section">
+        <div class="ad-container">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : '34bf866b3cbc040ca8aca436c1f9fc9e',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 320,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//orientsweptautopsy.com/34bf866b3cbc040ca8aca436c1f9fc9e/invoke.js"></script>
+        </div>
     </div>
-
-    <!-- Chat Toggle Button -->
-    <button class="chat-btn" onclick="toggleChat()">Show Chat</button>
-
-    <!-- Chat Frame -->
+    
+    <button class="chat-btn">Show Chat</button>
+    
     <iframe id="chat-frame"></iframe>
-
-    <!-- Disclaimer -->
+    
+    <!-- Disclaimer Section -->
     <div class="disclaimer">
         <strong>Legal Disclaimer</strong>
         <p><b>Content Hosting:</b> YoNo TV does not host or upload any video content. All streams are embedded from publicly available third-party sources.</p>
@@ -285,7 +223,6 @@
         <p><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties. Users must ensure content access legality in their region.</p>
         <p><b>DMCA Compliance:</b> If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</p>
     </div>
-
 </div>
 
 <script>
@@ -293,12 +230,15 @@
     const urlParams = new URLSearchParams(window.location.search);
     const src = urlParams.get('src');
     document.getElementById('video-frame').src = src ? src : "about:blank";
-
-    // Fullscreen with rotation for mobile
-    function toggleFullscreen() {
+    
+    // Refresh button functionality
+    document.querySelector('.refresh-btn').addEventListener('click', function() {
+        location.reload();
+    });
+    
+    // Fullscreen functionality
+    document.querySelector('.fullscreen-btn').addEventListener('click', function() {
         const iframe = document.getElementById('video-frame');
-        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
         if (iframe.requestFullscreen) {
             iframe.requestFullscreen();
         } else if (iframe.webkitRequestFullscreen) {
@@ -306,19 +246,14 @@
         } else if (iframe.msRequestFullscreen) {
             iframe.msRequestFullscreen();
         }
-
-        if (isMobile && screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('landscape').catch(() => {
-                console.warn("Orientation lock not supported.");
-            });
-        }
-    }
-
-    // Chat toggle
+    });
+    
+    // Chat toggle functionality
     let chatVisible = false;
-    function toggleChat() {
+    document.querySelector('.chat-btn').addEventListener('click', function() {
         const chatFrame = document.getElementById('chat-frame');
         const btn = document.querySelector('.chat-btn');
+        
         if (!chatVisible) {
             chatFrame.src = "https://www.youtube.com/live_chat?v=CcpYwQ1QiDY&embed_domain=nirutv.online";
             chatFrame.style.display = "block";
@@ -330,23 +265,89 @@
             btn.textContent = "Show Chat";
             chatVisible = false;
         }
-    }
+    });
     
-    // Set initial chat state
-    document.addEventListener('DOMContentLoaded', function() {
-        // Add a small delay to ensure ad scripts have time to load
-        setTimeout(() => {
-            const adContainers = document.querySelectorAll('.ad-container');
-            adContainers.forEach(container => {
-                const iframe = container.querySelector('iframe');
-                if (iframe) {
-                    iframe.style.display = 'block';
-                    iframe.style.margin = '0 auto';
-                }
-            });
-        }, 1000);
+    // Ensure ads are properly centered after loading
+    window.addEventListener('load', function() {
+        const adContainers = document.querySelectorAll('.ad-container');
+        adContainers.forEach(container => {
+            const iframe = container.querySelector('iframe');
+            if (iframe) {
+                iframe.style.margin = '0 auto';
+                iframe.style.display = 'block';
+            }
+        });
     });
 </script>
+ <center>
+    <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
+    <script type="text/javascript">sc_online_i(1704055,"ffffff","e61c1c");</script>
+    <br><noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
+  </center>
+</div>
+<!-- Anti-Adblock Popup -->
+  <div class="adb" id="adb" style="display: none;">
+      <div class="adbs">
+          <h3>Adblock Detected</h3>
+          <p>To Continue YoNoTV, Please Turnoff/Disable Adblocker. We really appreciate your support.</p>
+      </div>
+  </div>
 
+  <style>
+      .adb {
+          display: none;
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          left: 0;
+          top: 0;
+          background: rgba(51, 51, 51, 0.9);
+          z-index: 10000;
+          text-align: center;
+          color: #111;
+      }
+
+      .adbs {
+          margin: 0 auto;
+          width: auto;
+          min-width: 400px;
+          position: fixed;
+          z-index: 99999;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          padding: 20px 30px 30px;
+          background: rgba(255, 255, 255, 0.9);
+          border-radius: 12px;
+      }
+  </style>
+
+  <script type="text/javascript">
+      async function detectAdBlock() {
+          let adBlockEnabled = false;
+          const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+
+          try {
+              const controller = new AbortController();
+              const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
+
+              await fetch(new Request(googleAdUrl), { signal: controller.signal })
+                  .then(() => clearTimeout(timeoutId))
+                  .catch(error => {
+                      if (error.name === 'AbortError') return; // Ignore timeout errors
+                      adBlockEnabled = true;
+                  });
+
+          } catch (e) {
+              adBlockEnabled = true;
+          }
+
+          if (adBlockEnabled) {
+              document.getElementById("adb").style.display = "block";
+          }
+      }
+
+      detectAdBlock();
+  </script>
 </body>
 </html>
