@@ -290,6 +290,21 @@
         margin-top: 0;
     }
     
+    /* Redirect notification */
+    .redirect-notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #333;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 14px;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        display: none;
+    }
+    
     @media (max-width: 500px) {
         .top-controls {
             gap: 8px;
@@ -305,6 +320,13 @@
             margin-right: 4px;
             font-size: 14px;
         }
+        
+        .redirect-notification {
+            bottom: 10px;
+            right: 10px;
+            left: 10px;
+            text-align: center;
+        }
     }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -317,6 +339,11 @@
         <h3>Adblock Detected</h3>
         <p>To Continue YoNoTV, Please Turnoff/Disable Adblocker. We really appreciate your support.</p>
     </div>
+</div>
+
+<!-- Redirect Notification -->
+<div class="redirect-notification" id="redirect-notification">
+    <i class="fas fa-info-circle"></i> You will be redirected to our VIP page shortly...
 </div>
 
 <div class="container">
@@ -377,14 +404,13 @@
     // Theme toggle functionality
     const themeToggle = document.getElementById('theme-toggle');
     
-    // Check for saved theme preference or respect OS preference
-    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    const currentTheme = localStorage.getItem('theme');
-    
-    if (currentTheme === 'light' || (!currentTheme && prefersDarkScheme.matches)) {
-        document.body.classList.add('dark-mode');
-        themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
-    }
+    // Always start with light mode (ignore system preference)
+    // Remove any dark mode class that might be set
+    document.body.classList.remove('dark-mode');
+    // Set theme toggle to show dark mode option
+    themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+    // Clear any previously saved theme preference
+    localStorage.removeItem('theme');
     
     themeToggle.addEventListener('click', function() {
         // Toggle dark mode
@@ -525,9 +551,38 @@
         }
     }
 
-    // Run adblock detection after page loads
+    // Redirect functionality
+    function setupRedirect() {
+        // Check if user has already been redirected in this session
+        if (sessionStorage.getItem('redirected') === 'true') {
+            return; // Don't redirect again
+        }
+        
+        // Show notification 30 seconds before redirect
+        setTimeout(() => {
+            const notification = document.getElementById('redirect-notification');
+            notification.style.display = 'block';
+            
+            // Hide notification after 5 seconds
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }, 90000); // 1.5 minutes
+        
+        // Set up the actual redirect after 1 minutes
+        setTimeout(() => {
+            // Mark that user has been redirected
+            sessionStorage.setItem('redirected', 'true');
+            
+            // Redirect to VIP page
+            window.location.href = 'https://nirutv.online/VIP/ads.html';
+        }, 60000); // 1 minutes
+    }
+    
+    // Run adblock detection and set up redirect after page loads
     window.addEventListener('load', function() {
         setTimeout(detectAdBlock, 2000); // Delay detection slightly
+        setupRedirect(); // Set up the 2-minute redirect
     });
 </script>
 <center>
