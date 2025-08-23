@@ -381,7 +381,7 @@
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
     const currentTheme = localStorage.getItem('theme');
     
-    if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+    if (currentTheme === 'light' || (!currentTheme && prefersDarkScheme.matches)) {
         document.body.classList.add('dark-mode');
         themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
     }
