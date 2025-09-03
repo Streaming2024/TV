@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>M3U8 Playlist Player</title>
+
+  <!-- Plyr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    .player-wrapper {
+      width: 100%;
+      max-width: 100%;
+      background: #000;
+    }
+    .player-wrapper video {
+      width: 100%;
+      height: auto;
+      max-height: 70vh;
+      object-fit: contain;
+    }
+    .playlist {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+    .category {
+      grid-column: 1 / -1;
+    }
+    .category h2 {
+      font-size: 1.2rem;
+      margin: 10px 0;
+      border-bottom: 1px solid #333;
+      padding-bottom: 5px;
+    }
+    .item {
+      display: flex;
+      align-items: center;
+      background: #1e1e1e;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .item img {
+      width: 50px;
+      height: 40px;
+      object-fit: contain;
+      margin-right: 10px;
+      border-radius: 4px;
+      background: #fff;
+    }
+    .item span {
+      flex: 1;
+      font-size: 0.95rem;
+    }
+    .item button {
+      background: #ff5722;
+      border: none;
+      padding: 6px 12px;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .item button:hover {
+      background: #e64a19;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Player on top -->
+<div class="player-wrapper">
+  <video id="player" controls playsinline></video>
+</div>
+
+<!-- Playlist below -->
+<div class="playlist" id="playlist"></div>
+
+<!-- Plyr + HLS -->
+<script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script>
+const data = {
+  news: [
+    { name: 'Kantipur', uri: 'https://webott.viatv.com.np/v0t1/KntCineplexTv.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/Kantipur.jpg' },
+    { name: 'API HD', uri: 'https://webott.viatv.com.np/v0t1/AP1576.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/AP_1.jpg' },
+    { name: 'Prime HD', uri: 'https://webott.viatv.com.np/v0t1/PrimeTV576.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/PRIME_TIMES_HD.png' },
+    { name: 'Himalaya', uri: 'https://webott.viatv.com.np/v0t1/HimalayaTv576.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/Himalaya_TV.jpg' },
+    { name: 'Avenues', uri: 'https://webott.viatv.com.np/v0t1/Avenews,.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/Avenues_TV.jpg' },
+    { name: 'ABC News', uri: 'https://webott.viatv.com.np/v0t1/ABCNews576.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/ABC_News.jpg' },
+    { name: 'NTV', uri: 'https://webott.viatv.com.np/v0t1/Ntv576.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/Nepal_TV_HD.jpg' },
+    { name: 'NTV News', uri: 'https://webott.viatv.com.np/v0t1/NtvNews576.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/NTV_News_HD.jpg' },
+    { name: 'NTV Plus', uri: 'https://webott.viatv.com.np/v0t1/NtvPlus576.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/NTV_Plus_HD.jpg' },
+    { name: 'News 24', uri: 'https://webott.viatv.com.np/v0t1/News24.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/News_24.jpg' },
+    { name: 'Sagarmatha', uri: 'https://webott.viatv.com.np/v0t1/Sagarmatha.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/Sagarmatha.jpg' },
+    { name: 'Janata', uri: 'https://webott.viatv.com.np/v0t1/Jantatv.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/Janata_TV.jpg' },
+    { name: 'Mountain', uri: 'https://webott.viatv.com.np/v0t1/Mountain576.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/Mountain_TV.jpg' },
+    { name: 'Image', uri: 'https://webott.viatv.com.np/v0t1/Image576.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/Image_Channel.jpg' },
+    { name: 'YOHO TV', uri: 'https://webott.viatv.com.np/v0t1/YohoTV.stream/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/channel/logo/Yoho_TV_HD.jpg' },
+  ],
+  movies: [
+    { name: 'Raato Ghar', uri: 'https://webmov.viatv.com.np/ottvod/vod/nep/ratoghar/VoDrato.mp4/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/movie/logo/1620973720.jpeg' },
+    { name: 'The Break Up', uri: 'https://webmov.viatv.com.np/ottvod/vod/nep/breakup/VoDbreakup.mp4/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/movie/logo/1620974096.jpeg' },
+    { name: 'Bir Bikram 2', uri: 'https://webmov.viatv.com.np/ottvod/vod/nep/BB2/VoDBB2.mp4/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/movie/logo/1620967287.jpeg' },
+    { name: 'Captain', uri: 'https://webmov.viatv.com.np/ottvod/vod/nep/captain/VoDcaptain.mp4/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/movie/logo/1620967425.jpeg' },
+    { name: 'Gopi', uri: 'https://webmov.viatv.com.np/ottvod/vod/nep/gopi/VoDgopi.mp4/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/movie/logo/1620970814.jpeg' },
+    { name: 'Jatrai Jatra', uri: 'https://webmov.viatv.com.np/ottvod/vod/nep/jatrai/VoDjatrai.mp4/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/movie/logo/1620968262.jpeg' },
+    { name: 'Selfie King', uri: 'https://webmov.viatv.com.np/ottvod/vod/nep/selfie/VoDselfie.mp4/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/movie/logo/1620972900.jpeg' },
+    { name: 'Shatru Gate', uri: 'https://webmov.viatv.com.np/ottvod/vod/nep/shatru/VoDshatru.mp4/playlist.m3u8', icon: 'https://ott1.viatv.com.np//images/movie/logo/1620973511.jpeg' },
+  ]
+};
+
+// init Plyr
+const video = document.getElementById('player');
+const player = new Plyr(video);
+
+// function to play stream
+function playStream(uri) {
+  if (Hls.isSupported()) {
+    const hls = new Hls();
+    hls.loadSource(uri);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, () => player.play());
+  } else {
+    video.src = uri;
+    video.play();
+  }
+}
+
+// render playlist
+function renderPlaylist() {
+  const playlist = document.getElementById('playlist');
+  playlist.innerHTML = '';
+  Object.keys(data).forEach(category => {
+    const catDiv = document.createElement('div');
+    catDiv.className = 'category';
+    catDiv.innerHTML = `<h2>${category.toUpperCase()}</h2>`;
+    data[category].forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.innerHTML = `
+        <img src="${item.icon}" alt="${item.name}">
+        <span>${item.name}</span>
+        <button>Play</button>
+      `;
+      div.querySelector('button').addEventListener('click', () => playStream(item.uri));
+      catDiv.appendChild(div);
+    });
+    playlist.appendChild(catDiv);
+  });
+}
+
+renderPlaylist();
+
+// Auto play first channel
+if (data.news.length > 0) {
+  playStream(data.news[0].uri);
+}
+</script>
+</body>
+</html>
