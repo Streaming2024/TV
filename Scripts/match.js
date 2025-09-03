@@ -498,7 +498,7 @@
        
        
   {
-    "name": "Netherlands_",
+    "name": "Netherlands",
     "logo": "https://aimages.willow.tv/teamLogos/netherlands.png"
   },  
 
@@ -520,51 +520,51 @@
        
        
   {
-    "name": "Nepal_",
+    "name": "Nepal",
     "logo": "https://aimages.willow.tv/teamLogos/nepal.png"
   },  
      
 {
-    "name": "India_",
+    "name": "India",
     "logo": "https://aimages.willow.tv/teamLogos/india.png"
   },  
 
 {
-    "name": "Australia_",
+    "name": "Australia",
     "logo": "https://aimages.willow.tv/teamLogos/australia.png"
   },  
 
        {
-    "name": "Bangladesh_",
+    "name": "Bangladesh",
     "logo": "https://aimages.willow.tv/teamLogos/bangladesh.png"
   },  
 
        {
-    "name": "New Zealand_",
+    "name": "New Zealand",
     "logo": "https://aimages.willow.tv/teamLogos/newzealand.png"
   },  
 
 
        {
-    "name": "Afghanistan_",
+    "name": "Afghanistan",
     "logo": "https://aimages.willow.tv/teamLogos/afghanistan.png"
   },  
 
 
        {
-    "name": "Pakistan_",
+    "name": "Pakistan",
     "logo": "https://aimages.willow.tv/teamLogos/pakistan.png"
   },  
 
 
        {
-    "name": "Sri Lanka_",
+    "name": "Sri Lanka",
     "logo": "https://aimages.willow.tv/teamLogos/srilanka.png"
   },  
 
 
        {
-    "name": "England_",
+    "name": "England",
     "logo": "https://aimages.willow.tv/teamLogos/england.png"
   }, 
 
@@ -588,55 +588,55 @@
 
 
        {
-    "name": "USA_",
+    "name": "USA",
     "logo": "https://aimages.willow.tv/teamLogos/usa.png"
   }, 
 
        
          {
-    "name": "UAE_",
+    "name": "UAE",
     "logo": "https://aimages.willow.tv/teamLogos/uae.png"
   }, 
 
 
               {
     "name": "Japan",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6715.png"
+    "logo": "https://images.fotmob.com/imageresources/logo/teamlogo/6715.png"
   }, 
 
      
   {
     "name": "Everton",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8668.png"
+    "logo": "https://images.fotmob.com/imageresources/logo/teamlogo/8668.png"
   },    
   
        {
     "name": "Al Ahli",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/2530.png"
+    "logo": "https://images.fotmob.com/imageresources/logo/teamlogo/2530.png"
   },  
      
      
   {
     "name": "Al Ittihad",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8577.png"
+    "logo": "https://images.fotmob.com/imageresources/logo/teamlogo/8577.png"
   },  
      
      
  
   {
     "name": "Al-Taawoun",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/205686.png"
+    "logo": "https://images.fotmob.com/imageresources/logo/teamlogo/205686.png"
   },  
      
      
   {
     "name": "Al Fateh",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/177356.png"
+    "logo": "https://images.fotmob.com/imageresources/logo/teamlogo/177356.png"
   },
      
        {
     "name": "Al-Ettifaq",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/101915.png"
+    "logo": "https://images.fotmob.com/image resources/logo/teamlogo/101915.png"
   },  
      
      
@@ -1562,8 +1562,8 @@
   },    
   
        {
-    "name": "____",
-    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/___.png"
+    "name": "Bhutan",
+    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/95800.png"
   },  
      
      
