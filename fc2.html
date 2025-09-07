@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YoNoTV</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/controls.min.css" crossorigin="anonymous">
+  <style>
+    body { margin: 0; background-color: black; }
+    .shaka-spinner-container { display: none; }
+    .video-fill video { object-fit: fill cover; }
+    .shaka-overflow-menu, .shaka-settings-menu {
+      background-color: rgb(35, 35, 35); color: rgb(255, 255, 255);
+    }
+    .shaka-overflow-menu button:hover,
+    .shaka-settings-menu button:hover {
+      background-color: rgb(45, 45, 45);
+    }
+    .shaka-overflow-button-label,
+    .shaka-current-selection-span,
+    .material-icons-round,
+    .shaka-settings-menu button {
+      color: rgb(245, 245, 245);
+    }
+    .shaka-bottom-controls {
+      display: flex; flex-direction: column-reverse;
+    }
+
+    #loading-overlay {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: rgba(0,0,0,0.7); color: white;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      z-index: 9999; user-select: none;
+      font-family: Arial, sans-serif;
+    }
+
+    #progress-text {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    #progress-bar-container {
+      width: 50%;
+      height: 20px;
+      background: #444;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    #progress-bar {
+      width: 0%;
+      height: 100%;
+      background: red;
+      transition: width 0.1s linear;
+    }
+
+    #loading-message {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 15px;
+    }
+
+    #play-button {
+      display: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: red;
+      border: none;
+      color: white;
+      font-size: 36px;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false" onkeydown="return false" onmousedown="return false">
+
+  <!-- Loading Screen -->
+  <div id="loading-overlay">
+    <div id="progress-text">0%</div>
+    <div id="progress-bar-container"><div id="progress-bar"></div></div>
+    <div id="loading-message">Please Wait Video is loading...</div>
+    <button id="play-button" title="Play">▶</button>
+  </div>
+
+  <!-- Video Player Container -->
+  <div class="container video-fill" data-shaka-player-container style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;object-fit:fill cover;">
+    <video data-shaka-player id="video" style="width:100%;height:100%;"></video>
+  </div>
+
+  <!-- Telegram Link -->
+  <a href="https://t.me/yonotvlive" target="_blank">
+    <span style="position:absolute;z-index:100;top:6px;left:5px;height:30px;width:100px;color:#ccc;border:2px solid #ccc;padding:1px 0;border-radius:2px;text-align:center;">
+      Join us
+    </span>
+  </a>
+ <!-- MDP LINKD , KEY ID & KEY HERE -->
+  <script>
+    function _0x37bc(_0x406e27,_0x32f725){const _0x970367=_0x9703();return _0x37bc=function(_0x37bcb8,_0x7ee4f2){_0x37bcb8=_0x37bcb8-0x134;let _0x234d3f=_0x970367[_0x37bcb8];return _0x234d3f;},_0x37bc(_0x406e27,_0x32f725);}function _0x9703(){const _0x34919e=['2807iSvhbm','2339250OQdmAH','querySelectorAll','getPlayer','getElementById','2ONsvaB','https://a166aivottlinear-a.akamaihd.net/OTTB/sin-nitro/live/clients/dash/enc/inpyms8ezu/out/v1/1084d5c9a97a4c5b9f9554c88f486646/cenc.mpd','video','log','.shaka-overflow-menu-button','configure','rgba(255,255,255,.4)','Error\x20loading\x20stream:','2244924MEbEIU','Video\x20loaded\x20successfully.','progress-text','1316505KQsqat','style','Error\x20loading\x20video.','15018hBBGpM','rgba(255,255,255,.2)','textContent','forEach','loading-message','width','click','864849jqdwpM','214bd176832872339ce184338320f9a2','display','getControls','shaka-ui-loaded','parentElement','addEventListener','loading-overlay','none','min','progress-bar','rgb(255,0,0)','error','3741028zqysnd','8853144soCXrO','.shaka-back-to-overflow-button\x20.material-icons-round'];_0x9703=function(){return _0x34919e;};return _0x9703();}(function(_0x41874f,_0x20e887){const _0x1eceb2=_0x37bc,_0x3d8cbd=_0x41874f();while(!![]){try{const _0x1303c8=-parseInt(_0x1eceb2(0x145))/0x1*(-parseInt(_0x1eceb2(0x15a))/0x2)+-parseInt(_0x1eceb2(0x156))/0x3+parseInt(_0x1eceb2(0x152))/0x4+-parseInt(_0x1eceb2(0x13b))/0x5+-parseInt(_0x1eceb2(0x13e))/0x6*(parseInt(_0x1eceb2(0x155))/0x7)+parseInt(_0x1eceb2(0x153))/0x8+-parseInt(_0x1eceb2(0x138))/0x9;if(_0x1303c8===_0x20e887)break;else _0x3d8cbd['push'](_0x3d8cbd['shift']());}catch(_0x41239f){_0x3d8cbd['push'](_0x3d8cbd['shift']());}}}(_0x9703,0x950ff),(async function(){const _0x979811=_0x37bc,_0x71eb2f=_0x979811(0x15b),_0x58c4fe='065051b99bf5cf8d9a3bde5cbde6aaf9',_0x3d96e1=_0x979811(0x146);document[_0x979811(0x14b)](_0x979811(0x149),async()=>{const _0x5e5fc7=_0x979811,_0x670511=document[_0x5e5fc7(0x159)]('video'),_0x4a33ca=_0x670511['ui'];_0x4a33ca[_0x5e5fc7(0x135)]({'seekBarColors':{'base':_0x5e5fc7(0x13f),'buffered':_0x5e5fc7(0x136),'played':_0x5e5fc7(0x150)}});const _0x3f144d=_0x4a33ca[_0x5e5fc7(0x148)](),_0x3ec044=_0x3f144d[_0x5e5fc7(0x158)]();_0x3ec044[_0x5e5fc7(0x135)]({'drm':{'clearKeys':{[_0x58c4fe]:_0x3d96e1}}});try{await _0x3ec044['load'](_0x71eb2f),console[_0x5e5fc7(0x15d)](_0x5e5fc7(0x139)),_0x2cd77c();}catch(_0x2bc82b){console[_0x5e5fc7(0x151)](_0x5e5fc7(0x137),_0x2bc82b),alert(_0x5e5fc7(0x13d));}document[_0x5e5fc7(0x157)](_0x5e5fc7(0x134))[_0x5e5fc7(0x141)](_0x3b33bf=>{const _0x13232d=_0x5e5fc7;_0x3b33bf[_0x13232d(0x140)]='settings';}),document[_0x5e5fc7(0x157)](_0x5e5fc7(0x154))[_0x5e5fc7(0x141)](_0x311ef0=>{const _0x4d0117=_0x5e5fc7;_0x311ef0[_0x4d0117(0x140)]='arrow_back_ios_new';});});const _0x1474aa=document['getElementById'](_0x979811(0x14c)),_0xa62346=document[_0x979811(0x159)](_0x979811(0x13a)),_0x24a33e=document[_0x979811(0x159)](_0x979811(0x14f)),_0x5c1656=document[_0x979811(0x159)]('play-button'),_0x48f995=document[_0x979811(0x159)](_0x979811(0x142));function _0x2cd77c(){let _0x4dcbc5=0xf,_0x5e82e6=0x0;const _0x1c1c66=0x64,_0x35307c=setInterval(()=>{const _0x322e43=_0x37bc;_0x5e82e6+=_0x1c1c66/0x3e8;let _0x2fc637=Math[_0x322e43(0x14e)](0x64,_0x5e82e6/_0x4dcbc5*0x64);_0x24a33e[_0x322e43(0x13c)][_0x322e43(0x143)]=_0x2fc637+'%',_0xa62346['textContent']=Math['floor'](_0x2fc637)+'%',_0x2fc637>=0x64&&(clearInterval(_0x35307c),_0xa62346[_0x322e43(0x13c)][_0x322e43(0x147)]=_0x322e43(0x14d),_0x24a33e[_0x322e43(0x14a)]['style'][_0x322e43(0x147)]=_0x322e43(0x14d),_0x48f995['style'][_0x322e43(0x147)]='none',_0x5c1656['style'][_0x322e43(0x147)]='flex');},_0x1c1c66);}_0x5c1656[_0x979811(0x14b)](_0x979811(0x144),()=>{const _0x1bb9aa=_0x979811;_0x1474aa[_0x1bb9aa(0x13c)][_0x1bb9aa(0x147)]='none';const _0x636ed2=document[_0x1bb9aa(0x159)](_0x1bb9aa(0x15c));_0x636ed2['play']();});}()));
+  </script>
+</body>
+</html>
