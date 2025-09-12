@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en" prefix="og: https://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" />
+<link rel="profile" href="https://gmpg.org/xfn/11" />
+<meta content="width=device-width,minimum-scale=1,initial-scale=1" name="viewport" />
+<title> M3U8 Mob Player</title>
+
+<style>:root{--plyr-video-control-background-hover:rgba(156,136,255,.9);--plyr-color-main:#9c88ff}body{box-sizing:border-box;background:#000;font-family:sans-serif;margin:0}*{text-decoration:none}.albaplayer_videos_channel{position:absolute;z-index:999;left:8px;top:6px;right:8px;height:0}.albaplayer_videos_channel .button{background:#9e1414;cursor:pointer;font-size:14px;float:left;display:block;border-radius:2px;height:25px;text-align:center;line-height:22px;text-shadow:0 1px 1px #000;color:#fff;padding:0 10px;font-family:sans-serif;font-weight:700;position:relative;z-index:99}.albaplayer_videos_channel .refresh{float:right}#albaplayer_share_channel{position:absolute;top:-10px;z-index:9;left:-10px;border-radius:0;background:rgba(0,0,0,.9);right:-10px;bottom:0;height:100vh;text-align:center}.share-channel{position:absolute;top:50%;right:0;left:0;margin-top:-80px;display:flex;flex-direction:column;align-items:center}.share-channel textarea{margin-top:13px;max-width:98%;width:600px;direction:ltr;overflow:auto;font-size:14px;padding:5px;background:rgba(255,255,255,0.26);border:0;height:54px;color:#fff}.custom-btn{background:#552a86;border:0;font-size:16px;font-family:arial;padding:5px 16px;border-radius:5px;font-weight:700;margin-top:6px;color:#fff;cursor:pointer}.albaplayer_site_name{text-shadow:2px 2px 2px #000;z-index:9;bottom:18%;position:fixed;width:100%;height:0;text-align:center;color:#fff;font-size:3vw;display:none1}.jw-controls.jw-reset:before{display:none;content:'';z-index:9;position:absolute;right:0;left:0;bottom:7%;font-family:sans-serif;color:#fff;text-align:center;text-shadow:2px 2px 2px #000;font-size:2vw}#player{width: 100%;position:absolute;height:100%!important;z-index:9;right:0;left:0}.jw-slider-time.jw-background-color.jw-reset.jw-slider-horizontal.jw-reset,.jwplayer.jw-flag-rightclick-open .jw-rightclick,.jw-icon.jw-icon-inline.jw-button-color.jw-reset.jw-icon-rewind,.jw-icon.jw-icon-inline.jw-text.jw-reset.jw-text-elapsed,.jw-icon.jw-icon-inline.jw-button-color.jw-reset.jw-icon-cc.jw-settings-submenu-button.jw-off .jw-svg-icon,.jw-icon.jw-icon-inline.jw-button-color.jw-reset.jw-icon-cc.jw-settings-submenu-button.jw-off .jw-reset-text.jw-tooltip.jw-tooltip-captions,#matchpsho,.postimg,.post-body p{display:none!important}.jw-text-live::before{height:6px;width:6px;background-color:red}.jw-text-live.jw-dvr-live{box-shadow:initial}.jw-text-live.jw-dvr-live::before{background-color:currentColor}iframe.cf{position:absolute;height:100%}.cf.videoif{z-index:99}iframe.videoif{height:100%;position:absolute}video.post-video{position:absolute;height:100%}.albaplayer_server-body{box-sizing:border-box;position:relative;width:100%;background:#000;height:calc(100vh - 60px);overflow:hidden}.albaplayer_name{display:flex;clear:both;position:relative;overflow:hidden;width:100%;background:#000;max-height:50px;box-sizing:border-box;padding:0 2px;margin:0;list-style:none}.albaplayer_name li{text-align:center;width:100%;margin:4px 2px;position:relative;float:right;z-index:3;flex:1;box-sizing:border-box;display:flex;align-items:center;justify-content:center}.albaplayer_name a{text-align:center;background:#552a86;font-size:16px;width:100%;position:relative;cursor:pointer;padding:5px 5px 7px;border:0;text-shadow:0 1px 1px rgba(0,0,0,.3);box-shadow:0 0 0 #d6d6d6;border-radius:1px;height:43px;overflow:hidden;flex:1;box-sizing:border-box;font-weight:600;display:flex;align-items:center;justify-content:center;color:#fff!important}.albaplayer_name a.active,.albaplayer_name a:hover{background:#9e1414;transition:.3s all cubi;color:#fff!important}.embed-responsive{height:100%;position:relative;display:block;width:100%;padding:0;overflow:hidden}.embed-responsive::before{display:block;content:""}.embed-responsive .embed-responsive-item,.embed-responsive embed,.embed-responsive iframe,.embed-responsive object,.embed-responsive video{position:absolute;top:0;bottom:0;left:0;width:100%;height:100%;border:0}.embed-responsive-21by9::before{padding-top:42.857143%}.embed-responsive-16by9::before{padding-top:56.25%}.embed-responsive-4by3::before{padding-top:75%}.embed-responsive-1by1::before{padding-top:100%}.albaplayer_share_title{text-align:center;color:#fff;font-size:21px}.albaplayer_share_title *{color:#fff}#albaAdsPlayer{position:absolute;width:336px;right:0;bottom:0;z-index:9999}.mahimeta-close{position:absolute;top:-18px;right:5px;color:#4c4c4c;text-align:center;font-weight:bold;font-family:arial;font-size:14px;cursor:pointer;background:#fff;padding:0 5px;height:20px}.albaAdscon{overflow:hidden;width:100%}[data-player]{height:100%!important}.plyr--full-ui{box-sizing:border-box;height:100%}.plyr__control--overlaid{padding:1.5rem!important}@media screen and (max-width:500px){.jw-controls.jw-reset:before,.albaplayer_site_name{font-size:4vw}}@media screen and (max-width:640px){.albaplayer_name{width:100%;direction:rtl;text-align:center;overflow:auto;overflow-y:auto;overflow-y:auto;overflow-y:hidden;margin:0 auto}.albaplayer_name li{display:inline-block;vertical-align:middle;background-image:none;white-space:nowrap;-moz-user-select:none;cursor:pointer;position:relative;margin:0 3px 0}.albaplayer_name a{font-size:14px;padding:4px 8px 7px;border-radius:2px;height:30px;margin-top:4px}.albaplayer_videos_channel{left:4px;top:6px;right:6px}}#tme{position:fixed;z-index:99999999;bottom:50px;right:25px;width:48px;height:48px;text-align:center;border-radius:50%;background-color:#0088cc;cursor:pointer}#tme_message{text-align: right;position:absolute;bottom:62px;right:-10px;width:250px;padding:10px;background:white;border-radius:4px;box-shadow:0 2px 5px rgb(0 0 0);transition:opacity .5s ease-in}#tme_message:after,#tme_message:before{content:'';position:absolute;bottom:-21px;right:23px;border-style:solid;height:0;width:0;border-width:10px;border-color:transparent}#tme_message:after{border-top-color:#fff;bottom:-20px}#tme svg{margin-top:13px}#tme_message p{letter-spacing: -.5px;margin:5px 0 0;font-size:12px;color:#8e8e8e;text-align:right}.clossalert {position: absolute;left: -10px;top: -10px;border-radius: 50%;cursor: pointer;background: #fff;font-size: 10px;width: 20px;height: 20px;border: solid 1px #d9d9d9;display: inline-flex;align-items: center;justify-content: center;}#tme_message a{margin:6px 6px 0 0;color:#FFF;background:#0088cc;border-radius:5px;display:inline-block;padding:2px 7px;text-decoration:none}.dplayer-logo,[data-watermark-top-right],.plyr__video-wrapper::before,.jw-wrapper::before,#player::before{right:10px!important;top:10px!important;max-width:80px!important;left:auto!important}#tme.itisltr{right:auto;left:45px}#tme.itisltr #tme_message{text-align:left;right:auto;left:-10px}#tme.itisltr #tme_message:before,#tme.itisltr #tme_message::after{right:auto;left:23px}#tme.itisltr #tme_message p{text-align:left}#tme.itisltr #tme_message a{margin:6px 0 0 6px}</style>
+
+</head>
+
+
+<body>
+<ul class="albaplayer_name">
+</ul> <div class="albaplayer_server-body">
+<div class="video-con embed-responsive"><meta content="no-referrer" name="referrer" />
+
+  <!-- Isolated Modal -->
+  <div class="popup-modal-wrapper" id="popupModal">
+    <div class="popup-modal-box">
+      <h1>Mobile-Only Stream !! </h1>
+     <p>Kindly Open PC Links !! </p>
+    </div>
+  </div>
+
+  <script>
+    if (!/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      document.getElementById("popupModal").style.display = "flex";
+    }
+  </script>
+
+  <style>
+    .popup-modal-wrapper {
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popup-modal-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .popup-modal-box h1 {
+      font-size: 1.8em;
+      color: #e63946;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #e63946;
+      width: 0;
+      margin: 0 auto;
+      animation: popup-typing 3s steps(30, end) forwards, popup-blink 0.75s step-end infinite;
+    }
+
+    .popup-modal-box p {
+      font-size: 1.1em;
+      color: #555;
+      margin-top: 20px;
+      opacity: 0;
+      animation: popup-fadeIn 1s ease-in 3s forwards;
+    }
+
+    @keyframes popup-typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes popup-blink {
+      50% { border-color: transparent; }
+    }
+
+    @keyframes popup-fadeIn {
+      to { opacity: 1; }
+    }
+  </style>
+
+  
+<video allowfullscreen="yes" autoplay="0" controls="" frameborder="0" height="100%" id="video-player" marginheight="0" marginwidth="0" poster="https://nirutv.online/logo/image.png" scrolling="no" style="width: 100%;" type="application/x-mpegURL" width="100%"></video>
+
+
+  <script>
+  // Get the customid from the URL parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const customid = urlParams.get('url');
+  
+  // Update the src attribute of the video player
+  if (customid) {
+    const videoPlayer = document.getElementById('video-player');
+    videoPlayer.src = customid;
+  }
+</script>
+
+  
+  
+<style>.albaplayer-server-body .embed-responsive {position: unset;}.albaplayer-server-body .embed-responsive::before{content:"";display: none;}</style></div> <div class="albaplayer_videos_channel">
+<!--<a class="button refresh" href="javascript:window.location.reload()"> Refresh </a>-->
+</div>
+</div>
+
+
+  
+</body>
+</html>
