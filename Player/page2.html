@@ -335,8 +335,8 @@
     }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Popunder ADS Here -->
-<script type='text/javascript' src='//orientsweptautopsy.com/7a/67/68/7a676823323dfeab2e2da829151707c0.js'></script>
+<!--  Popupnder ADS here -->
+ <script type='text/javascript' src='//orientsweptautopsy.com/7a/67/68/7a676823323dfeab2e2da829151707c0.js'></script>
 </head>
 <body>
 
@@ -580,7 +580,7 @@
         }, 500); // Match the CSS transition time
     }
 
-    // Fixed Redirect functionality with multiple timings and frequency limiting
+    // Fixed Redirect functionality with 2 redirects per 12 hours limit
     function setupRedirects() {
         // Get redirect history from localStorage
         let redirectHistory = JSON.parse(localStorage.getItem('redirectHistory') || '{"count": 0, "lastReset": ' + Date.now() + '}');
@@ -592,9 +592,9 @@
             localStorage.setItem('redirectHistory', JSON.stringify(redirectHistory));
         }
         
-        // Check if user has reached the 5 redirects limit
-        if (redirectHistory.count >= 5) {
-            console.log("Redirect limit reached. Next redirect in 12 hours.");
+        // Check if user has reached the 2 redirects limit (changed from 5 to 2)
+        if (redirectHistory.count >= 2) {
+            console.log("Redirect limit reached (2/12 hours). Next redirect in 12 hours.");
             return; // Don't set up any redirects
         }
         
@@ -626,6 +626,13 @@
         
         // Second redirect after 3 minutes (180000 milliseconds)
         setTimeout(() => {
+            // Check if we've already reached the limit from the first redirect
+            redirectHistory = JSON.parse(localStorage.getItem('redirectHistory') || '{"count": 0, "lastReset": ' + Date.now() + '}');
+            if (redirectHistory.count >= 2) {
+                console.log("Redirect limit reached (2/12 hours). Skipping second redirect.");
+                return;
+            }
+            
             // Show notification
             const notification = document.getElementById('redirect-notification');
             const notificationText = document.getElementById('notification-text');
