@@ -10,45 +10,48 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: #000;
       height: 100%;
       width: 100%;
-      overflow: hidden;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #000;
+      overflow: hidden;
     }
     #dplayer {
       width: 100%;
       height: 100%;
     }
 
-    /* Background grid for PC banners */
-    .bg-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      grid-auto-rows: 150px;
-      gap: 5px;
+    /* Transparent background layer with all posters */
+    .bg-layer {
+      position: fixed;
+      top: 0; left: 0;
       width: 100%;
-      height: 100vh;
-      overflow: hidden;
+      height: 100%;
+      background: rgba(0,0,0,0.6); /* transparent dark layer */
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-auto-rows: 140px;
+      gap: 5px;
+      z-index: 0;
     }
-    .bg-grid img {
+    .bg-layer img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: blur(2px) brightness(0.7);
+      opacity: 0.6;
     }
 
-    /* Notice container at center */
+    /* Notice box */
     .notice-container {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       background: #fff;
       padding: 40px 50px;
       border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
       text-align: center;
+      z-index: 10;
       animation: fadeIn 1s ease-in-out;
     }
     .notice-container h1 {
@@ -149,21 +152,20 @@
       }
     ];
 
-    // Detect mobile
     const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 
     if (!isMobile) {
-      // Show all logos as background with notice at center
+      // PC Mode → Transparent background with posters + notice box
       document.body.innerHTML = `
-        <div class="bg-grid">
+        <div class="bg-layer">
           ${channels.map(ch => `<img src="${ch.logo}" alt="${ch.name}">`).join("")}
         </div>
         <div class="notice-container">
-          <h1>Mobile-Only Live Stream !!</h1>
-          <p>Kindly Open PC Links !!</p>
+          <h1>📱Mobile-Only Live Stream !!</h1>
+          <p>Kindly Open 🖥️ PC Links !!</p>
         </div>`;
     } else {
-      // Mobile streaming
+      // Mobile Mode → Live Streaming
       const getChannelName = () => {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get('id');
