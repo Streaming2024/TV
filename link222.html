@@ -10,173 +10,132 @@
     html, body {
       margin: 0;
       padding: 0;
+      background: #000;
       height: 100%;
       width: 100%;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: #000;
       overflow: hidden;
     }
     #dplayer {
       width: 100%;
       height: 100%;
     }
-
-    /* Main background image (poster) */
-    .poster-bg {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: url("https://nirutv.online/logo/image.png") center center / cover no-repeat;
-      opacity: 0.25;
-      z-index: 0;
-    }
-
-    /* Transparent overlay grid of channel logos */
-    .bg-layer {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      grid-auto-rows: 140px;
-      gap: 5px;
-      z-index: 1;
-    }
-    .bg-layer img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.6;
-    }
-
-    /* Notice box */
-    .notice-container {
+    /* Notice Box */
+    #pc-notice {
       position: absolute;
-      top: 50%; left: 50%;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
       background: #fff;
-      padding: 40px 50px;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      padding: 20px 40px;
       text-align: center;
-      z-index: 10;
-      animation: fadeIn 1s ease-in-out;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      display: none;
+      z-index: 9999;
     }
-    .notice-container h1 {
-      color: #e60000;
-      font-size: 2.5rem;
-      font-weight: 900;
-      margin: 0 0 15px 0;
+    #pc-notice h2 {
+      color: red;
+      font-weight: bold;
+      margin: 0 0 10px;
     }
-    .notice-container p {
-      color: #333;
-      font-size: 1.2rem;
+    #pc-notice p {
+      color: black;
       margin: 0;
-      font-weight: 500;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translate(-50%, -45%); }
-      to { opacity: 1; transform: translate(-50%, -50%); }
     }
   </style>
 </head>
 <body>
   <div id="dplayer"></div>
 
-  <script>
-    const channels = [
-      {
-        "name": "sonyliv",
-        "logo": "https://sonypicturesnetworks.com/images/logos/SONY%20YAY.png",
-        "url": "http://mini.allinonereborn.online/events/stream_proxy.php?url=https://sonymtmnew.akamaized.net/v1/master/0085f7057986fc2f8467089bb19b8b7e4f1bf8d7/mediaT5559prod-PlaybackConfig/2118981/mens_s1808/ENG/std_lrl-800300010.m3u8",
-        "category": "Kids"
-      },
-      {
-        "name": "Sony BBC Earth HD",
-        "logo": "https://sonypicturesnetworks.com/images/logos/SBBCE_LOGO_NEW_PNG.png",
-        "url": "https://tataplay.slivcdn.com/hls/live/2011907/SonyBBCEarthHD/master_3500.m3u8",
-        "category": "Infotainment"
-      },
-      {
-        "name": "Sony PIX HD",
-        "logo": "https://sonypicturesnetworks.com/images/logos/PIX%20HD_WHITE.png",
-        "url": "https://tataplay.slivcdn.com/hls/live/2011748/PIXHD/master_3500.m3u8",
-        "category": "Movies"
-      },
-      {
-        "name": "sonyten1hd",
-        "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen1_HD_Logo_CLR.png",
-        "url": "https://tataplay.slivcdn.com/hls/live/2011747/TEN1HD/master_3500.m3u8",
-        "category": "Sports"
-      },
-      {
-        "name": "Sony TEN 1",
-        "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen1_SD_Logo_CLR.png",
-        "url": "https://tataplay.slivcdn.com/hls/live/2011739/TEN1SD/master_3500.m3u8",
-        "category": "Sports"
-      },
-      {
-        "name": "sonyten2hd",
-        "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen2_HD_Logo_CLR.png",
-        "url": "https://tataplay.slivcdn.com/hls/live/2020434/TEN2HD/master_3500.m3u8",
-        "category": "Sports"
-      },
-      {
-        "name": "Sony TEN 2",
-        "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen2_SD_Logo_CLR.png",
-        "url": "https://tataplay.slivcdn.com/hls/live/2020590/TEN2SD/master_3500.m3u8",
-        "category": "Sports"
-      },
-      {
-        "name": "sonyten3hd",
-        "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen4_HD_Logo_CLR.png",
-        "url": "https://tataplay.slivcdn.com/hls/live/2020591/TEN3HD/master_3500.m3u8",
-        "category": "Sports"
-      },
-      {
-        "name": "sonyten4hd",
-        "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen4_HD_Logo_CLR.png",
-        "url": "https://tataplay.slivcdn.com/hls/live/2020589/ten4hd/master_3500.m3u8",
-        "category": "Sports"
-      },
-      {
-        "name": "sonyten4sd",
-        "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen4_SD_Logo_CLR.png",
-        "url": "https://tataplay.slivcdn.com/hls/live/2020437/ten4sd/master_3500.m3u8",
-        "category": "Sports"
-      },
-      {
-        "name": "sonyten5hd",
-        "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen5_HD_Logo_CLR.png",
-        "url": "https://tataplay.slivcdn.com/hls/live/2020593/SONYSIXHD/master_3500.m3u8",
-        "category": "Sports"
-      },
-      {
-        "name": "Sony TEN 5",
-        "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen5_SD_Logo_CLR.png",
-        "url": "https://tataplay.slivcdn.com/hls/live/2020594/SONYSIXSD/master_3500.m3u8",
-        "category": "Sports"
-      }
-    ];
+  <!-- PC/Laptop Notice -->
+  <div id="pc-notice">
+    <h2>📱Mobile-Only Stream !!</h2>
+    <p>Kindly Open 🖥️PC Links !!</p>
+  </div>
 
-    const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+  <script>
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     if (!isMobile) {
-      // PC Mode → Poster background + Transparent logos + Notice box
-      document.body.innerHTML = `
-        <div class="poster-bg"></div>
-        <div class="bg-layer">
-          ${channels.map(ch => `<img src="${ch.logo}" alt="${ch.name}">`).join("")}
-        </div>
-        <div class="notice-container">
-          <h1>Mobile-Only Live Stream !!</h1>
-          <p>Kindly Open PC Links !!</p>
-        </div>`;
+      // Show notice on PC/Laptop
+      document.getElementById('pc-notice').style.display = 'block';
     } else {
-      // Mobile Mode → Live Streaming
+      // Only run player on mobile
+      const channels = [
+        {
+          "name": "sonyliv",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY%20YAY.png",
+          "url": "http://mini.allinonereborn.online/events/stream_proxy.php?url=https://sonymtmnew.akamaized.net/v1/master/0085f7057986fc2f8467089bb19b8b7e4f1bf8d7/mediaT5559prod-PlaybackConfig/2118981/mens_s1808/ENG/std_lrl-800300010.m3u8?hdnea=exp=1755580584~acl=/*~id=44272035319465639212759584919729~hmac=c7d8bd04f4c6adc3a0d0e57ecb65033084c1a20045b37fc480d6453f15c9ae59",
+          "category": "Kids"
+        },
+        {
+          "name": "Sony BBC Earth HD",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SBBCE_LOGO_NEW_PNG.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2011907/SonyBBCEarthHD/master_3500.m3u8",
+          "category": "Infotainment"
+        },
+        {
+          "name": "Sony PIX HD",
+          "logo": "https://sonypicturesnetworks.com/images/logos/PIX%20HD_WHITE.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2011748/PIXHD/master_3500.m3u8",
+          "category": "Movies"
+        },
+        {
+          "name": "sonyten1hd",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen1_HD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2011747/TEN1HD/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "Sony TEN 1",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen1_SD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2011739/TEN1SD/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "sonyten2hd",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen2_HD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020434/TEN2HD/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "Sony TEN 2",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen2_SD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020590/TEN2SD/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "sonyten3hd",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen4_HD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020591/TEN3HD/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "sonyten4hd",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen4_HD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020589/ten4hd/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "sonyten4sd",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen4_SD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020437/ten4sd/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "sonyten5hd",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen5_HD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020593/SONYSIXHD/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "Sony TEN 5",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen5_SD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020594/SONYSIXSD/master_3500.m3u8",
+          "category": "Sports"
+        }
+      ];
+
       const getChannelName = () => {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get('id');
