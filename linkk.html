@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Channel Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0/dist/hls.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dplayer@1.26.0/dist/DPlayer.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: transparent; /* full black हटाइयो */
+    }
+    #dplayer {
+      width: 100%;
+      height: 100%;
+      background: #000; /* video नआएसम्म default black */
+    }
+    /* Notice Box */
+    #pc-notice {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      padding: 20px 40px;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      display: none;
+      z-index: 9999;
+    }
+    #pc-notice h2 {
+      color: red;
+      font-weight: bold;
+      margin: 0 0 10px;
+    }
+    #pc-notice p {
+      color: black;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="dplayer"></div>
+
+  <!-- PC/Laptop Notice -->
+  <div id="pc-notice">
+    <h2>Mobile-Only Stream !!</h2>
+    <p>Kindly Open PC Links !!</p>
+  </div>
+
+  <script>
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (!isMobile) {
+      // Show notice on PC/Laptop
+      document.getElementById('pc-notice').style.display = 'block';
+    } else {
+      // Only run player on mobile
+      const channels = [
+        {
+          "name": "sonyliv",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY%20YAY.png",
+          "url": "http://mini.allinonereborn.online/events/stream_proxy.php?url=https://sonymtmnew.akamaized.net/v1/master/0085f7057986fc2f8467089bb19b8b7e4f1bf8d7/mediaT5559prod-PlaybackConfig/2118981/mens_s1808/ENG/std_lrl-800300010.m3u8",
+          "category": "Kids"
+        },
+        {
+          "name": "Sony BBC Earth HD",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SBBCE_LOGO_NEW_PNG.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2011907/SonyBBCEarthHD/master_3500.m3u8",
+          "category": "Infotainment"
+        },
+        {
+          "name": "Sony PIX HD",
+          "logo": "https://sonypicturesnetworks.com/images/logos/PIX%20HD_WHITE.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2011748/PIXHD/master_3500.m3u8",
+          "category": "Movies"
+        },
+        {
+          "name": "sonyten1hd",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen1_HD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2011747/TEN1HD/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "Sony TEN 1",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen1_SD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2011739/TEN1SD/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "sonyten2hd",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen2_HD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020434/TEN2HD/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "Sony TEN 2",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen2_SD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020590/TEN2SD/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "sonyten3hd",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen4_HD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020591/TEN3HD/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "sonyten4hd",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen4_HD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020589/ten4hd/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "sonyten4sd",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen4_SD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020437/ten4sd/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "sonyten5hd",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen5_HD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020593/SONYSIXHD/master_3500.m3u8",
+          "category": "Sports"
+        },
+        {
+          "name": "Sony TEN 5",
+          "logo": "https://sonypicturesnetworks.com/images/logos/SONY_SportsTen5_SD_Logo_CLR.png",
+          "url": "https://tataplay.slivcdn.com/hls/live/2020594/SONYSIXSD/master_3500.m3u8",
+          "category": "Sports"
+        }
+      ];
+
+      const getChannelName = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('id');
+      };
+
+      const channelName = getChannelName();
+      const channel = channels.find(ch => ch.name.toLowerCase() === channelName?.toLowerCase());
+
+      if (!channel) {
+        document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:20%'>Channel not found.</h1>";
+      } else {
+        const dp = new DPlayer({
+          container: document.getElementById('dplayer'),
+          autoplay: true,
+          volume: 0.8,
+          video: {
+            url: channel.url,
+            type: 'hls',
+            pic: "https://nirutv.online/logo/image.png"  // Poster
+          }
+        });
+
+        const tryAutoPlay = async () => {
+          const video = dp.video;
+          try {
+            video.muted = false;
+            video.volume = 0.8;
+            await video.play();
+          } catch {
+            try {
+              video.muted = true;
+              await video.play();
+              video.muted = false;
+            } catch {}
+          }
+        };
+
+        tryAutoPlay();
+
+        ['click', 'touchstart', 'keydown'].forEach(evt =>
+          document.addEventListener(evt, () => {
+            if (dp.video.muted) {
+              dp.video.muted = false;
+              dp.video.volume = 0.8;
+            }
+          }, { once: true })
+        );
+      }
+    }
+  </script>
+</body>
+</html>
