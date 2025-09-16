@@ -40,7 +40,7 @@
 
     if (customID) {
       const m3u8URL = `https://pull.niues.live/live/stream-${customID}_lhd.m3u8`;
-      const finalURL = `https://nirutv.online/Player/dplyrr2?url=${m3u8URL}`;
+      const finalURL = `https://nirutv.online/Player/plyrr?url=${m3u8URL}`;
       document.getElementById('player-iframe').src = finalURL;
     } else {
       document.getElementById('player-iframe').src = "about:blank";
