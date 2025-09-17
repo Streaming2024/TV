@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link href="https://nirutv.online/logo/favicon.png" rel="icon" type="image/x-icon"/>
+<title>LIVE Page</title>
+<script src="https://nirutv.online/Scripts/clicks.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+    --bg-color: #f5f5f5;
+    --text-color: #333;
+    --container-bg: #ffffff;
+    --header-bg: #ffffff;
+    --notice-bg: #e0e0e0;
+    --disclaimer-bg: #d4d2cb;
+    --btn-primary: #ff0011;
+    --btn-secondary: #007BFF;
+    --btn-text: white;
+    --shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.dark-mode {
+    --bg-color: #1a1a1a;
+    --text-color: #f0f0f0;
+    --container-bg: #2d2d2d;
+    --header-bg: #2d2d2d;
+    --notice-bg: #444;
+    --disclaimer-bg: #3c3c3c;
+    --btn-primary: #ff5252;
+    --btn-secondary: #4a8eff;
+    --btn-text: #f0f0f0;
+    --shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: var(--bg-color);
+    color: var(--text-color);
+    text-align: center;
+    touch-action: manipulation;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 15px;
+    background: var(--container-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: background 0.3s ease;
+}
+
+.header {
+    margin-bottom: 10px;
+    text-align: center;
+    padding: 10px;
+    background: var(--header-bg);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+.header-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    max-height: 80px;
+}
+
+.top-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--btn-primary);
+    color: var(--btn-text);
+    border: none;
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+    min-width: 110px;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.control-btn i {
+    margin-right: 6px;
+    font-size: 16px;
+}
+
+.theme-toggle {
+    background: var(--btn-secondary);
+}
+
+.notice {
+    background: var(--notice-bg);
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px 0 15px;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.video-container {
+    position: relative;
+    background: #000;
+    margin: 15px auto;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    box-shadow: var(--shadow);
+}
+
+.video-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.fullscreen-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 0, 17, 0.8);
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 20px;
+    z-index: 10;
+    transition: opacity 0.3s ease;
+}
+
+.chat-control {
+    margin: 15px 0;
+}
+
+.chat-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--btn-secondary);
+    color: var(--btn-text);
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+    min-width: 140px;
+}
+
+.chat-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.chat-btn i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+#chat-frame {
+    width: 100%;
+    height: 400px;
+    border: none;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.disclaimer {
+    margin: 20px 0 10px;
+    padding: 20px;
+    background: var(--disclaimer-bg);
+    border-radius: 8px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: background 0.3s ease;
+}
+
+.disclaimer strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.disclaimer p {
+    margin: 8px 0;
+}
+
+.disclaimer b {
+    color: var(--text-color);
+}
+
+/* Fullscreen */
+:fullscreen {
+    width: 100%;
+    height: 100%;
+    background: black;
+}
+
+@media screen and (orientation: landscape) {
+    .video-container {
+        max-width: 100%;
+        max-height: 80vh;
+    }
+}
+
+/* Anti-Adblock Styles */
+.adb {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(51, 51, 51, 0.9);
+    z-index: 10000;
+    text-align: center;
+    color: #111;
+}
+
+.adbs {
+    margin: 0 auto;
+    width: auto;
+    min-width: 400px;
+    position: fixed;
+    z-index: 99999;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 30px 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+}
+
+.adbs h3 {
+    color: #ff0011;
+    margin-top: 0;
+}
+
+.redirect-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #333;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: none;
+    transition: opacity 0.5s ease;
+}
+
+.redirect-notification.hiding {
+    opacity: 0;
+}
+
+@media (max-width: 500px) {
+    .top-controls {
+        gap: 8px;
+    }
+    
+    .control-btn {
+        min-width: 100px;
+        padding: 7px 12px;
+        font-size: 13px;
+    }
+    
+    .redirect-notification {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        text-align: center;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- Anti-Adblock Popup -->
+<div class="adb" id="adb">
+    <div class="adbs">
+        <h3>Adblock Detected</h3>
+        <p>To Continue YoNoTV, Please Turn Off/Disable Adblocker. We really appreciate your support.</p>
+    </div>
+</div>
+
+<!-- Redirect Notification -->
+<div class="redirect-notification" id="redirect-notification">
+    <i class="fas fa-info-circle"></i> <span id="notification-text">Advertisement will begin in 5 seconds…</span>
+</div>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <a href="https://yonotvsports.com" target="_blank">
+            <img src="https://nirutv.online/logo/logo.png" alt="YoNoTV Live Sports" class="header-image">
+        </a>
+    </div>
+    
+    <!-- Controls -->
+    <div class="top-controls">
+        <button class="control-btn" id="refresh-btn">
+            <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+        <button class="control-btn theme-toggle" id="theme-toggle">
+            <i class="fas fa-moon"></i> Dark Mode
+        </button>
+    </div>
+    
+    <div class="notice">Wait for Loading & Skip 1–2 ads (press back)</div>
+    
+    <!-- Video Container -->
+    <div class="video-container">
+        <iframe 
+            id="video-frame" 
+            src="about:blank" 
+            sandbox="allow-scripts allow-forms allow-same-origin" 
+            allowfullscreen>
+        </iframe>
+        <button class="fullscreen-btn" id="fullscreen-button"><i class="fas fa-expand"></i> Fullscreen</button>
+    </div>
+    
+    <!-- Chat Control -->
+    <div class="chat-control">
+        <button class="chat-btn" id="chat-toggle-btn"><i class="fas fa-comment-slash"></i> Hide Chat</button>
+    </div>
+    
+    <iframe id="chat-frame"></iframe>
+    
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+        <strong>Legal Disclaimer</strong>
+        <p><b>Content Hosting:</b> YoNo TV does not host or upload any video content. All streams are embedded from publicly available third-party sources.</p>
+        <p><b>Copyright Notice:</b> We do not claim ownership of any content displayed on this platform. All trademarks, logos, and media belong to their respective owners.</p>
+        <p><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties. Users must ensure content access legality in their region.</p>
+        <p><b>DMCA Compliance:</b> If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</p>
+        <p><b>Contact Information:</b> For any inquiries, please email us at yonotvlive@gmail.com.</p>
+    </div>
+</div>
+
+<script>
+const videoFrame = document.getElementById('video-frame');
+const urlParams = new URLSearchParams(window.location.search);
+const src = urlParams.get('src');
+videoFrame.src = src ? src : "about:blank";
+
+// Block all pop-ups from iframe scripts
+window.open = function() { return null; };
+
+// Fullscreen button
+const fullscreenButton = document.getElementById('fullscreen-button');
+const videoContainer = document.querySelector('.video-container');
+fullscreenButton.addEventListener('click', function() {
+    if (videoContainer.requestFullscreen) {
+        videoContainer.requestFullscreen();
+    } else if (videoContainer.webkitRequestFullscreen) {
+        videoContainer.webkitRequestFullscreen();
+    } else if (videoContainer.msRequestFullscreen) {
+        videoContainer.msRequestFullscreen();
+    }
+});
+
+// Theme toggle
+const themeToggle = document.getElementById('theme-toggle');
+document.body.classList.remove('dark-mode');
+themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+localStorage.removeItem('theme');
+
+themeToggle.addEventListener('click', function() {
+    document.body.classList.toggle('dark-mode');
+    if (document.body.classList.contains('dark-mode')) {
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+        localStorage.setItem('theme','dark');
+    } else {
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+        localStorage.setItem('theme','light');
+    }
+});
+
+// Refresh button
+document.getElementById('refresh-btn').addEventListener('click', function() {
+    location.reload();
+});
+
+// YouTube chat
+const youtubeChatUrl = "https://www.youtube.com/live_chat?v=CcpYwQ1QiDY&embed_domain=nirutv.online";
+function loadYouTubeChat() {
+    document.getElementById('chat-frame').src = youtubeChatUrl;
+}
+
+// Chat toggle
+let chatVisible = true;
+const chatToggleBtn = document.getElementById('chat-toggle-btn');
+chatToggleBtn.addEventListener('click', function() {
+    const chatFrame = document.getElementById('chat-frame');
+    if(chatVisible){
+        chatFrame.style.display = "none";
+        chatToggleBtn.innerHTML = '<i class="fas fa-comment"></i> Show Chat';
+        chatVisible = false;
+    } else {
+        chatFrame.style.display = "block";
+        chatToggleBtn.innerHTML = '<i class="fas fa-comment-slash"></i> Hide Chat';
+        chatVisible = true;
+        loadYouTubeChat();
+    }
+});
+
+// Anti-adblock detection
+async function detectAdBlock() {
+    let adBlockEnabled = false;
+    try {
+        await fetch('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', {cache:'no-store'});
+    } catch(e) {
+        adBlockEnabled = true;
+    }
+    if(adBlockEnabled){
+        document.getElementById('adb').style.display = 'block';
+        videoFrame.src = "about:blank";
+    }
+}
+
+// Redirect notification setup
+function setupRedirects() {
+    let redirectHistory = JSON.parse(localStorage.getItem('redirectHistory') || '{"count":0,"lastReset":'+Date.now()+'}');
+    const twelveHours = 12*60*60*1000;
+    if(Date.now()-redirectHistory.lastReset>twelveHours){
+        redirectHistory = {count:0,lastReset:Date.now()};
+        localStorage.setItem('redirectHistory',JSON.stringify(redirectHistory));
+    }
+    if(redirectHistory.count>=2) return;
+
+    const redirectFunc = () => {
+        const notification = document.getElementById('redirect-notification');
+        const notificationText = document.getElementById('notification-text');
+        notificationText.textContent = "You will be redirected to our VIP page in 5 seconds...";
+        notification.style.display = 'block';
+        setTimeout(() => {
+            redirectHistory.count++;
+            redirectHistory.lastReset = Date.now();
+            localStorage.setItem('redirectHistory', JSON.stringify(redirectHistory));
+            window.location.href='https://nirutv.online/VIP/ads.html';
+        }, 5000);
+    };
+
+    setTimeout(redirectFunc, 60000);
+    setTimeout(redirectFunc, 180000);
+}
+
+window.addEventListener('load', function(){
+    loadYouTubeChat();
+    detectAdBlock();
+    setupRedirects();
+});
+</script>
+
+<center>
+<script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
+<script type="text/javascript">sc_online_i(1704055,"ffffff","e61c1c");</script>
+<noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
+</center>
+
+</body>
+</html>
