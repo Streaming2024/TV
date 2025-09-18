@@ -35,37 +35,24 @@
       justify-content: center; align-items: center;
       z-index: 9999;
     }
-
     #banner-overlay img {
       max-width: 100%;
       max-height: 100%;
     }
 
-    /* Small loading circle at screen center */
+    /* Canvas Loading Circle */
     #loading-circle {
-      border: 6px solid #f3f3f3;
-      border-top: 6px solid red;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
       position: fixed;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      animation: spin 1s linear infinite;
-      z-index: 10000; /* above banner */
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      z-index: 10000;
     }
   </style>
 </head>
 <body oncontextmenu="return false" onkeydown="return false" onmousedown="return false">
 
   <!-- Loading Circle -->
-  <div id="loading-circle"></div>
+  <canvas id="loading-circle" width="80" height="80"></canvas>
 
   <!-- Banner Overlay -->
   <div id="banner-overlay">
@@ -78,7 +65,6 @@
     <video data-shaka-player id="video" style="width:100%;height:100%;" preload="auto"></video>
   </div>
 
-  
   <!-- Player Script -->
   <script>
     (async function () {
@@ -88,7 +74,44 @@
 
       const video = document.getElementById("video");
       const bannerOverlay = document.getElementById('banner-overlay');
-      const loadingCircle = document.getElementById('loading-circle');
+      const canvas = document.getElementById('loading-circle');
+      const ctx = canvas.getContext('2d');
+
+      // Draw progress circle
+      let startTime = Date.now();
+      let duration = 6000; // 6 seconds
+
+      function draw() {
+        let now = Date.now();
+        let elapsed = now - startTime;
+        let progress = Math.min(elapsed / duration, 1);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // White circle background
+        ctx.beginPath();
+        ctx.arc(40, 40, 30, 0, 2 * Math.PI);
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 6;
+        ctx.stroke();
+
+        // Red progress arc
+        ctx.beginPath();
+        ctx.arc(40, 40, 30, -Math.PI / 2, (2 * Math.PI * progress) - Math.PI / 2);
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 6;
+        ctx.stroke();
+
+        if (progress < 1) {
+          requestAnimationFrame(draw);
+        } else {
+          // Hide after 6 sec
+          canvas.style.display = 'none';
+          bannerOverlay.style.display = 'none';
+          video.play().catch(err => console.error("Play error:", err));
+        }
+      }
+      draw();
 
       document.addEventListener("shaka-ui-loaded", async () => {
         const ui = video["ui"];
@@ -112,17 +135,8 @@
         });
 
         try {
-          // Load video in background
           await player.load(manifestUri);
           console.log("Video loaded successfully (preload).");
-
-          // 5 seconds delay → hide banner & loading circle, play video
-          setTimeout(() => {
-            bannerOverlay.style.display = 'none';
-            loadingCircle.style.display = 'none';
-            video.play().catch(err => console.error("Play error:", err));
-          }, 5000);
-
         } catch (error) {
           console.error("Error loading stream:", error);
           alert("Error loading video.");
