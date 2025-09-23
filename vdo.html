@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stealth Video Embed</title>
+    <title>Video Content</title>
     <style>
         * {
             margin: 0;
@@ -15,31 +15,28 @@
             background: #000;
             overflow: hidden;
             font-family: Arial, sans-serif;
+            height: 100vh;
+            width: 100vw;
         }
         
-        #videoContainer {
-            position: fixed;
-            top: 0;
-            left: 0;
+        #videoWrapper {
             width: 100%;
             height: 100%;
-            background: #000;
-            z-index: 1;
+            position: relative;
         }
         
-        #fakeContent {
+        #fakeLoader {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: #000;
-            z-index: 2;
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #fff;
-            font-size: 18px;
+            z-index: 10;
             transition: opacity 0.5s;
         }
         
@@ -50,93 +47,140 @@
     </style>
 </head>
 <body>
-    <div id="videoContainer"></div>
-    <div id="fakeContent">
-        <div>Loading content...</div>
+    <div id="videoWrapper"></div>
+    <div id="fakeLoader">
+        <div>Loading premium content...</div>
     </div>
 
     <script>
-        // Obfuscated URL - base64 encoded
-        const encodedUrl = 'Ly9idWlsZGluZ2Zyb3duLm5ldC9lbWJlZC95bWRwajQ=';
-        
-        // Decode the URL
-        const videoUrl = atob(encodedUrl);
-        
-        // Create iframe with obfuscated attributes
-        function createStealthIframe() {
-            const iframe = document.createElement('iframe');
+        // Advanced stealth technique - Dynamic URL assembly
+        function createStealthEmbed() {
+            // Break URL into multiple parts and reconstruct dynamically
+            const domainParts = ['building', 'frown', '.net'];
+            const pathParts = ['embed', 'ymdpj4'];
             
-            // Set attributes in random order with delays to confuse detectors
+            // Reconstruct URL in a way that's hard to detect
             setTimeout(() => {
-                iframe.setAttribute('allowfullscreen', 'true');
+                const domain = domainParts.join('');
+                const path = pathParts.join('/');
+                const fullUrl = 'https://' + domain + '/' + path;
+                
+                // Create iframe with randomized attribute order
+                const iframe = document.createElement('iframe');
+                
+                // Set styling first (less suspicious)
                 iframe.style.width = '100%';
-            }, 50);
-            
-            setTimeout(() => {
                 iframe.style.height = '100%';
                 iframe.style.border = 'none';
-            }, 100);
-            
-            setTimeout(() => {
-                iframe.setAttribute('frameborder', '0');
-                iframe.setAttribute('scrolling', 'no');
-            }, 150);
-            
-            // Use JavaScript to set src after a delay (avoids detection)
-            setTimeout(() => {
-                iframe.src = 'https:' + videoUrl;
-            }, 200);
-            
-            // Add random data attributes to confuse detectors
-            iframe.setAttribute('data-' + Math.random().toString(36).substring(2, 8), '');
-            iframe.setAttribute('data-type', 'media');
-            iframe.setAttribute('data-loaded', 'true');
-            
-            // Add to container
-            document.getElementById('videoContainer').appendChild(iframe);
-            
-            // Hide fake content after iframe loads
-            setTimeout(() => {
-                document.getElementById('fakeContent').classList.add('hidden');
-            }, 1000);
+                iframe.style.background = 'transparent';
+                
+                // Add random class name
+                iframe.className = 'content-' + Math.random().toString(36).substring(2, 8);
+                
+                // Set attributes with delays
+                setTimeout(() => {
+                    iframe.setAttribute('allowfullscreen', '');
+                    iframe.setAttribute('frameborder', '0');
+                }, 100);
+                
+                setTimeout(() => {
+                    iframe.setAttribute('scrolling', 'no');
+                    // Use data attribute initially
+                    iframe.setAttribute('data-content-src', fullUrl);
+                }, 150);
+                
+                // Finally set src after a delay
+                setTimeout(() => {
+                    iframe.src = fullUrl;
+                    
+                    // Add to page
+                    document.getElementById('videoWrapper').appendChild(iframe);
+                    
+                    // Hide loader
+                    setTimeout(() => {
+                        document.getElementById('fakeLoader').classList.add('hidden');
+                    }, 2000);
+                }, 300);
+                
+            }, 500);
         }
         
-        // Anti-detection techniques
-        function applyAntiDetection() {
-            // Prevent right-click inspection
-            document.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-                return false;
-            });
+        // Advanced anti-detection measures
+        function applyAdvancedStealth() {
+            // Override common detection methods
+            const originalQuerySelector = Document.prototype.querySelector;
+            Document.prototype.querySelector = function(selector) {
+                if (typeof selector === 'string' && 
+                   (selector.includes('iframe') || selector.includes('[src*="buildingfrown"]'))) {
+                    // Return null for detection attempts
+                    return null;
+                }
+                return originalQuerySelector.apply(this, arguments);
+            };
             
-            // Prevent keyboard shortcuts for dev tools
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'F12' || 
-                    (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || 
-                    (e.ctrlKey && e.key === 'u')) {
-                    e.preventDefault();
-                    return false;
+            // Mask iframe properties
+            Object.defineProperty(HTMLIFrameElement.prototype, 'src', {
+                get: function() {
+                    if (this.className && this.className.includes('content-')) {
+                        return 'about:blank'; // Return fake src
+                    }
+                    return this.getAttribute('src');
+                },
+                set: function(value) {
+                    this.setAttribute('src', value);
                 }
             });
             
-            // Add decoy iframes to confuse detectors
-            for (let i = 0; i < 2; i++) {
-                const decoy = document.createElement('iframe');
-                decoy.style.cssText = 'display: none; width: 0; height: 0; border: 0;';
-                decoy.src = 'about:blank';
-                document.body.appendChild(decoy);
+            // Prevent right-click inspection
+            document.addEventListener('contextmenu', (e) => e.preventDefault());
+            
+            // Block dev tools keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
+                    e.preventDefault();
+                    window.location.reload();
+                }
+            });
+            
+            // Add decoy iframes
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const decoy = document.createElement('iframe');
+                    decoy.style.cssText = 'display:none;width:1px;height:1px;';
+                    decoy.src = 'about:blank';
+                    decoy.setAttribute('data-decoy', 'true');
+                    document.body.appendChild(decoy);
+                }, i * 200);
             }
             
-            // Randomize attribute names in the DOM
-            const randomAttr = 'data-' + Math.random().toString(36).substring(2, 10);
-            document.body.setAttribute(randomAttr, 'stealth-mode');
+            // Randomize DOM attributes periodically
+            setInterval(() => {
+                const frames = document.querySelectorAll('iframe');
+                frames.forEach(frame => {
+                    if (frame.className.includes('content-')) {
+                        frame.setAttribute('data-t' + Date.now(), Math.random());
+                    }
+                });
+            }, 5000);
         }
         
         // Initialize with random delay
         setTimeout(() => {
-            applyAntiDetection();
-            createStealthIframe();
-        }, Math.random() * 500 + 200);
+            applyAdvancedStealth();
+            createStealthEmbed();
+        }, Math.random() * 1000 + 500);
+        
+        // Additional protection: Monitor for detection scripts
+        const originalAppendChild = Element.prototype.appendChild;
+        Element.prototype.appendChild = function(child) {
+            if (child.tagName === 'SCRIPT') {
+                const scriptContent = child.src || child.textContent || '';
+                if (scriptContent.includes('iframe') && scriptContent.includes('detect')) {
+                    return child; // Block detection scripts
+                }
+            }
+            return originalAppendChild.call(this, child);
+        };
     </script>
 </body>
 </html>
