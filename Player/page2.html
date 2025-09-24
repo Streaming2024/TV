@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<script src="https://nirutv.online/Scripts/clicks.js"></script>
 <link href="https://nirutv.online/logo/favicon.png" rel="icon" type="image/x-icon"/>
 <title>LIVE Page</title>
 <style>
@@ -290,26 +289,6 @@
         margin-top: 0;
     }
     
-    /* Redirect notification */
-    .redirect-notification {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #333;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 8px;
-        font-size: 14px;
-        z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        display: none;
-        transition: opacity 0.5s ease;
-    }
-    
-    .redirect-notification.hiding {
-        opacity: 0;
-    }
-    
     @media (max-width: 500px) {
         .top-controls {
             gap: 8px;
@@ -325,18 +304,11 @@
             margin-right: 4px;
             font-size: 14px;
         }
-        
-        .redirect-notification {
-            bottom: 10px;
-            right: 10px;
-            left: 10px;
-            text-align: center;
-        }
     }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!--  Popupnder ADS here -->
- <script type='text/javascript' src='//orientsweptautopsy.com/7a/67/68/7a676823323dfeab2e2da829151707c0.js'></script>
+    <!-- Popup ads-->
+<script type='text/javascript' src='//orientsweptautopsy.com/7a/67/68/7a676823323dfeab2e2da829151707c0.js'></script>
 </head>
 <body>
 
@@ -346,11 +318,6 @@
         <h3>Adblock Detected</h3>
         <p>To Continue YoNoTV, Please Turnoff/Disable Adblocker. We really appreciate your support.</p>
     </div>
-</div>
-
-<!-- Redirect Notification -->
-<div class="redirect-notification" id="redirect-notification">
-    <i class="fas fa-info-circle"></i> <span id="notification-text">You will be redirected to our VIP page in 5 seconds...</span>
 </div>
 
 <div class="container">
@@ -414,7 +381,7 @@
     // Function to load YouTube chat
     function loadYouTubeChat() {
         const chatFrame = document.getElementById('chat-frame');
-        // Always reload the chat to fix the blank issue after redirecting back
+        // Always reload the chat to fix the blank issue
         chatFrame.src = youtubeChatUrl;
     }
     
@@ -569,94 +536,6 @@
             }
         }
     }
-
-    // Function to hide redirect notification with animation
-    function hideRedirectNotification() {
-        const notification = document.getElementById('redirect-notification');
-        notification.classList.add('hiding');
-        setTimeout(() => {
-            notification.style.display = 'none';
-            notification.classList.remove('hiding');
-        }, 500); // Match the CSS transition time
-    }
-
-    // Fixed Redirect functionality with 2 redirects per 12 hours limit
-    function setupRedirects() {
-        // Get redirect history from localStorage
-        let redirectHistory = JSON.parse(localStorage.getItem('redirectHistory') || '{"count": 0, "lastReset": ' + Date.now() + '}');
-        const twelveHours = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
-        
-        // Reset count if it's been more than 12 hours
-        if (Date.now() - redirectHistory.lastReset > twelveHours) {
-            redirectHistory = {"count": 0, "lastReset": Date.now()};
-            localStorage.setItem('redirectHistory', JSON.stringify(redirectHistory));
-        }
-        
-        // Check if user has reached the 2 redirects limit (changed from 5 to 2)
-        if (redirectHistory.count >= 2) {
-            console.log("Redirect limit reached (2/12 hours). Next redirect in 12 hours.");
-            return; // Don't set up any redirects
-        }
-        
-        // First redirect after 1 minute (60000 milliseconds)
-        setTimeout(() => {
-            // Show notification
-            const notification = document.getElementById('redirect-notification');
-            const notificationText = document.getElementById('notification-text');
-            notificationText.textContent = "You will be redirected to our VIP page in 5 seconds...";
-            notification.style.display = 'block';
-            
-            // Set up the actual redirect after 5 seconds
-            const redirectTimeout = setTimeout(() => {
-                // Update redirect history
-                redirectHistory.count++;
-                redirectHistory.lastReset = Date.now();
-                localStorage.setItem('redirectHistory', JSON.stringify(redirectHistory));
-                
-                // Redirect to VIP page
-                window.location.href = 'https://nirutv.online/VIP/ads.html';
-            }, 5000); // 5 seconds
-            
-            // Hide notification if user navigates away before redirect
-            window.addEventListener('beforeunload', function() {
-                clearTimeout(redirectTimeout);
-                hideRedirectNotification();
-            });
-        }, 60000); // 1 minute
-        
-        // Second redirect after 3 minutes (180000 milliseconds)
-        setTimeout(() => {
-            // Check if we've already reached the limit from the first redirect
-            redirectHistory = JSON.parse(localStorage.getItem('redirectHistory') || '{"count": 0, "lastReset": ' + Date.now() + '}');
-            if (redirectHistory.count >= 2) {
-                console.log("Redirect limit reached (2/12 hours). Skipping second redirect.");
-                return;
-            }
-            
-            // Show notification
-            const notification = document.getElementById('redirect-notification');
-            const notificationText = document.getElementById('notification-text');
-            notificationText.textContent = "You will be redirected to our VIP page in 5 seconds...";
-            notification.style.display = 'block';
-            
-            // Set up the actual redirect after 5 seconds
-            const redirectTimeout = setTimeout(() => {
-                // Update redirect history
-                redirectHistory.count++;
-                redirectHistory.lastReset = Date.now();
-                localStorage.setItem('redirectHistory', JSON.stringify(redirectHistory));
-                
-                // Redirect to VIP page
-                window.location.href = 'https://nirutv.online/VIP/ads.html';
-            }, 5000); // 5 seconds
-            
-            // Hide notification if user navigates away before redirect
-            window.addEventListener('beforeunload', function() {
-                clearTimeout(redirectTimeout);
-                hideRedirectNotification();
-            });
-        }, 180000); // 3 minutes
-    }
     
     // Run after page loads
     window.addEventListener('load', function() {
@@ -665,7 +544,6 @@
         
         // Set up other functionality
         setTimeout(detectAdBlock, 2000); // Delay detection slightly
-        setupRedirects(); // Set up the redirects
     });
 </script>
 <center>
@@ -673,5 +551,8 @@
     <script type="text/javascript">sc_online_i(1704055,"ffffff","e61c1c");</script>
     <br><noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
 </center>
+<!-- Anti-devtools -->
+    <script src="https://nirutv.online/Scripts/clicks.js"></script>
+    <script disable-devtool-auto='true' src='https://cdn.jsdelivr.net/npm/disable-devtool' clear-log='true' disable-select='true' disable-copy='true' disable-cut='true' disable-paste='true'></script>
 </body>
 </html>
