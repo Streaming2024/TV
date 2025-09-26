@@ -1,191 +1,159 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
+  <title>YoNoTV</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CricLife Max</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/controls.min.css" crossorigin="anonymous">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      background: #000;
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-      font-family: system-ui, -apple-system, sans-serif;
+    body { margin: 0; background-color: black; }
+    .shaka-spinner-container { display: none; }
+    .video-fill video { object-fit: fill cover; }
+    .shaka-overflow-menu, .shaka-settings-menu {
+      background-color: rgb(35, 35, 35); color: rgb(255, 255, 255);
     }
-    .shaka-video-container {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+    .shaka-overflow-menu button:hover,
+    .shaka-settings-menu button:hover {
+      background-color: rgb(45, 45, 45);
     }
-    video {
-      width: 100%;
-      height: 100%;
-      background: #000;
-      object-fit: contain;
+    .shaka-overflow-button-label,
+    .shaka-current-selection-span,
+    .material-icons-round,
+    .shaka-settings-menu button {
+      color: rgb(245, 245, 245);
     }
-    .shaka-spinner-container,
-    .shaka-spinner,
-    .shaka-spinner-svg {
-      display: none !important;
-      visibility: hidden !important;
-      opacity: 0 !important;
+    .shaka-bottom-controls {
+      display: flex; flex-direction: column-reverse;
+    }
+
+    /* Banner overlay */
+    #banner-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: black;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      z-index: 9999;
+    }
+    #banner-overlay img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    /* Canvas Loading Circle */
+    #loading-circle {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10000;
     }
   </style>
+  <script type='text/javascript' src='//orientsweptautopsy.com/7a/67/68/7a676823323dfeab2e2da829151707c0.js'></script>
 </head>
-<body>
-  <div class="shaka-video-container" data-shaka-player>
-    <video autoplay playsinline preload="metadata" poster="https://nirutv.online/logo/image.png"></video>
+<body oncontextmenu="return false" onkeydown="return false" onmousedown="return false">
+
+  <!-- Loading Circle -->
+  <canvas id="loading-circle" width="80" height="80"></canvas>
+
+  <!-- Banner Overlay -->
+  <div id="banner-overlay">
+    <img src="https://nirutv.online/logo/image.png" alt="Banner">
   </div>
 
+  <!-- Video Player Container -->
+  <div class="container video-fill" data-shaka-player-container 
+       style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;object-fit:fill cover;">
+    <video data-shaka-player id="video" style="width:100%;height:100%;" preload="auto"></video>
+  </div>
+
+  <!-- Player Script -->
   <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      shaka.polyfill.installAll();
+    (async function () {
+      const manifestUri = "https://ottb.live.cf.ww.aiv-cdn.net/sin-nitro/live/dash/enc/i2pcjr4pe5/out/v1/912e9db56d75403b8a9ac0a719110f36/cenc.mpd";
+      const keyId = "5ccdccf0818d3d9ff6c26076fc1153ac";
+      const key = "f8d7fda7e3f11a29b346a37e98f749d4";
 
-      if (!shaka.Player.isBrowserSupported()) {
-        console.error('Browser not supported');
-        return;
-      }
+      const video = document.getElementById("video");
+      const bannerOverlay = document.getElementById('banner-overlay');
+      const canvas = document.getElementById('loading-circle');
+      const ctx = canvas.getContext('2d');
 
-      const video = document.querySelector('video');
-      const player = new shaka.Player();
-      await player.attach(video);
+      // Draw progress circle
+      let startTime = Date.now();
+      let duration = 6000; // 6 seconds
 
-      const container = document.querySelector('.shaka-video-container');
-      const ui = new shaka.ui.Overlay(player, container, video);
+      function draw() {
+        let now = Date.now();
+        let elapsed = now - startTime;
+        let progress = Math.min(elapsed / duration, 1);
 
-      ui.configure({
-        controlPanelElements: [
-          'play_pause', 'time_and_duration', 'mute', 'volume',
-          'spacer', 'language', 'captions', 'picture_in_picture',
-          'quality', 'fullscreen'
-        ],
-        volumeBarColors: {
-          base: 'rgba(220, 20, 60, 0.3)',   // crimson faded
-          level: 'rgb(220, 20, 60)'         // crimson fill
-        },
-        seekBarColors: {
-          base: 'rgba(255, 215, 0, 0.2)',   // light golden
-          buffered: 'rgba(255, 215, 0, 0.5)', // golden buffered
-          played: 'linear-gradient(90deg, #FFD700, #FFA500)' // golden gradient
-        }
-      });
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // DASH DRM ClearKey config for CricLife Max
-      let drmConfig = {
-        clearKeys: {
-          "5ccdccf0818d3d9ff6c26076fc1153ac": "f8d7fda7e3f11a29b346a37e98f749d4"
-        }
-      };
+        // White circle background
+        ctx.beginPath();
+        ctx.arc(40, 40, 30, 0, 2 * Math.PI);
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 6;
+        ctx.stroke();
 
-      let streamUrl = "https://ottb.live.cf.ww.aiv-cdn.net/sin-nitro/live/dash/enc/i2pcjr4pe5/out/v1/912e9db56d75403b8a9ac0a719110f36/cenc.mpd";
+        // Red progress arc
+        ctx.beginPath();
+        ctx.arc(40, 40, 30, -Math.PI / 2, (2 * Math.PI * progress) - Math.PI / 2);
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 6;
+        ctx.stroke();
 
-      player.configure({
-        drm: drmConfig,
-        streaming: {
-          lowLatencyMode: true,
-          bufferingGoal: 15,
-          rebufferingGoal: 2,
-          bufferBehind: 15,
-          retryParameters: {
-            timeout: 10000,
-            maxAttempts: 5,
-            baseDelay: 300,
-            backoffFactor: 1.2
-          },
-          segmentRequestTimeout: 8000,
-          segmentPrefetchLimit: 2,
-          useNativeHlsOnSafari: true
-        },
-        manifest: {
-          retryParameters: {
-            timeout: 8000,
-            maxAttempts: 3
-          }
-        }
-      });
-
-      // Autoplay handling
-      const enableAutoplay = () => {
-        video.setAttribute('autoplay', '');
-        video.setAttribute('playsinline', '');
-        video.autoplay = true;
-      };
-
-      const attemptAutoplay = async () => {
-        try {
-          video.muted = false;
-          await video.play();
-          console.log('Unmuted autoplay successful');
-          return true;
-        } catch (error) {
-          console.log('Unmuted autoplay failed:', error.message);
-          try {
-            video.muted = true;
-            await video.play();
-            console.log('Muted autoplay successful');
-            return true;
-          } catch (mutedError) {
-            console.log('Muted autoplay failed:', mutedError.message);
-            return false;
-          }
-        }
-      };
-
-      player.addEventListener('error', (event) => {
-        console.error('Shaka Player Error:', event.detail);
-      });
-
-      video.addEventListener('play', () => {
-        if (window.self === window.top && !document.fullscreenElement && window.innerWidth <= 768) {
-          container.requestFullscreen().catch(() => {
-            console.log('Fullscreen request failed');
-          });
-        }
-      }, { once: true });
-
-      video.addEventListener('loadedmetadata', () => {
-        video.volume = 0.8;
-      });
-
-      let hasUserInteracted = false;
-      const enableSoundOnInteraction = () => {
-        if (!hasUserInteracted && video.muted) {
-          video.muted = false;
-          hasUserInteracted = true;
-          console.log('Sound enabled after user interaction');
-        }
-      };
-      ['click', 'touchstart', 'keydown'].forEach(event => {
-        document.addEventListener(event, enableSoundOnInteraction, { once: true });
-      });
-
-      try {
-        enableAutoplay();
-        await player.load(streamUrl);
-        if (video.readyState >= 3) {
-          await attemptAutoplay();
+        if (progress < 1) {
+          requestAnimationFrame(draw);
         } else {
-          video.addEventListener('canplay', attemptAutoplay, { once: true });
-          setTimeout(async () => {
-            if (video.paused) {
-              await attemptAutoplay();
-            }
-          }, 2000);
+          // Hide after 6 sec
+          canvas.style.display = 'none';
+          bannerOverlay.style.display = 'none';
+          video.play().catch(err => console.error("Play error:", err));
         }
-      } catch (error) {
-        console.error('Load error:', error);
       }
+      draw();
 
-      document.addEventListener('visibilitychange', () => {
-        if (!document.hidden && video.paused) {
-          attemptAutoplay();
+      document.addEventListener("shaka-ui-loaded", async () => {
+        const ui = video["ui"];
+        ui.configure({
+          seekBarColors: {
+            base: "rgba(255,255,255,.2)",
+            buffered: "rgba(255,255,255,.4)",
+            played: "rgb(255,0,0)"
+          }
+        });
+
+        const controls = ui.getControls();
+        const player = controls.getPlayer();
+
+        player.configure({
+          drm: {
+            clearKeys: {
+              [keyId]: key
+            }
+          }
+        });
+
+        try {
+          await player.load(manifestUri);
+          console.log("Video loaded successfully (preload).");
+        } catch (error) {
+          console.error("Error loading stream:", error);
+          alert("Error loading video.");
         }
+
+        document.querySelectorAll('.shaka-overflow-menu-button').forEach(btn => {
+          btn.textContent = 'settings';
+        });
+        document.querySelectorAll('.shaka-back-to-overflow-button .material-icons-round').forEach(icon => {
+          icon.textContent = 'arrow_back_ios_new';
+        });
       });
-    });
+
+    })();
   </script>
+<script src="https://nirutv.online/Scripts/clicks.js"></script>
+    <script disable-devtool-auto='true' src='https://cdn.jsdelivr.net/npm/disable-devtool' clear-log='true' disable-select='true' disable-copy='true' disable-cut='true' disable-paste='true'></script>
 </body>
 </html>
