@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link href="https://nirutv.online/logo/favicon.png" rel="icon" type="image/x-icon"/>
+<title>LIVE Page</title>
+<style>
+    :root {
+        --bg-color: #f5f5f5;
+        --text-color: #333;
+        --container-bg: #ffffff;
+        --header-bg: #ffffff;
+        --notice-bg: #e0e0e0;
+        --disclaimer-bg: #d4d2cb;
+        --btn-primary: #ff0011;
+        --btn-secondary: #007BFF;
+        --btn-text: white;
+        --shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .dark-mode {
+        --bg-color: #1a1a1a;
+        --text-color: #f0f0f0;
+        --container-bg: #2d2d2d;
+        --header-bg: #2d2d2d;
+        --notice-bg: #444;
+        --disclaimer-bg: #3c3c3c;
+        --btn-primary: #ff5252;
+        --btn-secondary: #4a8eff;
+        --btn-text: #f0f0f0;
+        --shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: var(--bg-color);
+        color: var(--text-color);
+        text-align: center;
+        touch-action: manipulation;
+        transition: background 0.3s ease, color 0.3s ease;
+    }
+    
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 15px;
+        background: var(--container-bg);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        transition: background 0.3s ease;
+    }
+    
+    .header {
+        margin-bottom: 10px;
+        text-align: center;
+        padding: 10px;
+        background: var(--header-bg);
+        border-radius: 10px;
+        transition: background 0.3s ease;
+    }
+    
+    .header-image {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        max-height: 80px;
+    }
+    
+    .top-controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 10px 0;
+        flex-wrap: wrap;
+    }
+    
+    .control-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--btn-primary);
+        color: var(--btn-text);
+        border: none;
+        padding: 8px 15px;
+        font-size: 14px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
+        min-width: 110px;
+    }
+    
+    .control-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    
+    .control-btn i {
+        margin-right: 6px;
+        font-size: 16px;
+    }
+    
+    .theme-toggle {
+        background: var(--btn-secondary);
+    }
+    
+    .notice {
+        background: var(--notice-bg);
+        padding: 10px;
+        border-radius: 8px;
+        margin: 10px 0 15px;
+        font-size: 14px;
+        transition: background 0.3s ease;
+    }
+    
+    .video-container {
+        position: relative;
+        background: #000;
+        margin: 15px auto;
+        border-radius: 8px;
+        overflow: hidden;
+        aspect-ratio: 16 / 9;
+        box-shadow: var(--shadow);
+    }
+    
+    .video-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+    
+    .fullscreen-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 0, 17, 0.8);
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        font-size: 12px;
+        cursor: pointer;
+        border-radius: 20px;
+        z-index: 10;
+        transition: opacity 0.3s ease;
+    }
+    
+    .chat-control {
+        margin: 15px 0;
+    }
+    
+    .chat-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--btn-secondary);
+        color: var(--btn-text);
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
+        min-width: 140px;
+    }
+    
+    .chat-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    
+    .chat-btn i {
+        margin-right: 8px;
+        font-size: 16px;
+    }
+    
+    /* Hide fullscreen button in fullscreen mode */
+    :-webkit-full-screen .fullscreen-btn,
+    :-moz-full-screen .fullscreen-btn,
+    :-ms-fullscreen .fullscreen-btn,
+    :fullscreen .fullscreen-btn {
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    #chat-frame {
+        width: 100%;
+        height: 400px;
+        border: none;
+        margin: 10px 0;
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+    }
+    
+    /* Disclaimer Section */
+    .disclaimer {
+        margin: 20px 0 10px;
+        padding: 20px;
+        background: var(--disclaimer-bg);
+        border-radius: 8px;
+        text-align: left;
+        font-size: 14px;
+        line-height: 1.5;
+        transition: background 0.3s ease;
+    }
+    
+    .disclaimer strong {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    
+    .disclaimer p {
+        margin: 8px 0;
+    }
+    
+    .disclaimer b {
+        color: var(--text-color);
+    }
+    
+    /* Fullscreen styles */
+    :-webkit-full-screen {
+        width: 100%;
+        height: 100%;
+        background: black;
+    }
+    
+    :-moz-full-screen {
+        width: 100%;
+        height: 100%;
+        background: black;
+    }
+    
+    :-ms-fullscreen {
+        width: 100%;
+        height: 100%;
+        background: black;
+    }
+    
+    :fullscreen {
+        width: 100%;
+        height: 100%;
+        background: black;
+    }
+    
+    /* Mobile landscape detection */
+    @media screen and (orientation: landscape) {
+        .video-container {
+            max-width: 100%;
+            max-height: 80vh;
+        }
+    }
+    
+    /* Anti-Adblock Styles */
+    .adb {
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: rgba(51, 51, 51, 0.9);
+        z-index: 10000;
+        text-align: center;
+        color: #111;
+    }
+
+    .adbs {
+        margin: 0 auto;
+        width: auto;
+        min-width: 400px;
+        position: fixed;
+        z-index: 99999;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px 30px 30px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+    }
+    
+    .adbs h3 {
+        color: #ff0011;
+        margin-top: 0;
+    }
+    
+    /* Redirect notification */
+    .redirect-notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #333;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 14px;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        display: none;
+        transition: opacity 0.5s ease;
+    }
+    
+    .redirect-notification.hiding {
+        opacity: 0;
+    }
+    
+    @media (max-width: 500px) {
+        .top-controls {
+            gap: 8px;
+        }
+        
+        .control-btn {
+            min-width: 100px;
+            padding: 7px 12px;
+            font-size: 13px;
+        }
+        
+        .control-btn i {
+            margin-right: 4px;
+            font-size: 14px;
+        }
+        
+        .redirect-notification {
+            bottom: 10px;
+            right: 10px;
+            left: 10px;
+            text-align: center;
+        }
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Anti-Adblock Popup -->
+<div class="adb" id="adb">
+    <div class="adbs">
+        <h3>Adblock Detected</h3>
+        <p>To Continue YoNoTV, Please Turnoff/Disable Adblocker. We really appreciate your support.</p>
+    </div>
+</div>
+
+<!-- Redirect Notification -->
+<div class="redirect-notification" id="redirect-notification">
+    <i class="fas fa-info-circle"></i> <span id="notification-text">Advertisement will begin in 5 seconds…</span>
+</div>
+
+<div class="container">
+    <!-- Header Image with Link -->
+    <div class="header">
+        <a href="https://yonotvsports.com" target="_blank">
+            <img src="https://nirutv.online/logo/logo.png" alt="YoNoTV Live Sports" class="header-image">
+        </a>
+    </div>
+    
+    <!-- Top Controls (Refresh + Theme Toggle) -->
+    <div class="top-controls">
+        <button class="control-btn" id="refresh-btn">
+            <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+        
+        <button class="control-btn theme-toggle" id="theme-toggle">
+            <i class="fas fa-moon"></i> Dark Mode
+        </button>
+    </div>
+    
+    <div class="notice">Wait for Loading & Skip 1–2 ads (press back)</div>
+    
+    <!-- Video Container -->
+    <div class="video-container">
+        <iframe id="video-frame" sandbox="allow-scripts allow-forms allow-same-origin" allowfullscreen></iframe>
+        <button class="fullscreen-btn" id="fullscreen-button"><i class="fas fa-expand"></i> Fullscreen</button>
+    </div>
+    
+    <!-- Chat Control -->
+    <div class="chat-control">
+        <button class="chat-btn" id="chat-toggle-btn">
+            <i class="fas fa-comment-slash"></i> Hide Chat
+        </button>
+    </div>
+    
+    <!-- Chat is now always visible by default -->
+    <iframe id="chat-frame"></iframe>
+    
+    <!-- Disclaimer Section -->
+    <div class="disclaimer">
+        <strong>Legal Disclaimer</strong>
+        <p><b>Content Hosting:</b> YoNo TV does not host or upload any video content. All streams are embedded from publicly available third-party sources.</p>
+        <p><b>Copyright Notice:</b> We do not claim ownership of any content displayed on this platform. All trademarks, logos, and media belong to their respective owners.</p>
+        <p><b>Legal Responsibility:</b> YoNoTV is not responsible for the legality of content hosted by third parties. Users must ensure content access legality in their region.</p>
+        <p><b>DMCA Compliance:</b> If you are a copyright owner and believe content infringes your rights, please contact the hosting provider directly. We will respond to proper DMCA requests.</p>
+        <p><b>Contact Information:</b> For any inquiries, please email us at yonotvlive@gmail.com.</p>
+    </div>
+</div>
+
+<script>
+    // Load video from URL param
+    const urlParams = new URLSearchParams(window.location.search);
+    const src = urlParams.get('src');
+    const videoFrame = document.getElementById('video-frame');
+    videoFrame.src = src ? src : "about:blank";
+    
+    // YouTube Chat URL
+    const youtubeChatUrl = "https://www.youtube.com/live_chat?v=CcpYwQ1QiDY&embed_domain=nirutv.online";
+    
+    // Function to load YouTube chat
+    function loadYouTubeChat() {
+        const chatFrame = document.getElementById('chat-frame');
+        // Always reload the chat to fix the blank issue after redirecting back
+        chatFrame.src = youtubeChatUrl;
+    }
+    
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    
+    // Always start with light mode (ignore system preference)
+    // Remove any dark mode class that might be set
+    document.body.classList.remove('dark-mode');
+    // Set theme toggle to show dark mode option
+    themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+    // Clear any previously saved theme preference
+    localStorage.removeItem('theme');
+    
+    themeToggle.addEventListener('click', function() {
+        // Toggle dark mode
+        document.body.classList.toggle('dark-mode');
+        
+        // Update icon and text
+        if (document.body.classList.contains('dark-mode')) {
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+    
+    // Refresh button functionality
+    document.getElementById('refresh-btn').addEventListener('click', function() {
+        location.reload();
+    });
+    
+    // Enhanced Fullscreen functionality for all devices
+    const fullscreenButton = document.getElementById('fullscreen-button');
+    const videoContainer = document.querySelector('.video-container');
+    
+    function toggleFullscreen() {
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        
+        if (isMobile) {
+            // For mobile devices - request fullscreen on the video container
+            if (videoContainer.requestFullscreen) {
+                videoContainer.requestFullscreen();
+            } else if (videoContainer.webkitRequestFullscreen) {
+                videoContainer.webkitRequestFullscreen();
+            } else if (videoContainer.msRequestFullscreen) {
+                videoContainer.msRequestFullscreen();
+            }
+            
+            // Lock orientation to landscape if supported
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(() => {
+                    console.log("Orientation lock not supported");
+                });
+            }
+            
+            // Hide the button immediately on mobile
+            fullscreenButton.style.display = 'none';
+        } else {
+            // For desktop/tablet - request fullscreen on the iframe
+            if (videoFrame.requestFullscreen) {
+                videoFrame.requestFullscreen();
+            } else if (videoFrame.webkitRequestFullscreen) {
+                videoFrame.webkitRequestFullscreen();
+            } else if (videoFrame.msRequestFullscreen) {
+                videoFrame.msRequestFullscreen();
+            }
+        }
+    }
+    
+    fullscreenButton.addEventListener('click', toggleFullscreen);
+    
+    // Handle orientation changes on mobile
+    function handleOrientationChange() {
+        if (window.matchMedia("(orientation: landscape)").matches) {
+            // Landscape mode
+            videoContainer.style.maxHeight = '80vh';
+        } else {
+            // Portrait mode
+            videoContainer.style.maxHeight = 'none';
+        }
+    }
+    
+    // Initial check
+    handleOrientationChange();
+    
+    // Add orientation change listener
+    window.addEventListener('orientationchange', handleOrientationChange);
+    window.addEventListener('resize', handleOrientationChange);
+    
+    // Exit fullscreen when orientation changes (for mobile)
+    document.addEventListener('fullscreenchange', function() {
+        if (!document.fullscreenElement && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            // Unlock orientation when exiting fullscreen
+            if (screen.orientation && screen.orientation.unlock) {
+                screen.orientation.unlock();
+            }
+            // Show the button again when exiting fullscreen
+            fullscreenButton.style.display = 'block';
+        }
+    });
+    
+    // Chat toggle functionality - now starts with chat visible
+    let chatVisible = true;
+    const chatToggleBtn = document.getElementById('chat-toggle-btn');
+    
+    chatToggleBtn.addEventListener('click', function() {
+        const chatFrame = document.getElementById('chat-frame');
+        
+        if (chatVisible) {
+            chatFrame.style.display = "none";
+            chatToggleBtn.innerHTML = '<i class="fas fa-comment"></i> Show Chat';
+            chatVisible = false;
+        } else {
+            chatFrame.style.display = "block";
+            chatToggleBtn.innerHTML = '<i class="fas fa-comment-slash"></i> Hide Chat';
+            chatVisible = true;
+            // Ensure chat is loaded when showing
+            loadYouTubeChat();
+        }
+    });
+    
+    // Anti-Adblock Detection
+    async function detectAdBlock() {
+        let adBlockEnabled = false;
+        const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
+
+            await fetch(new Request(googleAdUrl), { 
+                signal: controller.signal,
+                cache: 'no-store'
+            })
+                .then(() => clearTimeout(timeoutId))
+                .catch(error => {
+                    if (error.name === 'AbortError') return; // Ignore timeout errors
+                    adBlockEnabled = true;
+                });
+
+        } catch (e) {
+            adBlockEnabled = true;
+        }
+
+        if (adBlockEnabled) {
+            document.getElementById("adb").style.display = "block";
+            // Disable video playback if adblock is detected
+            if (videoFrame.src && videoFrame.src !== "about:blank") {
+                videoFrame.src = "about:blank";
+            }
+        }
+    }
+
+    // Function to hide redirect notification with animation
+    function hideRedirectNotification() {
+        const notification = document.getElementById('redirect-notification');
+        notification.classList.add('hiding');
+        setTimeout(() => {
+            notification.style.display = 'none';
+            notification.classList.remove('hiding');
+        }, 500); // Match the CSS transition time
+    }
+
+    // Fixed Redirect functionality with 2 redirects per 6 hours limit
+    function setupRedirects() {
+        // Get redirect history from localStorage
+        let redirectHistory = JSON.parse(localStorage.getItem('redirectHistory') || '{"count": 0, "lastReset": ' + Date.now() + '}');
+        const sixHours = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+        
+        // Reset count if it's been more than 6 hours
+        if (Date.now() - redirectHistory.lastReset > sixHours) {
+            redirectHistory = {"count": 0, "lastReset": Date.now()};
+            localStorage.setItem('redirectHistory', JSON.stringify(redirectHistory));
+        }
+        
+        // Check if user has reached the 2 redirects limit
+        if (redirectHistory.count >= 2) {
+            console.log("Redirect limit reached (2/6 hours). Next redirect in 6 hours.");
+            return; // Don't set up any redirects
+        }
+        
+        // First redirect after 5 minutes (300000 milliseconds)
+        setTimeout(() => {
+            // Show notification
+            const notification = document.getElementById('redirect-notification');
+            const notificationText = document.getElementById('notification-text');
+            notificationText.textContent = "You will be redirected to our VIP page in 5 seconds...";
+            notification.style.display = 'block';
+            
+            // Set up the actual redirect after 5 seconds
+            const redirectTimeout = setTimeout(() => {
+                // Update redirect history
+                redirectHistory.count++;
+                redirectHistory.lastReset = Date.now();
+                localStorage.setItem('redirectHistory', JSON.stringify(redirectHistory));
+                
+                // Redirect to VIP page
+                window.location.href = 'https://nirutv.online/VIP/ads.html';
+            }, 5000); // 5 seconds
+            
+            // Hide notification if user navigates away before redirect
+            window.addEventListener('beforeunload', function() {
+                clearTimeout(redirectTimeout);
+                hideRedirectNotification();
+            });
+        }, 300000); // 5 minutes
+        
+        // Second redirect after 10 minutes (600000 milliseconds)
+        setTimeout(() => {
+            // Check if we've already reached the limit from the first redirect
+            redirectHistory = JSON.parse(localStorage.getItem('redirectHistory') || '{"count": 0, "lastReset": ' + Date.now() + '}');
+            if (redirectHistory.count >= 2) {
+                console.log("Redirect limit reached (2/6 hours). Skipping second redirect.");
+                return;
+            }
+            
+            // Show notification
+            const notification = document.getElementById('redirect-notification');
+            const notificationText = document.getElementById('notification-text');
+            notificationText.textContent = "You will be redirected to our VIP page in 5 seconds...";
+            notification.style.display = 'block';
+            
+            // Set up the actual redirect after 5 seconds
+            const redirectTimeout = setTimeout(() => {
+                // Update redirect history
+                redirectHistory.count++;
+                redirectHistory.lastReset = Date.now();
+                localStorage.setItem('redirectHistory', JSON.stringify(redirectHistory));
+                
+                // Redirect to VIP page
+                window.location.href = 'https://nirutv.online/VIP/ads.html';
+            }, 5000); // 5 seconds
+            
+            // Hide notification if user navigates away before redirect
+            window.addEventListener('beforeunload', function() {
+                clearTimeout(redirectTimeout);
+                hideRedirectNotification();
+            });
+        }, 600000); // 10 minutes
+    }
+    
+    // Run after page loads
+    window.addEventListener('load', function() {
+        // Load YouTube chat
+        loadYouTubeChat();
+        
+        // Set up other functionality
+        setTimeout(detectAdBlock, 2000); // Delay detection slightly
+        setupRedirects(); // Set up the redirects
+    });
+</script>
+<center>
+    <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
+    <script type="text/javascript">sc_online_i(1704055,"ffffff","e61c1c");</script>
+    <br><noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
+</center>
+<script src="https://nirutv.online/Scripts/clicks.js"></script>
+    <script disable-devtool-auto='true' src='https://cdn.jsdelivr.net/npm/disable-devtool' clear-log='true' disable-select='true' disable-copy='true' disable-cut='true' disable-paste='true'></script>
+</body>
+</html>
