@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>YoNoTV</title>
+  <title>TNT1</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/controls.min.css" crossorigin="anonymous">
@@ -26,90 +26,97 @@
       display: flex; flex-direction: column-reverse;
     }
 
-    #loading-overlay {
-      position: fixed; top:0; left:0; width:100%; height:100%;
-      background: rgba(0,0,0,0.7); color: white;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      z-index: 9999; user-select: none;
-      font-family: Arial, sans-serif;
+    /* Banner overlay */
+    #banner-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: black;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      z-index: 9999;
+    }
+    #banner-overlay img {
+      max-width: 100%;
+      max-height: 100%;
     }
 
-    #progress-text {
-      font-size: 30px;
-      margin-bottom: 10px;
-    }
-
-    #progress-bar-container {
-      width: 50%;
-      height: 20px;
-      background: #444;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 10px;
-    }
-
-    #progress-bar {
-      width: 0%;
-      height: 100%;
-      background: red;
-      transition: width 0.1s linear;
-    }
-
-    #loading-message {
-      font-size: 16px;
-      color: #ccc;
-      margin-bottom: 15px;
-    }
-
-    #play-button {
-      display: none;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: red;
-      border: none;
-      color: white;
-      font-size: 36px;
-      cursor: pointer;
-      font-weight: bold;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0;
-      line-height: 1;
+    /* Canvas Loading Circle */
+    #loading-circle {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10000;
     }
   </style>
+  <!-- ADS -->
+ <script type='text/javascript' src='//orientsweptautopsy.com/7a/67/68/7a676823323dfeab2e2da829151707c0.js'></script>
 </head>
 <body oncontextmenu="return false" onkeydown="return false" onmousedown="return false">
 
-  <!-- Loading Screen -->
-  <div id="loading-overlay">
-    <div id="progress-text">0%</div>
-    <div id="progress-bar-container"><div id="progress-bar"></div></div>
-    <div id="loading-message">Please Wait Video is loading...</div>
-    <button id="play-button" title="Play">▶</button>
+  <!-- Loading Circle -->
+  <canvas id="loading-circle" width="80" height="80"></canvas>
+
+  <!-- Banner Overlay -->
+  <div id="banner-overlay">
+    <img src="https://nirutv.online/logo/image.png" alt="Banner">
   </div>
 
   <!-- Video Player Container -->
-  <div class="container video-fill" data-shaka-player-container style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;object-fit:fill cover;">
-    <video data-shaka-player id="video" style="width:100%;height:100%;"></video>
+  <div class="container video-fill" data-shaka-player-container 
+       style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;object-fit:fill cover;">
+    <video data-shaka-player id="video" style="width:100%;height:100%;" preload="auto"></video>
   </div>
 
-  <!-- Telegram Link -->
-  <a href="https://t.me/yonotvlive" target="_blank">
-    <span style="position:absolute;z-index:100;top:6px;left:5px;height:30px;width:100px;color:#ccc;border:2px solid #ccc;padding:1px 0;border-radius:2px;text-align:center;">
-      Join us
-    </span>
-  </a>
- <!-- MDP LINKD , KEY ID & KEY HERE -->
+ 
+ <!-- Player Script -->
   <script>
     (async function () {
-      const manifestUri = "";
+  const manifestUri = "";
       const keyId = "";
       const key = "";
 
+      const video = document.getElementById("video");
+      const bannerOverlay = document.getElementById('banner-overlay');
+      const canvas = document.getElementById('loading-circle');
+      const ctx = canvas.getContext('2d');
+
+      // Draw progress circle
+      let startTime = Date.now();
+      let duration = 6000; // 6 seconds
+
+      function draw() {
+        let now = Date.now();
+        let elapsed = now - startTime;
+        let progress = Math.min(elapsed / duration, 1);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // White circle background
+        ctx.beginPath();
+        ctx.arc(40, 40, 30, 0, 2 * Math.PI);
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 6;
+        ctx.stroke();
+
+        // Red progress arc
+        ctx.beginPath();
+        ctx.arc(40, 40, 30, -Math.PI / 2, (2 * Math.PI * progress) - Math.PI / 2);
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 6;
+        ctx.stroke();
+
+        if (progress < 1) {
+          requestAnimationFrame(draw);
+        } else {
+          // Hide after 6 sec
+          canvas.style.display = 'none';
+          bannerOverlay.style.display = 'none';
+          video.play().catch(err => console.error("Play error:", err));
+        }
+      }
+      draw();
+
       document.addEventListener("shaka-ui-loaded", async () => {
-        const video = document.getElementById("video");
         const ui = video["ui"];
         ui.configure({
           seekBarColors: {
@@ -132,8 +139,7 @@
 
         try {
           await player.load(manifestUri);
-          console.log("Video loaded successfully.");
-          startLoadingProgress();
+          console.log("Video loaded successfully (preload).");
         } catch (error) {
           console.error("Error loading stream:", error);
           alert("Error loading video.");
@@ -147,40 +153,10 @@
         });
       });
 
-      const loadingOverlay = document.getElementById('loading-overlay');
-      const progressText = document.getElementById('progress-text');
-      const progressBar = document.getElementById('progress-bar');
-      const playButton = document.getElementById('play-button');
-      const loadingMessage = document.getElementById('loading-message');
-
-      function startLoadingProgress() {
-        let duration = 15;
-        let elapsed = 0;
-        const intervalTime = 100;
-
-        const interval = setInterval(() => {
-          elapsed += intervalTime / 1000;
-          let percent = Math.min(100, (elapsed / duration) * 100);
-          progressBar.style.width = percent + '%';
-          progressText.textContent = Math.floor(percent) + '%';
-
-          if (percent >= 100) {
-            clearInterval(interval);
-            progressText.style.display = 'none';
-            progressBar.parentElement.style.display = 'none';
-            loadingMessage.style.display = 'none';
-            playButton.style.display = 'flex';
-          }
-        }, intervalTime);
-      }
-
-      playButton.addEventListener('click', () => {
-        loadingOverlay.style.display = 'none';
-        const video = document.getElementById('video');
-        video.play();
-      });
-
     })();
+    
   </script>
+<script src="https://nirutv.online/Scripts/clicks.js"></script>
+    <script disable-devtool-auto='true' src='https://cdn.jsdelivr.net/npm/disable-devtool' clear-log='true' disable-select='true' disable-copy='true' disable-cut='true' disable-paste='true'></script>
 </body>
 </html>
