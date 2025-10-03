@@ -40,7 +40,7 @@
 
     // Get ?id= from URL
     const urlParams = new URLSearchParams(window.location.search);
-    const channelId = urlParams.get("id");
+    const channelId = urlParams.get("src");
 
     // Set iframe src if channel exists
     if (channelId && channels[channelId]) {
