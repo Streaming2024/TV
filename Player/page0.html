@@ -399,11 +399,26 @@
 </div>
 
 <script>
-    // Load video from URL param
-    const urlParams = new URLSearchParams(window.location.search);
-    const src = urlParams.get('src');
-    const videoFrame = document.getElementById('video-frame');
-    videoFrame.src = src ? src : "about:blank";
+   // Load video from URL param
+  const urlParams = new URLSearchParams(window.location.search);
+  const src = urlParams.get('src');
+  const videoFrame = document.getElementById('video-frame');
+
+  if (src) {
+    // Parse the inner URL
+    const innerUrl = new URL(src);
+    const channelId = innerUrl.searchParams.get("id");
+
+    // If inner URL already has id, keep it as is
+    if (channelId) {
+      videoFrame.src = src;
+    } else {
+      // fallback: if no id found, load blank
+      videoFrame.src = "about:blank";
+    }
+  } else {
+    videoFrame.src = "about:blank";
+  }
     
     // YouTube Chat URL
     const youtubeChatUrl = "https://www.youtube.com/live_chat?v=CcpYwQ1QiDY&embed_domain=nirutv.online";
