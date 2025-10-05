@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Scooby Streams</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+      <meta name="referrer" content="no-referrer"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.6.12/dist/plyr.css"/>
+          <style>
+              body {
+                        background-color: #000000;
+                              margin: 0;
+                                    padding: 0;
+                                          overflow: hidden;
+              }
+                  html, body {
+                            height: 100%;
+                  }
+                      video {
+                                width: 100%;
+                                      height: 100%;
+                                            max-width: 100%;
+                      }
+                          .plyr {
+                                    height: 100%;
+                          }
+                            </style>
+                            </head>
+                            <body>
+                              <video id="player" autoplay controls crossorigin playsinline></video>
+
+                                <script src="https://cdn.jsdelivr.net/npm/hls.js@1.1.4/dist/hls.min.js"></script>
+                                  <script src="https://cdn.jsdelivr.net/npm/plyr@3.6.12/dist/plyr.min.js"></script>
+                                    <script>
+                                      async function getStreamUrl(id, preferredKey, lang = 'english') {
+                                              try {
+                                                        const res = await fetch("https://raw.githubusercontent.com/Jitendra-unatti/fancode/refs/heads/main/data/fancode.json");
+                                                              const data = await res.json();
+
+                                                                    // Find matches by match_id
+                                                                          const matches = data.matches.filter(m => m.match_id == id);
+                                                                                if (!matches.length) throw new Error("Stream not found for ID " + id);
+
+                                                                                      // Find the specific language match, or default to the first one
+                                                                                            let match = matches.find(m => m.language.toLowerCase() === lang.toLowerCase());
+                                                                                                  if (!match) {
+                                                                                                              match = matches[0];
+                                                                                                  }
+                                                                                                        
+                                                                                                              // Map of possible sources
+                                                                                                                    const sourceMap = {
+                                                                                                                                adfree_stream: match.adfree_stream,
+                                                                                                                                        dai_stream: match.dai_stream,
+                                                                                                                                                Primary_Playback_URL: match.STREAMING_CDN?.Primary_Playback_URL,
+                                                                                                                                                        fancode_cdn: match.STREAMING_CDN?.fancode_cdn,
+                                                                                                                                                                dai_google_cdn: match.STREAMING_CDN?.dai_google_cdn,
+                                                                                                                                                                        cloudfront_cdn: match.STREAMING_CDN?.cloudfront_cdn,
+                                                                                                                                                                                sony_cdn: match.STREAMING_CDN?.sony_cdn
+                                                                                                                    };
+
+                                                                                                                          // If user explicitly requests a key (?id=123&cloudfront_cdn)
+                                                                                                                                if (preferredKey && sourceMap[preferredKey] && sourceMap[preferredKey] !== "Unavailable") {
+                                                                                                                                            return sourceMap[preferredKey];
+                                                                                                                                }
+
+                                                                                                                                      // Otherwise pick first available source
+                                                                                                                                            const sources = Object.values(sourceMap).filter(url => url && url !== "Unavailable");
+                                                                                                                                                  return sources.length > 0 ? sources[0] : null;
+                                              } catch (err) {
+                                                        console.error("Error loading JSON:", err);
+                                                              return null;
+                                              }
+                                      }
+
+                                        document.addEventListener('DOMContentLoaded', async () => {
+                                                const video = document.getElementById('player');
+
+                                                    // Get query params
+                                                        const urlParams = new URLSearchParams(window.location.search);
+                                                            const id = urlParams.get("id");
+                                                                const lang = urlParams.get("lang") || 'english';
+                                                                    let preferredKey = null;
+
+                                                                        // Find which CDN flag was passed (?id=123&cloudfront_cdn)
+                                                                            for (const key of ["adfree_stream","dai_stream","Primary_Playback_URL","fancode_cdn","dai_google_cdn","cloudfront_cdn","sony_cdn"]) {
+                                                                                      if (urlParams.has(key)) {
+                                                                                                  preferredKey = key;
+                                                                                                          break;
+                                                                                      }
+                                                                            }
+
+                                                                                if (!id) {
+                                                                                          document.body.innerHTML = "<p>No ID provided in URL (?id=)</p>";
+                                                                                                return;
+                                                                                }
+
+                                                                                    const source = await getStreamUrl(id, preferredKey, lang);
+                                                                                        if (!source) {
+                                                                                                  document.body.innerHTML = "<p>No playable stream found for ID " + id + ".</p>";
+                                                                                                        return;
+                                                                                        }
+
+                                                                                            if (Hls.isSupported()) {
+                                                                                                      const hls = new Hls({ maxMaxBufferLength: 100 });
+                                                                                                            hls.loadSource(source);
+                                                                                                                  hls.attachMedia(video);
+                                                                                                                        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                                                                                                                                    const availableQualities = hls.levels.map(level => level.height).filter(Boolean).sort((a, b) => b - a);
+                                                                                                                                            const defaultQuality = availableQualities.includes(1080) ? 1080 : (availableQualities[0] || 360);
+
+                                                                                                                                                    const player = new Plyr(video, {
+                                                                                                                                                                  controls: ['play-large', 'play', 'mute', 'volume', 'settings', 'fullscreen'],
+                                                                                                                                                                            quality: {
+                                                                                                                                                                                            default: defaultQuality,
+                                                                                                                                                                                                        options: availableQualities,
+                                                                                                                                                                                                                    forced: true,
+                                                                                                                                                                                                                                onChange: (quality) => {
+                                                                                                                                                                                                                                                  hls.levels.forEach((level, levelIndex) => {
+                                                                                                                                                                                                                                                                      if (level.height === quality) {
+                                                                                                                                                                                                                                                                                            hls.currentLevel = levelIndex;
+                                                                                                                                                                                                                                                                      }
+                                                                                                                                                                                                                                                  });
+                                                                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                    });
+
+                                                                                                                                                            // Orientation lock
+                                                                                                                                                                    document.addEventListener('fullscreenchange', () => {
+                                                                                                                                                                                  if (document.fullscreenElement) {
+                                                                                                                                                                                                  if (screen.orientation && screen.orientation.lock) {
+                                                                                                                                                                                                                    screen.orientation.lock('landscape').catch(err => {
+                                                                                                                                                                                                                                        console.error('Error locking orientation:', err);
+                                                                                                                                                                                                                    });
+                                                                                                                                                                                                  }
+                                                                                                                                                                                  }
+                                                                                                                                                                    });
+                                                                                                                        });
+                                                                                            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                                                                                                      video.src = source;
+                                                                                                            new Plyr(video);
+                                                                                            } else {
+                                                                                                      document.body.innerHTML = '<p>Your browser does not support HLS playback.</p>';
+                                                                                            }
+                                        });
+                                    </script>
+
+
+                                            </body>
+                                            </html>
+                                            
+                                                    }
+                                            })
+                                                                                            }
+                                                                                            }
+                                                                                                                                                                                                                    })
+                                                                                                                                                                                                  }
+                                                                                                                                                                                  }
+                                                                                                                                                                    })
+                                                                                                                                                                                                                                                                      }
+                                                                                                                                                                                                                                                  })
+                                                                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                    })
+                                                                                                                        })
+                                                                                            }
+                                                                                        }
+                                                                                }
+                                                                                      }
+                                                                            }
+                                        })
+                                              }
+                                                                                                                                }
+                                                                                                                    }
+                                                                                                  }
+                                              }
+                                      }
+                          }
+                      }
+                  }
+              }
