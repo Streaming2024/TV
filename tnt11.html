@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TNT1</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/controls.min.css" crossorigin="anonymous">
+  <style>
+    body { margin: 0; background-color: black; }
+    .shaka-spinner-container { display: none; }
+    .video-fill video { object-fit: fill cover; }
+    .shaka-overflow-menu, .shaka-settings-menu {
+      background-color: rgb(35, 35, 35); color: rgb(255, 255, 255);
+    }
+    .shaka-overflow-menu button:hover,
+    .shaka-settings-menu button:hover {
+      background-color: rgb(45, 45, 45);
+    }
+    .shaka-overflow-button-label,
+    .shaka-current-selection-span,
+    .material-icons-round,
+    .shaka-settings-menu button {
+      color: rgb(245, 245, 245);
+    }
+    .shaka-bottom-controls {
+      display: flex; flex-direction: column-reverse;
+    }
+
+    /* Banner overlay */
+    #banner-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: black;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      z-index: 9999;
+    }
+    #banner-overlay img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    /* Canvas Loading Circle */
+    #loading-circle {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10000;
+    }
+  </style>
+ 
+</head>
+<body oncontextmenu="return false" onkeydown="return false" onmousedown="return false">
+
+  <!-- Loading Circle -->
+  <canvas id="loading-circle" width="80" height="80"></canvas>
+
+  <!-- Banner Overlay -->
+  <div id="banner-overlay">
+    <img src="https://nirutv.online/logo/image.png" alt="Banner">
+  </div>
+
+  <!-- Video Player Container -->
+  <div class="container video-fill" data-shaka-player-container 
+       style="position:absolute;z-index:-1;top:0;left:0;width:100%;height:100%;object-fit:fill cover;">
+    <video data-shaka-player id="video" style="width:100%;height:100%;" preload="auto"></video>
+  </div>
+
+ 
+ <!-- Player Script -->
+  <script>
+    (async function () {
+  const manifestUri = "https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/dash/enc/wf8usag51e/out/v1/bd3b0c314fff4bb1ab4693358f3cd2d3/cenc.mpd";
+      const keyId = "d0f2e5c39e70c18f29bf77768a1ad89a";
+      const key = "d6853c51fcf37a18905f0609972395d7";
+
+      const video = document.getElementById("video");
+      const bannerOverlay = document.getElementById('banner-overlay');
+      const canvas = document.getElementById('loading-circle');
+      const ctx = canvas.getContext('2d');
+
+      // Draw progress circle
+      let startTime = Date.now();
+      let duration = 6000; // 6 seconds
+
+      function draw() {
+        let now = Date.now();
+        let elapsed = now - startTime;
+        let progress = Math.min(elapsed / duration, 1);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // White circle background
+        ctx.beginPath();
+        ctx.arc(40, 40, 30, 0, 2 * Math.PI);
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 6;
+        ctx.stroke();
+
+        // Red progress arc
+        ctx.beginPath();
+        ctx.arc(40, 40, 30, -Math.PI / 2, (2 * Math.PI * progress) - Math.PI / 2);
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 6;
+        ctx.stroke();
+
+        if (progress < 1) {
+          requestAnimationFrame(draw);
+        } else {
+          // Hide after 6 sec
+          canvas.style.display = 'none';
+          bannerOverlay.style.display = 'none';
+          video.play().catch(err => console.error("Play error:", err));
+        }
+      }
+      draw();
+
+      document.addEventListener("shaka-ui-loaded", async () => {
+        const ui = video["ui"];
+        ui.configure({
+          seekBarColors: {
+            base: "rgba(255,255,255,.2)",
+            buffered: "rgba(255,255,255,.4)",
+            played: "rgb(255,0,0)"
+          }
+        });
+
+        const controls = ui.getControls();
+        const player = controls.getPlayer();
+
+        player.configure({
+          drm: {
+            clearKeys: {
+              [keyId]: key
+            }
+          }
+        });
+
+        try {
+          await player.load(manifestUri);
+          console.log("Video loaded successfully (preload).");
+        } catch (error) {
+          console.error("Error loading stream:", error);
+          alert("Error loading video.");
+        }
+
+        document.querySelectorAll('.shaka-overflow-menu-button').forEach(btn => {
+          btn.textContent = 'settings';
+        });
+        document.querySelectorAll('.shaka-back-to-overflow-button .material-icons-round').forEach(icon => {
+          icon.textContent = 'arrow_back_ios_new';
+        });
+      });
+
+    })();
+    
+  </script>
+<script src="https://nirutv.online/Scripts/clicks.js"></script>
+    <script disable-devtool-auto='true' src='https://cdn.jsdelivr.net/npm/disable-devtool' clear-log='true' disable-select='true' disable-copy='true' disable-cut='true' disable-paste='true'></script>
+</body>
+</html>
