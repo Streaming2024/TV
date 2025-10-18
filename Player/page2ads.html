@@ -307,7 +307,7 @@
     }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Popup ads-->
+	 <!-- Popup ads-->
 <script type='text/javascript' src='//orientsweptautopsy.com/7a/67/68/7a676823323dfeab2e2da829151707c0.js'></script>
 </head>
 <body>
@@ -323,7 +323,7 @@
 <div class="container">
     <!-- Header Image with Link -->
     <div class="header">
-        <a href="https://yonotvsports.com" target="_blank">
+        <a href="https://yonotv.net" target="_blank">
             <img src="https://nirutv.online/logo/logo.png" alt="YoNoTV Live Sports" class="header-image">
         </a>
     </div>
@@ -340,7 +340,7 @@
     </div>
     
     <div class="notice">Wait for Loading & Skip 1–2 ads (press back)</div>
-  <!-- ADS here -->
+   <!-- ADS here -->
 	<center>
 		<script type="text/javascript">
 	atOptions = {
@@ -358,7 +358,7 @@
         <iframe id="video-frame" sandbox="allow-scripts allow-forms allow-same-origin" allowfullscreen></iframe>
         <button class="fullscreen-btn" id="fullscreen-button"><i class="fas fa-expand"></i> Fullscreen</button>
     </div>
-     <!-- Start Banner Ad -->
+    <!-- Start Banner Ad -->
 <div style="text-align:center; margin:10px 0;">
   <a href="https://cutt.ly/tr06xXgJ" target="_blank">
     <img src="https://yonotv.pages.dev/ADS1.gif" alt="Banner Ad" style="max-width:100%; height:auto;" />
@@ -411,26 +411,20 @@
     // Function to load YouTube chat
     function loadYouTubeChat() {
         const chatFrame = document.getElementById('chat-frame');
-        // Always reload the chat to fix the blank issue
         chatFrame.src = youtubeChatUrl;
     }
     
     // Theme toggle functionality
     const themeToggle = document.getElementById('theme-toggle');
     
-    // Always start with light mode (ignore system preference)
-    // Remove any dark mode class that might be set
+    // Always start with light mode
     document.body.classList.remove('dark-mode');
-    // Set theme toggle to show dark mode option
     themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
-    // Clear any previously saved theme preference
     localStorage.removeItem('theme');
     
     themeToggle.addEventListener('click', function() {
-        // Toggle dark mode
         document.body.classList.toggle('dark-mode');
         
-        // Update icon and text
         if (document.body.classList.contains('dark-mode')) {
             themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
             localStorage.setItem('theme', 'dark');
@@ -445,7 +439,7 @@
         location.reload();
     });
     
-    // Enhanced Fullscreen functionality for all devices
+    // Fullscreen functionality
     const fullscreenButton = document.getElementById('fullscreen-button');
     const videoContainer = document.querySelector('.video-container');
     
@@ -453,7 +447,6 @@
         const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
         
         if (isMobile) {
-            // For mobile devices - request fullscreen on the video container
             if (videoContainer.requestFullscreen) {
                 videoContainer.requestFullscreen();
             } else if (videoContainer.webkitRequestFullscreen) {
@@ -462,17 +455,12 @@
                 videoContainer.msRequestFullscreen();
             }
             
-            // Lock orientation to landscape if supported
             if (screen.orientation && screen.orientation.lock) {
-                screen.orientation.lock('landscape').catch(() => {
-                    console.log("Orientation lock not supported");
-                });
+                screen.orientation.lock('landscape').catch(() => {});
             }
             
-            // Hide the button immediately on mobile
             fullscreenButton.style.display = 'none';
         } else {
-            // For desktop/tablet - request fullscreen on the iframe
             if (videoFrame.requestFullscreen) {
                 videoFrame.requestFullscreen();
             } else if (videoFrame.webkitRequestFullscreen) {
@@ -485,37 +473,30 @@
     
     fullscreenButton.addEventListener('click', toggleFullscreen);
     
-    // Handle orientation changes on mobile
+    // Handle orientation changes
     function handleOrientationChange() {
         if (window.matchMedia("(orientation: landscape)").matches) {
-            // Landscape mode
             videoContainer.style.maxHeight = '80vh';
         } else {
-            // Portrait mode
             videoContainer.style.maxHeight = 'none';
         }
     }
     
-    // Initial check
     handleOrientationChange();
-    
-    // Add orientation change listener
     window.addEventListener('orientationchange', handleOrientationChange);
     window.addEventListener('resize', handleOrientationChange);
     
-    // Exit fullscreen when orientation changes (for mobile)
+    // Exit fullscreen when orientation changes
     document.addEventListener('fullscreenchange', function() {
         if (!document.fullscreenElement && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            // Unlock orientation when exiting fullscreen
             if (screen.orientation && screen.orientation.unlock) {
                 screen.orientation.unlock();
             }
-            // Show the button again when exiting fullscreen
             fullscreenButton.style.display = 'block';
         }
     });
     
-    // Chat toggle functionality - now starts with chat visible
+    // Chat toggle functionality
     let chatVisible = true;
     const chatToggleBtn = document.getElementById('chat-toggle-btn');
     
@@ -530,7 +511,6 @@
             chatFrame.style.display = "block";
             chatToggleBtn.innerHTML = '<i class="fas fa-comment-slash"></i> Hide Chat';
             chatVisible = true;
-            // Ensure chat is loaded when showing
             loadYouTubeChat();
         }
     });
@@ -542,7 +522,7 @@
 
         try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
 
             await fetch(new Request(googleAdUrl), { 
                 signal: controller.signal,
@@ -550,7 +530,7 @@
             })
                 .then(() => clearTimeout(timeoutId))
                 .catch(error => {
-                    if (error.name === 'AbortError') return; // Ignore timeout errors
+                    if (error.name === 'AbortError') return;
                     adBlockEnabled = true;
                 });
 
@@ -560,7 +540,6 @@
 
         if (adBlockEnabled) {
             document.getElementById("adb").style.display = "block";
-            // Disable video playback if adblock is detected
             if (videoFrame.src && videoFrame.src !== "about:blank") {
                 videoFrame.src = "about:blank";
             }
@@ -569,19 +548,15 @@
     
     // Run after page loads
     window.addEventListener('load', function() {
-        // Load YouTube chat
         loadYouTubeChat();
-        
-        // Set up other functionality
-        setTimeout(detectAdBlock, 2000); // Delay detection slightly
+        setTimeout(detectAdBlock, 2000);
     });
 </script>
 <!-- BEGIN: Powered by Supercounters.com -->
 <center><script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script><script type="text/javascript">sc_online_i(1704055,"ffffff","e61c1c");</script><br /><noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
 </center>
 <!-- END: Powered by Supercounters.com -->
-<!-- Anti-devtools -->
-    <script src="https://nirutv.online/Scripts/clicks.js"></script>
+<script src="https://nirutv.online/Scripts/clicks.js"></script>
     <script disable-devtool-auto='true' src='https://cdn.jsdelivr.net/npm/disable-devtool' clear-log='true' disable-select='true' disable-copy='true' disable-cut='true' disable-paste='true'></script>
 </body>
 </html>
