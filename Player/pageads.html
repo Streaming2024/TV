@@ -289,26 +289,6 @@
         margin-top: 0;
     }
     
-    /* Redirect notification */
-    .redirect-notification {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #333;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 8px;
-        font-size: 14px;
-        z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        display: none;
-        transition: opacity 0.5s ease;
-    }
-    
-    .redirect-notification.hiding {
-        opacity: 0;
-    }
-    
     @media (max-width: 500px) {
         .top-controls {
             gap: 8px;
@@ -324,13 +304,6 @@
             margin-right: 4px;
             font-size: 14px;
         }
-        
-        .redirect-notification {
-            bottom: 10px;
-            right: 10px;
-            left: 10px;
-            text-align: center;
-        }
     }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -343,11 +316,6 @@
         <h3>Adblock Detected</h3>
         <p>To Continue YoNoTV, Please Turnoff/Disable Adblocker. We really appreciate your support.</p>
     </div>
-</div>
-
-<!-- Redirect Notification -->
-<div class="redirect-notification" id="redirect-notification">
-    <i class="fas fa-info-circle"></i> <span id="notification-text">Advertisement will begin in 5 seconds…</span>
 </div>
 
 <div class="container">
@@ -441,26 +409,20 @@
     // Function to load YouTube chat
     function loadYouTubeChat() {
         const chatFrame = document.getElementById('chat-frame');
-        // Always reload the chat to fix the blank issue after redirecting back
         chatFrame.src = youtubeChatUrl;
     }
     
     // Theme toggle functionality
     const themeToggle = document.getElementById('theme-toggle');
     
-    // Always start with light mode (ignore system preference)
-    // Remove any dark mode class that might be set
+    // Always start with light mode
     document.body.classList.remove('dark-mode');
-    // Set theme toggle to show dark mode option
     themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
-    // Clear any previously saved theme preference
     localStorage.removeItem('theme');
     
     themeToggle.addEventListener('click', function() {
-        // Toggle dark mode
         document.body.classList.toggle('dark-mode');
         
-        // Update icon and text
         if (document.body.classList.contains('dark-mode')) {
             themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
             localStorage.setItem('theme', 'dark');
@@ -475,7 +437,7 @@
         location.reload();
     });
     
-    // Enhanced Fullscreen functionality for all devices
+    // Fullscreen functionality
     const fullscreenButton = document.getElementById('fullscreen-button');
     const videoContainer = document.querySelector('.video-container');
     
@@ -483,7 +445,6 @@
         const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
         
         if (isMobile) {
-            // For mobile devices - request fullscreen on the video container
             if (videoContainer.requestFullscreen) {
                 videoContainer.requestFullscreen();
             } else if (videoContainer.webkitRequestFullscreen) {
@@ -492,17 +453,12 @@
                 videoContainer.msRequestFullscreen();
             }
             
-            // Lock orientation to landscape if supported
             if (screen.orientation && screen.orientation.lock) {
-                screen.orientation.lock('landscape').catch(() => {
-                    console.log("Orientation lock not supported");
-                });
+                screen.orientation.lock('landscape').catch(() => {});
             }
             
-            // Hide the button immediately on mobile
             fullscreenButton.style.display = 'none';
         } else {
-            // For desktop/tablet - request fullscreen on the iframe
             if (videoFrame.requestFullscreen) {
                 videoFrame.requestFullscreen();
             } else if (videoFrame.webkitRequestFullscreen) {
@@ -515,37 +471,30 @@
     
     fullscreenButton.addEventListener('click', toggleFullscreen);
     
-    // Handle orientation changes on mobile
+    // Handle orientation changes
     function handleOrientationChange() {
         if (window.matchMedia("(orientation: landscape)").matches) {
-            // Landscape mode
             videoContainer.style.maxHeight = '80vh';
         } else {
-            // Portrait mode
             videoContainer.style.maxHeight = 'none';
         }
     }
     
-    // Initial check
     handleOrientationChange();
-    
-    // Add orientation change listener
     window.addEventListener('orientationchange', handleOrientationChange);
     window.addEventListener('resize', handleOrientationChange);
     
-    // Exit fullscreen when orientation changes (for mobile)
+    // Exit fullscreen when orientation changes
     document.addEventListener('fullscreenchange', function() {
         if (!document.fullscreenElement && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            // Unlock orientation when exiting fullscreen
             if (screen.orientation && screen.orientation.unlock) {
                 screen.orientation.unlock();
             }
-            // Show the button again when exiting fullscreen
             fullscreenButton.style.display = 'block';
         }
     });
     
-    // Chat toggle functionality - now starts with chat visible
+    // Chat toggle functionality
     let chatVisible = true;
     const chatToggleBtn = document.getElementById('chat-toggle-btn');
     
@@ -560,7 +509,6 @@
             chatFrame.style.display = "block";
             chatToggleBtn.innerHTML = '<i class="fas fa-comment-slash"></i> Hide Chat';
             chatVisible = true;
-            // Ensure chat is loaded when showing
             loadYouTubeChat();
         }
     });
@@ -572,7 +520,7 @@
 
         try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
 
             await fetch(new Request(googleAdUrl), { 
                 signal: controller.signal,
@@ -580,7 +528,7 @@
             })
                 .then(() => clearTimeout(timeoutId))
                 .catch(error => {
-                    if (error.name === 'AbortError') return; // Ignore timeout errors
+                    if (error.name === 'AbortError') return;
                     adBlockEnabled = true;
                 });
 
@@ -590,109 +538,16 @@
 
         if (adBlockEnabled) {
             document.getElementById("adb").style.display = "block";
-            // Disable video playback if adblock is detected
             if (videoFrame.src && videoFrame.src !== "about:blank") {
                 videoFrame.src = "about:blank";
             }
         }
     }
-
-    // Function to hide redirect notification with animation
-    function hideRedirectNotification() {
-        const notification = document.getElementById('redirect-notification');
-        notification.classList.add('hiding');
-        setTimeout(() => {
-            notification.style.display = 'none';
-            notification.classList.remove('hiding');
-        }, 500); // Match the CSS transition time
-    }
-
-    // Fixed Redirect functionality with 2 redirects per 6 hours limit
-    function setupRedirects() {
-        // Get redirect history from localStorage
-        let redirectHistory = JSON.parse(localStorage.getItem('redirectHistory') || '{"count": 0, "lastReset": ' + Date.now() + '}');
-        const sixHours = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
-        
-        // Reset count if it's been more than 6 hours
-        if (Date.now() - redirectHistory.lastReset > sixHours) {
-            redirectHistory = {"count": 0, "lastReset": Date.now()};
-            localStorage.setItem('redirectHistory', JSON.stringify(redirectHistory));
-        }
-        
-        // Check if user has reached the 2 redirects limit
-        if (redirectHistory.count >= 2) {
-            console.log("Redirect limit reached (2/6 hours). Next redirect in 6 hours.");
-            return; // Don't set up any redirects
-        }
-        
-        // First redirect after 5 minutes (300000 milliseconds)
-        setTimeout(() => {
-            // Show notification
-            const notification = document.getElementById('redirect-notification');
-            const notificationText = document.getElementById('notification-text');
-            notificationText.textContent = "You will be redirected to our VIP page in 5 seconds...";
-            notification.style.display = 'block';
-            
-            // Set up the actual redirect after 5 seconds
-            const redirectTimeout = setTimeout(() => {
-                // Update redirect history
-                redirectHistory.count++;
-                redirectHistory.lastReset = Date.now();
-                localStorage.setItem('redirectHistory', JSON.stringify(redirectHistory));
-                
-                // Redirect to VIP page
-                window.location.href = 'https://nirutv.online/VIP/ads.html';
-            }, 5000); // 5 seconds
-            
-            // Hide notification if user navigates away before redirect
-            window.addEventListener('beforeunload', function() {
-                clearTimeout(redirectTimeout);
-                hideRedirectNotification();
-            });
-        }, 300000); // 5 minutes
-        
-        // Second redirect after 10 minutes (600000 milliseconds)
-        setTimeout(() => {
-            // Check if we've already reached the limit from the first redirect
-            redirectHistory = JSON.parse(localStorage.getItem('redirectHistory') || '{"count": 0, "lastReset": ' + Date.now() + '}');
-            if (redirectHistory.count >= 2) {
-                console.log("Redirect limit reached (2/6 hours). Skipping second redirect.");
-                return;
-            }
-            
-            // Show notification
-            const notification = document.getElementById('redirect-notification');
-            const notificationText = document.getElementById('notification-text');
-            notificationText.textContent = "You will be redirected to our VIP page in 5 seconds...";
-            notification.style.display = 'block';
-            
-            // Set up the actual redirect after 5 seconds
-            const redirectTimeout = setTimeout(() => {
-                // Update redirect history
-                redirectHistory.count++;
-                redirectHistory.lastReset = Date.now();
-                localStorage.setItem('redirectHistory', JSON.stringify(redirectHistory));
-                
-                // Redirect to VIP page
-                window.location.href = 'https://nirutv.online/VIP/ads.html';
-            }, 5000); // 5 seconds
-            
-            // Hide notification if user navigates away before redirect
-            window.addEventListener('beforeunload', function() {
-                clearTimeout(redirectTimeout);
-                hideRedirectNotification();
-            });
-        }, 600000); // 10 minutes
-    }
     
     // Run after page loads
     window.addEventListener('load', function() {
-        // Load YouTube chat
         loadYouTubeChat();
-        
-        // Set up other functionality
-        setTimeout(detectAdBlock, 2000); // Delay detection slightly
-        setupRedirects(); // Set up the redirects
+        setTimeout(detectAdBlock, 2000);
     });
 </script>
 <!-- BEGIN: Powered by Supercounters.com -->
