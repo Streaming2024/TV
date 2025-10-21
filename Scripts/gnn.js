@@ -524,7 +524,7 @@
        
   {
     "name": "Nepal",
-    "logo": "https://nirutv.online/logo/can.png"
+    "logo": "https://dns-tv.pages.dev/logo/can.png"
   },  
      
 {
@@ -1374,7 +1374,7 @@
 
            {
     "name": "Nepal.",
-    "logo": "https://nirutv.online/logo/flag.png"
+    "logo": "https://dns-tv.pages.dev/logo/flag.png"
   },  
 
        
@@ -1545,48 +1545,48 @@
      
   {
     "name": "Biratnagar King",
-    "logo": "https://nirutv.online/logo/biratnagar.png"
+    "logo": "https://dns-tv.pages.dev/logo/biratnagar.png"
   },
        {
     "name": "Sudurpaschim Royal",
-    "logo": "https://nirutv.online/logo/sudurpaschim.png"
+    "logo": "https://dns-tv.pages.dev/logo/sudurpaschim.png"
   },  
      
      
   {
     "name": "Pokhara Avenger",
-    "logo": "https://nirutv.online/logo/pokhara.png"
+    "logo": "https://dns-tv.pages.dev/logo/pokhara.png"
   },  
      
      
  
   {
     "name": "Lumbini Lions",
-    "logo": "https://nirutv.online/logo/lumbini.png"
+    "logo": "https://dns-tv.pages.dev/logo/lumbini.png"
   },  
      
      
   {
     "name": "Kathmandu Gurkhas",
-    "logo": "https://nirutv.online/logo/ktm.png"
+    "logo": "https://dns-tv.pages.dev/logo/ktm.png"
   },    
   
        {
     "name": "Karnali Yaks",
-    "logo": "https://nirutv.online/logo/karnali.png"
+    "logo": "https://dns-tv.pages.dev/logo/karnali.png"
   },  
      
      
   {
     "name": "Chitwan Rhinos",
-    "logo": "https://nirutv.online/logo/chitwan.png"
+    "logo": "https://dns-tv.pages.dev/logo/chitwan.png"
   },  
      
      
  
   {
     "name": "Janakpur Bolts",
-    "logo": "https://nirutv.online/logo/janakpur.png"
+    "logo": "https://dns-tv.pages.dev/logo/janakpur.png"
   },  
      
    {
