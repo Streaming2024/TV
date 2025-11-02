@@ -1,6 +1,6 @@
 document.addEventListener('contextmenu', function(event) {
     event.preventDefault();
-    window.location.href = 'https://nirutv.online/VIP/ads.html';
+    window.location.href = 'https://dns-tv.pages.dev/VIP/ads.html';
 });
 
 document.addEventListener('keydown', function(event) {
@@ -23,7 +23,7 @@ document.addEventListener('keydown', function(event) {
             (combo.ctrl && (event.ctrlKey || event.metaKey)) && 
             (!combo.shift || event.shiftKey)) {
             event.preventDefault();
-            window.location.href = 'https://nirutv.online/VIP/ads.html';
+            window.location.href = 'https://dns-tv.pages.dev/VIP/ads.html';
             return;
         }
     }
@@ -31,6 +31,6 @@ document.addEventListener('keydown', function(event) {
     // Block F12 (DevTools)
     if (event.key === 'F12') {
         event.preventDefault();
-        window.location.href = 'https://nirutv.online/VIP/ads.html';
+        window.location.href = 'https://dns-tv.pages.dev/VIP/ads.html';
     }
 });
